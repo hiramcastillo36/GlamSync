@@ -1,14 +1,6 @@
-const express = require('express');
+require('dotenv').config();
+const Server = require("./config/server");
 
-const app = express();
-const port = 3000;
+const server = new Server();
 
-app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.send('¡Hola Mundo! Bienvenido a mi API');
-});
-
-app.listen(port, () => {
-  console.log(`Servidor ejecutándose en http://localhost:${port}`);
-});
+server.listen();
