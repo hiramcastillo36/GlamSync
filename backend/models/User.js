@@ -6,12 +6,12 @@ const UserSchema = new mongoose.Schema({
   email: String,
   password: String,
   phone: String,
-  registerDate: Date,
-  profilePhoto: String,
-  isAdmin: Boolean,
+  role: {
+    type: String,
+    enum: ['admin', 'client', 'employee'],
+    default: 'client',
+  },
   managedSalons: [mongoose.Schema.Types.ObjectId],
-  recoveryToken: Object,
-  lastAccess: Date
 });
 
 module.exports = mongoose.model('User', UserSchema);
