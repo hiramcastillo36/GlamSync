@@ -29,7 +29,7 @@ const login = async (req = request, res = response) => {
 
     try{
         const { password: _, ...simpleUser } = user.toObject();
-        const token = await generateJWT(email);
+        const token = await generateJWT(user._id);
         res.status(200).json({
             msg: "Login OK",
             token: token,
