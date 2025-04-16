@@ -13,16 +13,25 @@ class Server {
             ]
         };
 
+        this.paths = {
+            auth: "/api/auth",
+        }
+
+        this.middlewares();
+        this.routes();
         connectDB();
     }
 
     routes(){
-        this.app.get("*", function(req, res) {
-            res.status(404).json({
-                msg: "Ruta no encontrada",
-                result: 12345
-            })
+        this.app.use(this.paths.auth, require("../routes/auth"));
+        this.app.get("/", (req, res) => {
+            res.send("API is running...");
         });
+    }
+
+    middlewares(){
+        this.app.use(cors(this.corsOptions));
+        this.app.use(express.json());
     }
 
     listen(){
