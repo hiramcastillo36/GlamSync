@@ -1,0 +1,44 @@
+<div class="home-container">
+  <!-- Header con Angular Material -->
+  <mat-toolbar color="white" class="header">
+    <span class="logo">GlamSync</span>
+    <div class="header-actions">
+      <button mat-icon-button class="search-btn">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-mini-fab class="profile-btn" aria-label="Perfil de usuario">
+        <mat-icon>person</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- Hero Banner -->
+  <div class="hero-banner">
+    <div class="hero-content">
+      <h1>Encuentra fácilmente tu lugar favorito</h1>
+    </div>
+  </div>
+
+  <!-- Salones Section -->
+  <section class="salones-section">
+    <h2 class="section-title">Prueba alguno de los salones más cotizados</h2>
+    
+    <div class="salones-grid">
+      <!-- Salon Card con Angular Material (repetido para cada salón) -->
+      <mat-card class="salon-card" *ngFor="let salon of salones">
+        <img mat-card-image [src]="salon.imagen" alt="{{salon.nombre}}">
+        <mat-card-content>
+          <h3 class="salon-name">{{salon.nombre}}</h3>
+          <p class="salon-description">{{salon.descripcion}}</p>
+          <div class="salon-rating">
+            <mat-icon *ngFor="let star of getStars(salon.rating)" 
+                    [class.filled]="star === 1">star</mat-icon>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button class="ver-mas-btn">VER MÁS</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+</div>

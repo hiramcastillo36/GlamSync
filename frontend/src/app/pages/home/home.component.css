@@ -1,0 +1,179 @@
+.home-container {
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 70px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  color: #8B5C54;
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-btn {
+  color: #333;
+}
+
+.profile-btn {
+  background-color: #8B5C54 !important;
+  color: white;
+}
+
+.hero-banner {
+  height: 400px;
+  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/assets/images/hero-hair.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  color: white;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 600px;
+  z-index: 2;
+}
+
+.hero-content h1 {
+  font-size: 2.8rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.salones-section {
+  padding: 3rem 2rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.salones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.salon-card {
+  transition: transform 0.3s ease;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.salon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+}
+
+.salon-card img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.salon-name {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.salon-description {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.salon-rating {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.salon-rating mat-icon {
+  color: #ddd;
+  font-size: 1.2rem;
+  width: 20px;
+  height: 20px;
+}
+
+.salon-rating mat-icon.filled {
+  color: #FFD700;
+}
+
+.ver-mas-btn {
+  background-color: #E0EBE8 !important;
+  color: #666 !important;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.ver-mas-btn:hover {
+  background-color: #d0dbd8 !important;
+}
+
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 300px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .salones-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0 1rem;
+  }
+  
+  .hero-banner {
+    height: 250px;
+    padding: 0 1rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .salones-section {
+    padding: 2rem 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+}
