@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-// Importaciones de Angular Material
+import { RouterModule, Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +23,8 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  constructor(private router: Router) {}
+  
   salones = [
     {
       id: 1,
@@ -49,8 +49,11 @@ export class HomeComponent {
     }
   ];
 
-  // Método para generar estrellas basadas en la calificación
   getStars(rating: number): number[] {
     return Array(5).fill(0).map((_, i) => i < rating ? 1 : 0);
+  }
+
+  verDetalleSalon(id: number): void {
+    this.router.navigate(['/salon', id]);
   }
 }

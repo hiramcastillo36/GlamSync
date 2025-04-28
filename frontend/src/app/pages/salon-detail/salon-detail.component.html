@@ -1,0 +1,82 @@
+<div class="salon-detail-container" *ngIf="salon">
+   
+    <mat-toolbar color="white" class="header">
+      <div class="breadcrumb">
+        <a routerLink="/home" class="logo">GlamSync</a>
+        <span class="separator">></span>
+        <span class="current-page">{{salon.nombre}}</span>
+      </div>
+      <div class="header-actions">
+        <button mat-icon-button class="favorite-btn">
+          <mat-icon>favorite_border</mat-icon>
+        </button>
+        <button mat-icon-button class="search-btn">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button mat-mini-fab class="profile-btn" aria-label="Perfil de usuario">
+          <mat-icon>person</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+  
+    <div class="content-container">
+   
+      <div class="salon-info-section">
+        <div class="salon-details">
+          <h1 class="salon-title">{{salon.nombre}}</h1>
+          <div class="salon-address">
+            <p>{{salon.direccion}}</p>
+            <p>{{salon.edificio}}</p>
+            <p>Tel: {{salon.telefono}}</p>
+            <p>Horario de atención:</p>
+            <p>{{salon.horario}}</p>
+          </div>
+          <button mat-flat-button class="agendar-btn">AGENDAR</button>
+        </div>
+        
+        <div class="services-section">
+          <mat-card class="services-card">
+            <mat-card-content>
+              <h2 class="services-title">Nuestros servicios</h2>
+              <ul class="services-list">
+                <li *ngFor="let servicio of salon.servicios">
+                  <mat-icon class="bullet-icon">fiber_manual_record</mat-icon>
+                  {{servicio}}
+                </li>
+              </ul>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+  
+    
+      <div class="salon-image-section">
+        <img [src]="salon.imagen" alt="{{salon.nombre}}" class="main-image">
+      
+        <div class="rating-section">
+          <p>¡No olvides calificar tu visita!</p>
+          <p class="link">Ver comentarios</p>
+          <div class="stars-container">
+            <mat-icon *ngFor="let star of getStars(salon.rating)" 
+                     [class.filled]="star === 1">star</mat-icon>
+          </div>
+        </div>
+  
+        <div class="packages-section">
+          <h2 class="packages-title">Conoce nuestros paquetes del mes</h2>
+          <div class="packages-container">
+            <div class="package" *ngFor="let paquete of salon.paquetes">
+              <div class="package-image-container" *ngIf="paquete.id === 1; else packageImage">
+                <div class="discount-icon">
+                  <span class="percent-icon">%</span>
+                </div>
+              </div>
+              <ng-template #packageImage>
+                <img [src]="paquete.imagen" alt="{{paquete.nombre}}" class="package-image">
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
