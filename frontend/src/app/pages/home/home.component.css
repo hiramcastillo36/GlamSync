@@ -20,6 +20,7 @@
 }
 
 .logo {
+  font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
   color: #8B5C54;
   font-weight: 500;
@@ -40,29 +41,46 @@
   color: white;
 }
 
-.hero-banner {
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-header {
   height: 400px;
-  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/assets/images/hero-hair.jpg');
-  background-size: cover;
-  background-position: center;
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 0 2rem;
-  color: white;
-  position: relative;
+  background-color: #FAF0EF;
+}
+.salones-section h2{
+  font-family: 'Playfair Display', serif;
 }
 
 .hero-content {
   max-width: 600px;
   z-index: 2;
+  padding-left: 2rem;
+  color: #333;
 }
 
 .hero-content h1 {
+  font-family: 'Playfair Display', serif;
   font-size: 2.8rem;
   margin-bottom: 2rem;
   font-weight: 500;
   line-height: 1.2;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-image: url('/assets/images/hero-hair.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .salones-section {
@@ -81,12 +99,23 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
+  justify-items: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1200px;
+
 }
 
 .salon-card {
   transition: transform 0.3s ease;
-  border-radius: 8px !important;
+  border-radius: 20px !important;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .salon-card:hover {
@@ -140,8 +169,20 @@
 }
 
 @media (max-width: 768px) {
-  .hero-banner {
+  .hero-header {
     height: 300px;
+    flex-direction: column;
+  }
+  
+  .hero-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    order: -1;
+  }
+  
+  .hero-content {
+    padding: 1rem 2rem;
   }
   
   .hero-content h1 {
@@ -158,9 +199,16 @@
     padding: 0 1rem;
   }
   
-  .hero-banner {
-    height: 250px;
-    padding: 0 1rem;
+  .hero-header {
+    height: auto;
+  }
+  
+  .hero-image {
+    height: 150px;
+  }
+  
+  .hero-content {
+    padding: 1rem;
   }
   
   .hero-content h1 {

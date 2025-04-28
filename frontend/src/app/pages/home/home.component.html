@@ -1,5 +1,5 @@
 <div class="home-container">
-  <!-- Header con Angular Material -->
+
   <mat-toolbar color="white" class="header">
     <span class="logo">GlamSync</span>
     <div class="header-actions">
@@ -12,19 +12,19 @@
     </div>
   </mat-toolbar>
 
-  <!-- Hero Banner -->
-  <div class="hero-banner">
-    <div class="hero-content">
-      <h1>Encuentra fácilmente tu lugar favorito</h1>
+  <div class="hero-section">
+    <div class="hero-header">
+      <div class="hero-content">
+        <h1>Encuentra fácilmente tu lugar favorito</h1>
+      </div>
+      <div class="hero-image"></div>
     </div>
   </div>
 
-  <!-- Salones Section -->
   <section class="salones-section">
     <h2 class="section-title">Prueba alguno de los salones más cotizados</h2>
     
     <div class="salones-grid">
-      <!-- Salon Card con Angular Material (repetido para cada salón) -->
       <mat-card class="salon-card" *ngFor="let salon of salones">
         <img mat-card-image [src]="salon.imagen" alt="{{salon.nombre}}">
         <mat-card-content>
