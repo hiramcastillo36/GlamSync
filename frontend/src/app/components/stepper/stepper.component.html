@@ -4,7 +4,7 @@
       <form [formGroup]="serviciosForm">
         <div class="step-content">
           <h2 class="step-title">Servicio</h2>
-          
+
           <div class="servicios-lista">
             <app-service-card
               *ngFor="let servicio of servicios"
@@ -15,16 +15,16 @@
               (deselect)="deseleccionarServicio()">
             </app-service-card>
           </div>
-          
+
           <div class="no-seleccionado" *ngIf="!servicioSeleccionado && !paqueteSeleccionado">
             <mat-icon>info</mat-icon>
             <p>No hay ningún servicio seleccionado</p>
           </div>
-          
+
           <div class="paquete-section">
             <h3 class="paquete-title">¿Deseas añadir un paquete (en lugar de un servicio individual)?</h3>
             <p class="paquete-subtitle">Puedes elegir un paquete o un servicio individual, pero no ambos</p>
-            
+
             <mat-form-field appearance="outline" class="paquete-select">
               <mat-label>Selecciona un paquete</mat-label>
               <mat-select formControlName="paquete">
@@ -34,7 +34,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            
+
             <app-package-card
               *ngIf="paqueteSeleccionado"
               [package]="paqueteSeleccionado"
@@ -42,20 +42,20 @@
               (deselect)="deseleccionarPaquete()">
             </app-package-card>
           </div>
-          
+
           <div class="button-row">
             <button mat-stroked-button (click)="onCancel()">CANCELAR</button>
-            <button 
-              mat-flat-button 
-              color="primary" 
-              class="continuar-btn" 
+            <button
+              mat-flat-button
+              color="primary"
+              class="continuar-btn"
               [disabled]="!serviciosForm.valid"
               (click)="stepper.next()">CONTINUAR</button>
           </div>
         </div>
       </form>
     </mat-step>
-    
+
     <!-- fecha y trabajador -->
     <mat-step [stepControl]="fechaForm" label="Selecciona tu fecha">
       <form [formGroup]="fechaForm">
@@ -65,20 +65,20 @@
               <h2>{{getFechaMostrar()}}</h2>
             </div>
           </div>
-          
+
           <div class="calendario-container">
-            <mat-calendar 
+            <mat-calendar
               [selected]="fechaSeleccionada"
               (selectedChange)="seleccionarFecha($event)">
             </mat-calendar>
           </div>
-          
+
           <div class="horario-section">
             <h3 class="horario-title">Selecciona un horario</h3>
-            
+
             <div class="horarios-lista">
-              <div 
-                *ngFor="let horario of horariosDisponibles" 
+              <div
+                *ngFor="let horario of horariosDisponibles"
                 class="horario-item"
                 [class.selected]="horarioSeleccionado === horario"
                 (click)="seleccionarHorario(horario)">
@@ -86,11 +86,11 @@
               </div>
             </div>
           </div>
-          
+
           <div class="profesional-section">
             <h3 class="profesional-title">¿Deseas elegir un profesional específico?</h3>
             <p class="profesional-subtitle">Esta opción es completamente opcional</p>
-            
+
             <div class="profesionales-lista">
               <app-professional-card
                 *ngFor="let profesional of personas"
@@ -99,7 +99,7 @@
                 [isDefaultOption]="false"
                 (select)="seleccionarPersona($event)">
               </app-professional-card>
-              
+
               <app-professional-card
                 [professional]="{ id: '', nombre: '', especialidad: '' }"
                 [selected]="!personaSeleccionada"
@@ -107,7 +107,7 @@
                 (select)="limpiarPersona()">
               </app-professional-card>
             </div>
-            
+
             <div class="profesional-seleccionado" *ngIf="personaSeleccionada">
               <h3>Profesional seleccionado</h3>
               <div class="profesional-card">
@@ -122,62 +122,62 @@
               </div>
             </div>
           </div>
-          
+
           <div class="button-row">
             <button mat-stroked-button (click)="stepper.previous()">ATRÁS</button>
-            <button 
-              mat-flat-button 
-              color="primary" 
-              class="continuar-btn" 
+            <button
+              mat-flat-button
+              color="primary"
+              class="continuar-btn"
               [disabled]="!fechaForm.valid"
               (click)="stepper.next()">CONTINUAR</button>
           </div>
         </div>
       </form>
     </mat-step>
-    
+
     <!-- confirma -->
     <mat-step [stepControl]="confirmacionForm" label="Resumen">
       <form [formGroup]="confirmacionForm">
         <div class="step-content">
           <h2 class="step-title">Confirma tu cita</h2>
-          
+
           <div class="confirmacion-contenido">
             <div class="resumen-cita">
               <div class="detalle-cita">
-                <p><strong>Salón:</strong> <span>{{salon.nombre}}</span></p>
-                
+                <p><strong>Salón:</strong> <span>{{salon.name}}</span></p>
+                <p><strong>Dirección:</strong> <span>{{salon.address}}</span></p>
                 <ng-container *ngIf="paqueteSeleccionado; else servicioBlock">
                   <p><strong>Paquete:</strong> <span>{{paqueteSeleccionado.nombre}}</span></p>
                   <p><strong>Descripción:</strong> <span>{{paqueteSeleccionado.descripcion}}</span></p>
                 </ng-container>
-                
+
                 <ng-template #servicioBlock>
                   <p><strong>Servicio:</strong> <span>{{servicioSeleccionado?.nombre || 'No seleccionado'}}</span></p>
                   <p *ngIf="servicioSeleccionado"><strong>Descripción:</strong> <span>{{servicioSeleccionado.descripcion}}</span></p>
                 </ng-template>
-                
+
                 <p><strong>Fecha:</strong> <span>{{getFechaMostrar()}}</span></p>
                 <p><strong>Horario:</strong> <span>{{horarioSeleccionado || 'No seleccionado'}}</span></p>
                 <p><strong>Profesional:</strong> <span>{{personaSeleccionada ? personaSeleccionada.nombre : 'Cualquiera disponible'}}</span></p>
-                
+
                 <div class="precio-total">
                   <strong>Precio total:</strong> <span class="monto-total">{{getTotalPrecio() | currency:'MXN':'symbol-narrow':'1.0-0'}}</span>
                 </div>
               </div>
-              
+
               <mat-checkbox formControlName="confirmado" class="confirmacion-checkbox">
                 Confirmo los detalles de mi cita
               </mat-checkbox>
             </div>
           </div>
-          
+
           <div class="button-row">
             <button mat-stroked-button (click)="stepper.previous()">ATRÁS</button>
-            <button 
-              mat-flat-button 
-              color="primary" 
-              class="confirmar-btn" 
+            <button
+              mat-flat-button
+              color="primary"
+              class="confirmar-btn"
               [disabled]="!confirmacionForm.valid"
               (click)="onConfirm()">CONFIRMAR CITA</button>
           </div>

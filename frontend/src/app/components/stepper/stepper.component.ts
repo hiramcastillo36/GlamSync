@@ -14,7 +14,7 @@ import { ServiceItem } from '../../interfaces/service';
 import { PackageItem } from '../../interfaces/package';
 import { Professional } from '../../interfaces/professional';
 import { AppointmentData } from '../../interfaces/appointment';
-import { SalonDetail } from '../../interfaces/salon';
+import { SalonDetail } from '../../interfaces/salon.interface';
 import { ServiceCardComponent } from '../service-card/service-card.component';
 import { PackageCardComponent } from '../package-card/package-card.component';
 import { ProfessionalCardComponent } from '../professional-card/professional-card.component';
@@ -47,29 +47,29 @@ export class AppointmentStepperComponent implements OnInit {
   @Input() paquetes: PackageItem[] = [];
   @Input() personas: Professional[] = [];
   @Input() horariosDisponibles: string[] = [];
-  
+
   @Output() cancel = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<AppointmentData>();
-  
+
   serviciosForm!: FormGroup;
   fechaForm!: FormGroup;
   confirmacionForm!: FormGroup;
-  
+
   servicioSeleccionado: ServiceItem | null = null;
   paqueteSeleccionado: PackageItem | null = null;
   personaSeleccionada: Professional | null = null;
   fechaSeleccionada: Date = new Date();
   horarioSeleccionado: string = '';
   isPaqueteSelected = false;
-  
+
   constructor(private _formBuilder: FormBuilder) {}
-  
+
   ngOnInit() {
     this.serviciosForm = this._formBuilder.group({
       servicio: [''],
       paquete: ['']
     }, { validator: this.servicioOrPaqueteValidator });
-    
+
     this.fechaForm = this._formBuilder.group({
       fecha: ['', Validators.required],
       persona: [''],
@@ -79,11 +79,11 @@ export class AppointmentStepperComponent implements OnInit {
     this.confirmacionForm = this._formBuilder.group({
       confirmado: [false, Validators.requiredTrue]
     });
-    
+
     if (this.servicios.length > 0) {
       this.seleccionarServicio(this.servicios[0]);
     }
-    
+
     this.serviciosForm.get('paquete')?.valueChanges.subscribe(paqueteId => {
       if (paqueteId) {
         this.paqueteSeleccionado = this.paquetes.find(p => String(p.id) === String(paqueteId)) || null;
@@ -97,25 +97,25 @@ export class AppointmentStepperComponent implements OnInit {
       }
     });
   }
-  
+
   servicioOrPaqueteValidator(group: FormGroup): { [key: string]: any } | null {
     const servicio = group.get('servicio')?.value;
     const paquete = group.get('paquete')?.value;
-    
+
     if (!servicio && !paquete) {
       return { 'requiredSelection': true };
     }
     return null;
   }
-  
+
   isServiceSelected(servicio: ServiceItem): boolean {
-    return this.servicioSeleccionado !== null && 
+    return this.servicioSeleccionado !== null &&
            String(this.servicioSeleccionado.id) === String(servicio.id);
   }
-  
+
   seleccionarServicio(servicio: ServiceItem): void {
     if (this.isPaqueteSelected) return;
-    
+
     if (this.servicioSeleccionado && String(this.servicioSeleccionado.id) === String(servicio.id)) {
       this.deseleccionarServicio();
     } else {
@@ -125,26 +125,26 @@ export class AppointmentStepperComponent implements OnInit {
       });
     }
   }
-  
+
   deseleccionarServicio(): void {
     this.servicioSeleccionado = null;
     this.serviciosForm.patchValue({
       servicio: ''
     });
   }
-  
+
   seleccionarPaquete(paquete: PackageItem): void {
     this.paqueteSeleccionado = paquete;
     this.isPaqueteSelected = true;
     this.serviciosForm.patchValue({
       paquete: paquete.id
     });
-    
+
     if (this.servicioSeleccionado) {
       this.deseleccionarServicio();
     }
   }
-  
+
   deseleccionarPaquete(): void {
     this.paqueteSeleccionado = null;
     this.isPaqueteSelected = false;
@@ -152,56 +152,56 @@ export class AppointmentStepperComponent implements OnInit {
       paquete: ''
     });
   }
-  
+
   seleccionarFecha(event: Date): void {
     this.fechaSeleccionada = event;
     this.fechaForm.patchValue({
       fecha: this.fechaSeleccionada
     });
   }
-  
+
   seleccionarHorario(horario: string): void {
     this.horarioSeleccionado = horario;
     this.fechaForm.patchValue({
       horario: horario
     });
   }
-  
+
   seleccionarPersona(persona: Professional | null): void {
     this.personaSeleccionada = persona;
     this.fechaForm.patchValue({
       persona: persona ? persona.id : ''
     });
   }
-  
+
   limpiarPersona(): void {
     this.personaSeleccionada = null;
     this.fechaForm.patchValue({
       persona: ''
     });
   }
-  
+
   getFechaMostrar(): string {
-    const options: Intl.DateTimeFormatOptions = { 
-      weekday: 'short', 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     };
     return this.fechaSeleccionada.toLocaleDateString('es-ES', options);
   }
-  
+
   getTotalPrecio(): number {
     if (this.paqueteSeleccionado) {
       return this.paqueteSeleccionado.precio;
     }
     return this.servicioSeleccionado ? this.servicioSeleccionado.precio : 0;
   }
-  
+
   onCancel(): void {
     this.cancel.emit();
   }
-  
+
   onConfirm(): void {
     if (this.confirmacionForm.valid) {
       const appointmentData: AppointmentData = {
@@ -213,7 +213,7 @@ export class AppointmentStepperComponent implements OnInit {
         persona: this.personaSeleccionada,
         precioTotal: this.getTotalPrecio()
       };
-      
+
       this.confirm.emit(appointmentData);
     }
   }
