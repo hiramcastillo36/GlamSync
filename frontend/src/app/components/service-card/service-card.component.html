@@ -1,0 +1,23 @@
+<div class="servicio-item" 
+    [class.selected]="selected"
+    [class.disabled]="disabled"
+    (click)="onSelect()">
+  <h3 class="servicio-nombre">{{service.nombre}}</h3>
+  <p class="servicio-descripcion">{{service.descripcion}}</p>
+  <p class="servicio-precio">{{service.precio | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+  
+  <div class="disabled-overlay" *ngIf="disabled">
+    <mat-icon>block</mat-icon>
+    <span>Selecciona un paquete o un servicio</span>
+  </div>
+</div>
+
+<div class="servicio-seleccionado" *ngIf="selected">
+  <h3>Servicio seleccionado</h3>
+  <p><strong>{{service.nombre}}</strong></p>
+  <p class="servicio-descripcion">{{service.descripcion}}</p>
+  <p class="servicio-precio">{{service.precio | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+  <button mat-button color="warn" (click)="onDeselect()">
+    <mat-icon>close</mat-icon> Deseleccionar
+  </button>
+</div>

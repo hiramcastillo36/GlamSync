@@ -4,20 +4,24 @@ import { RouterModule, Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
+import { HeaderComponent } from '../../components/header/header.component';
+import { SalonCardComponent } from '../../components/salon-card/salon-card.component';
+import { RatingStarsComponent } from '../../components/rating/rating.component';
+import { SalonCard } from '../../interfaces/salon';
+import { ID } from '../../interfaces/types';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule, 
-    MatToolbarModule, 
-    MatButtonModule, 
-    MatIconModule, 
-    MatCardModule,
-    MatDividerModule
+    CommonModule,
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    HeaderComponent,
+    SalonCardComponent,
+    //RatingStarsComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -25,7 +29,7 @@ import { MatDividerModule } from '@angular/material/divider';
 export class HomeComponent {
   constructor(private router: Router) {}
   
-  salones = [
+  salones: SalonCard[] = [
     {
       id: 1,
       nombre: 'Salon NailsByO',
@@ -49,11 +53,7 @@ export class HomeComponent {
     }
   ];
 
-  getStars(rating: number): number[] {
-    return Array(5).fill(0).map((_, i) => i < rating ? 1 : 0);
-  }
-
-  verDetalleSalon(id: number): void {
+  verDetalleSalon(id: ID): void {
     this.router.navigate(['/salon', id]);
   }
 }

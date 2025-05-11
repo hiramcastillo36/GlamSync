@@ -1,0 +1,57 @@
+.profesional-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .profesional-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .profesional-item.selected {
+    border-color: #8B5C54;
+    background-color: #FAF0EF;
+  }
+  
+  .profesional-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    overflow: hidden;
+  }
+  
+  .profesional-avatar mat-icon {
+    color: #8B5C54;
+  }
+  
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .profesional-info {
+    flex: 1;
+  }
+  
+  .profesional-nombre {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .profesional-especialidad {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }

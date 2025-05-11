@@ -1,0 +1,22 @@
+<div class="appointments-container">
+  <app-header 
+    [showBreadcrumb]="true"
+    [salonId]="salon.id"
+    [salonName]="salon.nombre"
+    [currentPage]="'Agenda'">
+  </app-header>
+
+  <div class="content-container">
+    <h1 class="salon-title">{{salon.nombre}}</h1>
+
+    <app-appointment-stepper
+      [salon]="salon"
+      [servicios]="servicios"
+      [paquetes]="paquetes"
+      [personas]="personas"
+      [horariosDisponibles]="horariosDisponibles"
+      (cancel)="onCancelAppointment()"
+      (confirm)="onConfirmAppointment($event)">
+    </app-appointment-stepper>
+  </div>
+</div>`

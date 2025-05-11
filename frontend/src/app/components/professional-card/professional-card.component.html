@@ -1,0 +1,17 @@
+<div class="profesional-item" 
+     [class.selected]="selected"
+     (click)="onSelect()">
+  <div class="profesional-avatar">
+    <img *ngIf="!isDefaultOption && professional.foto" [src]="professional.foto" alt="{{professional.nombre}}" class="avatar-img">
+    <mat-icon *ngIf="!isDefaultOption && !professional.foto">person</mat-icon>
+    <mat-icon *ngIf="isDefaultOption">people</mat-icon>
+  </div>
+  <div class="profesional-info">
+    <h4 class="profesional-nombre">{{isDefaultOption ? 'Cualquiera disponible' : professional.nombre}}</h4>
+    <p class="profesional-especialidad">{{isDefaultOption ? 'Te asignaremos al mejor profesional disponible' : professional.especialidad}}</p>
+  </div>
+</div>
+<div class="disabled-overlay" *ngIf="disabled">
+  <mat-icon>block</mat-icon>
+  <span>Selecciona un paquete o un servicio</span>
+</div>

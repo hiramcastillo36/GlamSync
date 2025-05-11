@@ -1,0 +1,44 @@
+.paquete-seleccionado {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background-color: #FAF0EF;
+    border-radius: 8px;
+    border-left: 4px solid #8B5C54;
+  }
+  
+  .paquete-item {
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .paquete-item:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .paquete-nombre {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .paquete-descripcion {
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .paquete-precio {
+    font-weight: 500;
+    color: #8B5C54;
+    font-size: 1.2rem;
+  }
+  
+  .servicio-precio {
+    font-weight: 500;
+    color: #8B5C54;
+    font-size: 1.2rem;
+  }
