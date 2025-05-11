@@ -1,7 +1,7 @@
 import { ID } from './types';
 
 export interface SalonBase {
-  id: ID;
+  _id: ID;
   name: string;
   address: string;
   phone: string;
@@ -16,13 +16,12 @@ export interface SalonBase {
 
 export interface SalonCard extends SalonBase {
   imagen: string;
-  rating: number;
 }
 
 export interface SalonDetail extends SalonCard {
   servicios: string[];
   paquetes: Array<{
-    id: ID;
+    _id: ID;
     nombre: string;
     imagen: string;
   }>;

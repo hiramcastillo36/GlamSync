@@ -23,6 +23,6 @@ export class SalonCardComponent {
   @Output() viewDetail = new EventEmitter<ID>();
 
   onViewDetail(): void {
-    this.viewDetail.emit(this.salon.id);
+    this.viewDetail.emit(this.salon._id);
   }
 }
