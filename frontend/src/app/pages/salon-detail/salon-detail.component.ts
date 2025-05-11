@@ -1,34 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute } from '@angular/router';
-
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { HeaderComponent } from '../../components/header/header.component';
+import { RatingStarsComponent } from '../../components/rating/rating.component';
+import { SalonDetail } from '../../interfaces/salon';
+import { ID } from '../../interfaces/types';
 
 @Component({
   selector: 'app-salon-detail',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule, 
-    MatToolbarModule, 
-    MatButtonModule, 
-    MatIconModule, 
+    CommonModule,
+    RouterModule,
     MatCardModule,
-    MatDividerModule,
-    MatListModule
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    HeaderComponent,
+    RatingStarsComponent
   ],
   templateUrl: './salon-detail.component.html',
   styleUrls: ['./salon-detail.component.css']
 })
 export class SalonDetailComponent implements OnInit {
-  salon = {
+  salon: SalonDetail = {
     id: 1,
     nombre: 'Salon NailsByO',
+    descripcion: 'El mejor salón para uñas de la ciudad',
     direccion: 'Av. Sierra Leona #200',
     edificio: 'Edificio planta baja local 50',
     telefono: '+52 444 553 9021',
@@ -59,15 +61,19 @@ export class SalonDetailComponent implements OnInit {
       }
     ]
   };
-  
-  constructor(private route: ActivatedRoute) {}
-  
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
   ngOnInit() {
-    
-    // this.salonService.getSalon(salonId).subscribe(data => this.salon = data);
+    this.route.params.subscribe(params => {
+      const salonId: ID = params['id'];
+    });
   }
 
-  getStars(rating: number): number[] {
-    return Array(5).fill(0).map((_, i) => i < rating ? 1 : 0);
+  agendarCita(): void {
+    this.router.navigate(['/salon', this.salon.id, 'appointments']);
   }
 }

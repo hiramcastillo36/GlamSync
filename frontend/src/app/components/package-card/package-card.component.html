@@ -1,0 +1,17 @@
+<div class="paquete-seleccionado" *ngIf="selected; else packageSelector">
+    <h3>Paquete seleccionado</h3>
+    <p><strong>{{package.nombre}}</strong></p>
+    <p>{{package.descripcion}}</p>
+    <p class="servicio-precio">{{package.precio | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+    <button mat-button color="warn" (click)="onDeselect()">
+      <mat-icon>close</mat-icon> Deseleccionar
+    </button>
+  </div>
+  
+  <ng-template #packageSelector>
+    <div class="paquete-item" (click)="onSelect()">
+      <h3 class="paquete-nombre">{{package.nombre}}</h3>
+      <p class="paquete-descripcion">{{package.descripcion}}</p>
+      <p class="paquete-precio">{{package.precio | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+    </div>
+  </ng-template>

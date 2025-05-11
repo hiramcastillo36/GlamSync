@@ -90,7 +90,7 @@
   
   .agendar-btn {
     background-color: #c4dedf !important;
-    color: #333 !important;
+    color: #333;
     font-weight: 500;
     padding: 0.5rem 2rem;
     border-radius: 20px;
@@ -102,7 +102,7 @@
   }
   
   .services-card {
-    background-color: #8B5C54 ;
+    background-color: #8B5C54;
     color: white;
     border-radius: 10px ;
     padding: 1rem;

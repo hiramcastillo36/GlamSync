@@ -1,16 +1,5 @@
 <div class="home-container">
-
-  <mat-toolbar color="white" class="header">
-    <span class="logo">GlamSync</span>
-    <div class="header-actions">
-      <button mat-icon-button class="search-btn">
-        <mat-icon>search</mat-icon>
-      </button>
-      <button mat-mini-fab class="profile-btn" aria-label="Perfil de usuario">
-        <mat-icon>person</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+  <app-header></app-header>
 
   <div class="hero-section">
     <div class="hero-header">
@@ -25,20 +14,11 @@
     <h2 class="section-title">Prueba alguno de los salones más cotizados</h2>
     
     <div class="salones-grid">
-      <mat-card class="salon-card" *ngFor="let salon of salones">
-        <img mat-card-image [src]="salon.imagen" alt="{{salon.nombre}}">
-        <mat-card-content>
-          <h3 class="salon-name">{{salon.nombre}}</h3>
-          <p class="salon-description">{{salon.descripcion}}</p>
-          <div class="salon-rating">
-            <mat-icon *ngFor="let star of getStars(salon.rating)" 
-                    [class.filled]="star === 1">star</mat-icon>
-          </div>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button class="ver-mas-btn" (click)="verDetalleSalon(salon.id)">VER MÁS</button>
-        </mat-card-actions>
-      </mat-card>
+      <app-salon-card 
+        *ngFor="let salon of salones"
+        [salon]="salon"
+        (viewDetail)="verDetalleSalon($event)">
+      </app-salon-card>
     </div>
   </section>
 </div>

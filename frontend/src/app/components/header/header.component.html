@@ -1,0 +1,25 @@
+<mat-toolbar color="white" class="header">
+    <div class="breadcrumb" *ngIf="showBreadcrumb">
+      <a routerLink="/home" class="logo">GlamSync</a>
+      <ng-container *ngIf="salonId && salonName">
+        <span class="separator">></span>
+        <a [routerLink]="['/salon', salonId]" class="salon-link">{{salonName}}</a>
+        <ng-container *ngIf="currentPage">
+          <span class="separator">></span>
+          <span class="current-page">{{currentPage}}</span>
+        </ng-container>
+      </ng-container>
+    </div>
+    <span *ngIf="!showBreadcrumb" class="logo">GlamSync</span>
+    <div class="header-actions">
+      <button mat-icon-button class="favorite-btn" *ngIf="showBreadcrumb">
+        <mat-icon>favorite_border</mat-icon>
+      </button>
+      <button mat-icon-button class="search-btn">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-mini-fab class="profile-btn" aria-label="Perfil de usuario">
+        <mat-icon>person</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
