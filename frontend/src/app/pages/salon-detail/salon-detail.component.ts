@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { HeaderComponent } from '../../components/header/header.component';
 import { RatingStarsComponent } from '../../components/rating/rating.component';
-import { SalonDetail } from '../../interfaces/salon';
+import { SalonDetail } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 
 @Component({
@@ -29,20 +29,14 @@ import { ID } from '../../interfaces/types';
 export class SalonDetailComponent implements OnInit {
   salon: SalonDetail = {
     id: 1,
-    nombre: 'Salon NailsByO',
-    descripcion: 'El mejor salón para uñas de la ciudad',
-    direccion: 'Av. Sierra Leona #200',
-    edificio: 'Edificio planta baja local 50',
-    telefono: '+52 444 553 9021',
-    horario: 'L-V 9:00 am - 5:00pm',
-    imagen: '/assets/images/nails.jpg',
+    name: 'Salon NailsByO',
+    address: 'Calle 123',
+    phone: '1234567890',
+    description: 'El mejor salón para uñas de la ciudad',
+    workingHours: 'L-V 9:00 am - 5:00pm',
+    images: ['/assets/images/nails.jpg'],
     rating: 3,
-    servicios: [
-      'Uñas acrílicas',
-      'Gel',
-      'Manicure',
-      'Masaje de manos'
-    ],
+    servicios: ['Manicure', 'Pedicure', 'Uñas Naturales'],
     paquetes: [
       {
         id: 1,
@@ -59,7 +53,11 @@ export class SalonDetailComponent implements OnInit {
         nombre: 'Paquete Deluxe',
         imagen: '/assets/images/package3.jpg'
       }
-    ]
+    ],
+    imagen: '/assets/images/nails.jpg',
+    services: ['Manicure', 'Pedicure', 'Uñas Naturales'],
+    registerDate: new Date(),
+    isActive: true
   };
 
   constructor(

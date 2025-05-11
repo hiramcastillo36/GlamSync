@@ -1,24 +1,23 @@
 <div class="salon-detail-container" *ngIf="salon">
-  <app-header 
+  <app-header
     [showBreadcrumb]="true"
     [salonId]="salon.id"
-    [salonName]="salon.nombre">
+    [salonName]="salon.name">
   </app-header>
 
   <div class="content-container">
     <div class="salon-info-section">
       <div class="salon-details">
-        <h1 class="salon-title">{{salon.nombre}}</h1>
+        <h1 class="salon-title">{{salon.name}}</h1>
         <div class="salon-address">
-          <p>{{salon.direccion}}</p>
-          <p>{{salon.edificio}}</p>
-          <p>Tel: {{salon.telefono}}</p>
+          <p>{{salon.address}}</p>
+            <p>Tel: {{salon.phone}}</p>
           <p>Horario de atención:</p>
-          <p>{{salon.horario}}</p>
+          <p>{{salon.workingHours}}</p>
         </div>
         <button mat-flat-button class="agendar-btn" (click)="agendarCita()">AGENDAR</button>
       </div>
-      
+
       <div class="services-section">
         <mat-card class="services-card">
           <mat-card-content>
@@ -34,10 +33,10 @@
       </div>
     </div>
 
-  
+
     <div class="salon-image-section">
-      <img [src]="salon.imagen" alt="{{salon.nombre}}" class="main-image">
-    
+      <img [src]="salon.imagen" alt="{{salon.name}}" class="main-image">
+
       <div class="rating-section">
         <p>¡No olvides calificar tu visita!</p>
         <p class="link">Ver comentarios</p>
