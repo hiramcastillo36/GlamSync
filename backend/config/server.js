@@ -15,6 +15,7 @@ class Server {
 
         this.paths = {
             auth: "/api/auth",
+            salon: "/api/salon"
         }
 
         this.middlewares();
@@ -24,6 +25,7 @@ class Server {
 
     routes(){
         this.app.use(this.paths.auth, require("../routes/auth"));
+        this.app.use(this.paths.salon, require("../routes/salon"));
         this.app.get("/", (req, res) => {
             res.send("API is running...");
         });
