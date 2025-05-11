@@ -28,7 +28,7 @@ import { ID } from '../../interfaces/types';
 })
 export class SalonDetailComponent implements OnInit {
   salon: SalonDetail = {
-    id: 1,
+    _id: 1,
     name: 'Salon NailsByO',
     address: 'Calle 123',
     phone: '1234567890',
@@ -39,17 +39,17 @@ export class SalonDetailComponent implements OnInit {
     servicios: ['Manicure', 'Pedicure', 'Uñas Naturales'],
     paquetes: [
       {
-        id: 1,
+        _id: 1,
         nombre: 'Paquete Básico',
         imagen: '/assets/images/package1.jpg'
       },
       {
-        id: 2,
+        _id: 2,
         nombre: 'Paquete Premium',
         imagen: '/assets/images/package2.jpg'
       },
       {
-        id: 3,
+        _id: 3,
         nombre: 'Paquete Deluxe',
         imagen: '/assets/images/package3.jpg'
       }
@@ -72,6 +72,6 @@ export class SalonDetailComponent implements OnInit {
   }
 
   agendarCita(): void {
-    this.router.navigate(['/salon', this.salon.id, 'appointments']);
+    this.router.navigate(['/salon', this.salon._id, 'appointments']);
   }
 }

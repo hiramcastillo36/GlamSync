@@ -1,7 +1,7 @@
 <div class="salon-detail-container" *ngIf="salon">
   <app-header
     [showBreadcrumb]="true"
-    [salonId]="salon.id"
+    [salonId]="salon._id"
     [salonName]="salon.name">
   </app-header>
 
@@ -47,7 +47,7 @@
         <h2 class="packages-title">Conoce nuestros paquetes del mes</h2>
         <div class="packages-container">
           <div class="package" *ngFor="let paquete of salon.paquetes">
-            <div class="package-image-container" *ngIf="paquete.id === 1; else packageImage">
+            <div class="package-image-container" *ngIf="paquete._id === 1; else packageImage">
               <div class="discount-icon">
                 <span class="percent-icon">%</span>
               </div>
