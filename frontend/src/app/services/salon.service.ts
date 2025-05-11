@@ -17,4 +17,12 @@ export class SalonService {
     createSalon(salon: SalonBase): Observable<SalonBase> {
         return this.http.post<SalonBase>(this.url, salon);
     }
+
+    getSalones(): Observable<SalonBase[]> {
+        return this.http.get<SalonBase[]>(this.url);
+    }
+
+    getSalonById(id: string): Observable<SalonBase> {
+        return this.http.get<SalonBase>(`${this.url}/${id}`);
+    }
 }
