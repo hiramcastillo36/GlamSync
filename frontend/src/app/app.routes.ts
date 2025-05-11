@@ -3,10 +3,8 @@ import { LoginComponent } from '../app/pages/login/login.component';
 import { HomeComponent } from '../app/pages/home/home.component';
 import { SalonDetailComponent } from '../app/pages/salon-detail/salon-detail.component';
 import { RegisterComponent } from './components/register/register.component';
-import { LoginComponent } from './pages/login/login.component';
-import { HomeComponent } from './pages/home/home.component';
-import { SalonDetailComponent } from './pages/salon-detail/salon-detail.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
+import { SalonCreateComponent } from './pages/salon-create/salon-create.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,5 +12,6 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'salon/:id', component: SalonDetailComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'salon/:id/appointments', component: AppointmentsComponent }
+  { path: 'salon/:id/appointments', component: AppointmentsComponent },
+  { path: 'create', component: SalonCreateComponent },
 ];
