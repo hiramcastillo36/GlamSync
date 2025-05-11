@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SalonCardComponent } from '../../components/salon-card/salon-card.component';
 import { RatingStarsComponent } from '../../components/rating/rating.component';
-import { SalonCard } from '../../interfaces/salon';
+import { SalonCard } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 
 @Component({
@@ -28,28 +28,21 @@ import { ID } from '../../interfaces/types';
 })
 export class HomeComponent {
   constructor(private router: Router) {}
-  
+
   salones: SalonCard[] = [
     {
       id: 1,
-      nombre: 'Salon NailsByO',
-      descripcion: 'Hacemos cualquier diseño que desees',
+      name: 'Salon NailsByO',
+      address: 'Calle 123',
+      phone: '1234567890',
+      description: 'Hacemos cualquier diseño que desees',
+      workingHours: '10:00 - 18:00',
+      images: ['/assets/images/nails.jpg'],
+      rating: 3,
       imagen: '/assets/images/nails.jpg',
-      rating: 3
-    },
-    {
-      id: 2,
-      nombre: 'SalonByRM',
-      descripcion: 'Hacemos cualquier diseño que desees',
-      imagen: '/assets/images/hair.jpg',
-      rating: 3
-    },
-    {
-      id: 3,
-      nombre: 'Barbería',
-      descripcion: 'Hacemos cualquier diseño que desees',
-      imagen: '/assets/images/barber.jpg',
-      rating: 3
+      services: ['Manicure', 'Pedicure', 'Uñas Naturales'],
+      registerDate: new Date(),
+      isActive: true
     }
   ];
 
