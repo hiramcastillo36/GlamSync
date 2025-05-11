@@ -2,14 +2,16 @@ import { ID } from './types';
 
 export interface SalonBase {
   id: ID;
-  nombre: string;
-  descripcion: string;
-  direccion?: string;
-  telefono?: string;
-  email?: string;
-  horarioAtencion?: string;
-  edificio?: string;
-  horario?: string;
+  name: string;
+  address: string;
+  phone: string;
+  description: string;
+  workingHours: string;
+  images: string[];
+  rating: number;
+  services: string[];
+  registerDate: Date;
+  isActive: boolean;
 }
 
 export interface SalonCard extends SalonBase {
