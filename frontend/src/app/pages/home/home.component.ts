@@ -7,8 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SalonCardComponent } from '../../components/salon-card/salon-card.component';
 import { RatingStarsComponent } from '../../components/rating/rating.component';
-import { SalonCard } from '../../interfaces/salon.interface';
+import { SalonBase, SalonCard } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
+import { SalonService } from '../../services/salon.service';
 
 @Component({
   selector: 'app-home',
@@ -27,24 +28,17 @@ import { ID } from '../../interfaces/types';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
+  salones: SalonCard[] = [];
 
-  salones: SalonCard[] = [
-    {
-      id: 1,
-      name: 'Salon NailsByO',
-      address: 'Calle 123',
-      phone: '1234567890',
-      description: 'Hacemos cualquier diseño que desees',
-      workingHours: '10:00 - 18:00',
-      images: ['/assets/images/nails.jpg'],
-      rating: 3,
-      imagen: '/assets/images/nails.jpg',
-      services: ['Manicure', 'Pedicure', 'Uñas Naturales'],
-      registerDate: new Date(),
-      isActive: true
-    }
-  ];
+  constructor(private router: Router, private salonService: SalonService) {
+    this.salonService.getSalones().subscribe((salones) => {
+      this.salones = salones.map((salon) => ({
+        ...salon,
+        imagen: salon.images[0]
+      }));
+    });
+    console.log(this.salones);
+}
 
   verDetalleSalon(id: ID): void {
     this.router.navigate(['/salon', id]);
