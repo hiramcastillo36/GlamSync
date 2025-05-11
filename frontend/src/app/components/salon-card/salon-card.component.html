@@ -1,12 +1,11 @@
 <mat-card class="salon-card">
-    <img mat-card-image [src]="salon.imagen" alt="{{salon.nombre}}">
+    <img mat-card-image [src]="salon.imagen" alt="{{salon.name}}">
     <mat-card-content>
-      <h3 class="salon-name">{{salon.nombre}}</h3>
-      <p class="salon-description">{{salon.descripcion}}</p>
+      <h3 class="salon-name">{{salon.name}}</h3>
+      <p class="salon-description">{{salon.description}}</p>
       <app-rating-stars [rating]="salon.rating"></app-rating-stars>
     </mat-card-content>
     <mat-card-actions>
       <button mat-button class="ver-mas-btn" (click)="onViewDetail()">VER MÁS</button>
     </mat-card-actions>
   </mat-card>
-  

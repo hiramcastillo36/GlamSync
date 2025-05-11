@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { RatingStarsComponent } from '../rating/rating.component';
-import { SalonCard } from '../../interfaces/salon';
+import { SalonCard } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 
 @Component({
@@ -21,7 +21,7 @@ import { ID } from '../../interfaces/types';
 export class SalonCardComponent {
   @Input() salon!: SalonCard;
   @Output() viewDetail = new EventEmitter<ID>();
-  
+
   onViewDetail(): void {
     this.viewDetail.emit(this.salon.id);
   }
