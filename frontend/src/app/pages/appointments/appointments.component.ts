@@ -9,7 +9,7 @@ import { Professional } from '../../interfaces/professional';
 import { AppointmentData } from '../../interfaces/appointment';
 import { SalonDetail } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
-
+import { SalonService } from '../../services/salon.service';
 @Component({
   selector: 'app-appointments',
   standalone: true,
@@ -24,7 +24,7 @@ import { ID } from '../../interfaces/types';
 })
 export class AppointmentsComponent implements OnInit {
   salon: SalonDetail = {
-    id: 1,
+    _id: 1,
     name: 'Salon NailsByO',
     address: 'Calle 123',
     phone: '1234567890',
@@ -65,17 +65,36 @@ export class AppointmentsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private salonService: SalonService
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       const salonId: ID = params['id'];
+      this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
+        this.salon = {
+            _id: salon._id,
+            name: salon.name,
+            address: salon.address,
+            phone: salon.phone,
+            description: salon.description,
+            workingHours: salon.workingHours,
+            images: salon.images,
+            rating: salon.rating,
+            servicios: salon.services,
+            paquetes: [],
+            imagen: salon.images[0],
+            services: [],
+            registerDate: salon.registerDate,
+            isActive: salon.isActive
+        };
+      });
     });
   }
 
   onCancelAppointment(): void {
-    this.router.navigate(['/salon', this.salon.id]);
+    this.router.navigate(['/salon', this.salon._id]);
   }
 
   onConfirmAppointment(data: AppointmentData): void {
