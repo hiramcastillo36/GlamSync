@@ -7,7 +7,7 @@ import { ServiceItem } from '../../interfaces/service';
 import { PackageItem } from '../../interfaces/package';
 import { Professional } from '../../interfaces/professional';
 import { AppointmentData } from '../../interfaces/appointment';
-import { SalonDetail } from '../../interfaces/salon';
+import { SalonDetail } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 
 @Component({
@@ -25,12 +25,19 @@ import { ID } from '../../interfaces/types';
 export class AppointmentsComponent implements OnInit {
   salon: SalonDetail = {
     id: 1,
-    nombre: 'Salon NailsByO',
-    descripcion: 'El mejor salón para uñas de la ciudad',
-    imagen: '/assets/images/nails.jpg',
+    name: 'Salon NailsByO',
+    address: 'Calle 123',
+    phone: '1234567890',
+    description: 'El mejor salón para uñas de la ciudad',
+    workingHours: 'L-V 9:00 am - 5:00pm',
+    images: ['/assets/images/nails.jpg'],
     rating: 3,
     servicios: [],
-    paquetes: []
+    paquetes: [],
+    imagen: '/assets/images/nails.jpg',
+    services: [],
+    registerDate: new Date(),
+    isActive: true
   };
 
   servicios: ServiceItem[] = [
@@ -52,7 +59,7 @@ export class AppointmentsComponent implements OnInit {
   ];
 
   horariosDisponibles = [
-    '09:00', '10:00', '11:00', '12:00', 
+    '09:00', '10:00', '11:00', '12:00',
     '13:00', '14:00', '16:00', '17:00', '18:00'
   ];
 
