@@ -6,12 +6,17 @@ export interface SalonBase {
   address: string;
   phone: string;
   description: string;
-  workingHours: string;
+  workingHours: WorkingHours[];
   images: string[];
   rating: number;
   services: string[];
   registerDate: Date;
   isActive: boolean;
+}
+
+export interface WorkingHours {
+  day: string;
+  time: string;
 }
 
 export interface SalonCard extends SalonBase {
