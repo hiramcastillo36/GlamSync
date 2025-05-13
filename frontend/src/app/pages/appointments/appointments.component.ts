@@ -29,7 +29,7 @@ export class AppointmentsComponent implements OnInit {
     address: 'Calle 123',
     phone: '1234567890',
     description: 'El mejor salón para uñas de la ciudad',
-    workingHours: 'L-V 9:00 am - 5:00pm',
+    workingHours: [{day: 'L-V', time: '9:00 am - 5:00pm'}],
     images: ['/assets/images/nails.jpg'],
     rating: 3,
     servicios: [],
