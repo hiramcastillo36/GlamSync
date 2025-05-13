@@ -9,6 +9,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { RatingStarsComponent } from '../../components/rating/rating.component';
 import { SalonDetail } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
+import { SalonService } from '../../services/salon.service';
 
 @Component({
   selector: 'app-salon-detail',
@@ -27,51 +28,31 @@ import { ID } from '../../interfaces/types';
   styleUrls: ['./salon-detail.component.css']
 })
 export class SalonDetailComponent implements OnInit {
-  salon: SalonDetail = {
-    _id: 1,
-    name: 'Salon NailsByO',
-    address: 'Calle 123',
-    phone: '1234567890',
-    description: 'El mejor salón para uñas de la ciudad',
-    workingHours: 'L-V 9:00 am - 5:00pm',
-    images: ['/assets/images/nails.jpg'],
-    rating: 3,
-    servicios: ['Manicure', 'Pedicure', 'Uñas Naturales'],
-    paquetes: [
-      {
-        _id: 1,
-        nombre: 'Paquete Básico',
-        imagen: '/assets/images/package1.jpg'
-      },
-      {
-        _id: 2,
-        nombre: 'Paquete Premium',
-        imagen: '/assets/images/package2.jpg'
-      },
-      {
-        _id: 3,
-        nombre: 'Paquete Deluxe',
-        imagen: '/assets/images/package3.jpg'
-      }
-    ],
-    imagen: '/assets/images/nails.jpg',
-    services: ['Manicure', 'Pedicure', 'Uñas Naturales'],
-    registerDate: new Date(),
-    isActive: true
-  };
+
+  salon: SalonDetail | undefined;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private salonService: SalonService
+ ) {}
 
-  ngOnInit() {
+ngOnInit() {
     this.route.params.subscribe(params => {
       const salonId: ID = params['id'];
+      this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
+        this.salon = {
+          ...salon,
+          servicios: salon.services,
+          paquetes: [],
+          imagen: salon.images[0]
+        };
+        console.log(this.salon);
+      });
     });
   }
 
   agendarCita(): void {
-    this.router.navigate(['/salon', this.salon._id, 'appointments']);
+    this.router.navigate(['/salon', this.salon?._id, 'appointments']);
   }
 }

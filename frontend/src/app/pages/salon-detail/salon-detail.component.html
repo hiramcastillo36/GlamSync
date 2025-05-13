@@ -10,10 +10,20 @@
       <div class="salon-details">
         <h1 class="salon-title">{{salon.name}}</h1>
         <div class="salon-address">
-          <p>{{salon.address}}</p>
-            <p>Tel: {{salon.phone}}</p>
+          <div class="address-container">
+            <div *ngFor="let address of salon.address | keyvalue" class="address-item">
+              <span class="address-label">{{address.key | titlecase}}:</span>
+              <span class="address-value">{{address.value}}</span>
+            </div>
+          </div>
+          <p>Tel: {{salon.phone}}</p>
           <p>Horario de atención:</p>
-          <p>{{salon.workingHours}}</p>
+          <div class="working-hours">
+            <div *ngFor="let day of salon.workingHours | keyvalue" class="day-schedule">
+              <span class="day-name">{{day.key | titlecase}}:</span>
+              <span class="day-time">{{day.value}}</span>
+            </div>
+          </div>
         </div>
         <button mat-flat-button class="agendar-btn" (click)="agendarCita()">AGENDAR</button>
       </div>

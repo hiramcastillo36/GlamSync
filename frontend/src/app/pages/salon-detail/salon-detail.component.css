@@ -5,7 +5,7 @@
     margin: 0 auto;
     overflow-x: hidden;
   }
-  
+
   .header {
     display: flex;
     justify-content: space-between;
@@ -18,13 +18,13 @@
     z-index: 100;
     height: 70px;
   }
-  
+
   .breadcrumb {
     display: flex;
     align-items: center;
     font-size: 1rem;
   }
-  
+
   .logo {
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
@@ -32,44 +32,44 @@
     font-weight: 500;
     text-decoration: none;
   }
-  
+
   .separator {
     margin: 0 10px;
     color: #8B5C54;
   }
-  
+
   .current-page {
     color: #115A75;
     font-family: 'Playfair Display', serif;
 
   }
-  
+
   .header-actions {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
-  
+
   .favorite-btn, .search-btn {
     color: #333;
   }
-  
+
   .profile-btn {
     background-color: #8B5C54 !important;
     color: white;
   }
-  
+
   .content-container {
     display: flex;
     padding: 2rem;
     gap: 2rem;
   }
-  
+
   .salon-info-section {
     flex: 1;
     max-width: 400px;
   }
-  
+
   .salon-title {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
@@ -77,17 +77,17 @@
     color: #333;
     font-weight: 600;
   }
-  
+
   .salon-address {
     margin-bottom: 2rem;
     color: #555;
     line-height: 1.5;
   }
-  
+
   .salon-address p {
     margin: 0.2rem 0;
   }
-  
+
   .agendar-btn {
     background-color: #c4dedf !important;
     color: #333;
@@ -96,129 +96,129 @@
     border-radius: 20px;
     letter-spacing: 1px;
   }
-  
+
   .services-section {
     margin-top:60px;
   }
-  
+
   .services-card {
     background-color: #8B5C54;
     color: white;
     border-radius: 10px ;
     padding: 1rem;
   }
-  
+
   .services-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
     font-weight: 400;
   }
-  
+
   .services-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
-  
+
   .services-list li {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
     font-size: 1.1rem;
   }
-  
+
   .bullet-icon {
     font-size: 0.8rem;
     margin-right: 1rem;
     height: 8px;
     width: 8px;
   }
-  
+
   .salon-image-section {
     flex: 2;
     display: flex;
     flex-direction: column;
   }
-  
+
   .main-image {
-    width: 100%; 
-    height: 250px; 
+    width: 100%;
+    height: 250px;
     border-radius: 10px;
-    object-fit: cover; 
-    object-position: center; 
+    object-fit: cover;
+    object-position: center;
   }
-  
+
   .rating-section {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     text-align: center;
   }
-  
+
   .rating-section p {
     margin: 0.5rem 0;
     font-size: 1rem;
     color: #555;
   }
-  
+
   .link {
     color: #8B5C54;
     cursor: pointer;
     font-weight: 500;
   }
-  
+
   .stars-container {
     display: flex;
     justify-content: center;
     margin-top: 0.5rem;
   }
-  
+
   .stars-container mat-icon {
     color: #ddd;
     font-size: 1.5rem;
     width: 24px;
     height: 24px;
   }
-  
+
   .stars-container mat-icon.filled {
     color: #FFD700;
   }
-  
-  
+
+
   .packages-section {
     margin-top: 50px;
     text-align: center;
   }
-  
+
   .packages-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem; 
+    font-size: 1.8rem;
     margin-bottom: 1.5rem;
     color: #333;
     font-weight: 500;
   }
-  
+
   .packages-container {
     display: flex;
     justify-content: center;
     gap: 1.5rem;
     flex-wrap: wrap;
   }
-  
+
   .package {
-    width: 220px; 
+    width: 220px;
     height: 130px;
     background-color: #f0f0f0;
     border-radius: 10px;
     overflow: hidden;
   }
-  
+
   .package-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  
+
   .package-image-container {
     position: relative;
     width: 100%;
@@ -228,9 +228,9 @@
     align-items: center;
     background-color: #f9e4d4;
   }
-  
+
   .discount-icon {
-    width: 90px; 
+    width: 90px;
     height: 90px;
     background-color: #f9e4d4;
     border-radius: 50%;
@@ -239,55 +239,86 @@
     align-items: center;
     border: 2px solid #f9d1b5;
   }
-  
+
   .percent-icon {
     font-size: 1.8rem;
     color: #8B5C54;
     font-weight: bold;
   }
-  
-  
+
+
   @media (max-width: 992px) {
     .content-container {
       flex-direction: column;
     }
-    
+
     .salon-info-section {
       max-width: 100%;
     }
   }
-  
+
   @media (max-width: 768px) {
     .header {
       padding: 0 1rem;
     }
-    
+
     .breadcrumb {
       font-size: 0.9rem;
     }
-    
+
     .logo {
       font-size: 1rem;
     }
-    
+
     .content-container {
       padding: 1rem;
     }
-    
+
     .salon-title {
       font-size: 2rem;
     }
-    
+
     .packages-title {
       font-size: 1.5rem;
     }
-    
+
     .package {
       width: 180px;
       height: 110px;
     }
-  
+
     .main-image {
       height: 300px;
     }
+  }
+
+  .working-hours {
+    margin-top: 0.5rem;
+  }
+
+  .day-schedule {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .day-schedule:last-child {
+    border-bottom: none;
+  }
+
+  .day-name {
+    font-weight: 500;
+    color: #333;
+    min-width: 100px;
+  }
+
+  .day-hours {
+    color: #666;
+  }
+
+  .day-hours:empty::after {
+    content: 'Cerrado';
+    color: #dc3545;
+    font-style: italic;
   }
