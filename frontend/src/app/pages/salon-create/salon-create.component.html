@@ -1,0 +1,105 @@
+<div class="container">
+    <h1>Crear Salon</h1>
+    <form [formGroup]="salonForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
+
+        <div formGroupName="address">
+            <h3>Dirección</h3>
+            <div class="form-group">
+                <label for="street">Calle</label>
+                <input type="text" class="form-control" id="street" formControlName="street">
+            </div>
+            <div class="form-group">
+                <label for="building">Edificio</label>
+                <input type="text" class="form-control" id="building" formControlName="building">
+            </div>
+            <div class="form-group">
+                <label for="city">Ciudad</label>
+                <input type="text" class="form-control" id="city" formControlName="city">
+            </div>
+            <div class="form-group">
+                <label for="state">Estado</label>
+                <input type="text" class="form-control" id="state" formControlName="state">
+            </div>
+            <div class="form-group">
+                <label for="zipCode">Código Postal</label>
+                <input type="text" class="form-control" id="zipCode" formControlName="zipCode">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input type="text" class="form-control" id="phone" formControlName="phone">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+        </div>
+
+        <div formGroupName="workingHours">
+            <h3>Horario de trabajo</h3>
+            <div class="working-hours-container">
+                <div class="day-row" *ngFor="let day of workingDays">
+                    <div class="day-name">
+                        {{day.label}}
+                    </div>
+                    <div class="day-hours" *ngIf="salonForm.get('workingHours.' + day.value + 'Open')?.value">
+                        <div class="hours-inputs">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hora de apertura</mat-label>
+                                <input matInput type="time" [formControlName]="day.value + 'Start'">
+                            </mat-form-field>
+                            <span class="time-separator">a</span>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hora de cierre</mat-label>
+                                <input matInput type="time" [formControlName]="day.value + 'End'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="closed-message" *ngIf="!salonForm.get('workingHours.' + day.value + 'Open')?.value">
+                        <span>Cerrado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h3>Servicios</h3>
+            <div class="services-container">
+                <div class="service-input">
+                    <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="newService"
+                        [ngModelOptions]="{standalone: true}"
+                        placeholder="Agregar nuevo servicio"
+                        (keyup.enter)="addService()">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        (click)="addService()">
+                        Agregar
+                    </button>
+                </div>
+
+                <div class="services-list">
+                    <div class="service-item" *ngFor="let service of services.controls; let i = index">
+                        <span>{{service.value}}</span>
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-sm"
+                            (click)="removeService(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!salonForm.valid">Crear</button>
+    </form>
+</div>

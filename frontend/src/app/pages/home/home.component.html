@@ -1,0 +1,24 @@
+<div class="home-container">
+  <app-header></app-header>
+
+  <div class="hero-section">
+    <div class="hero-header">
+      <div class="hero-content">
+        <h1>Encuentra fácilmente tu lugar favorito</h1>
+      </div>
+      <div class="hero-image"></div>
+    </div>
+  </div>
+
+  <section class="salones-section">
+    <h2 class="section-title">Prueba alguno de los salones más cotizados</h2>
+    
+    <div class="salones-grid">
+      <app-salon-card 
+        *ngFor="let salon of salones"
+        [salon]="salon"
+        (viewDetail)="verDetalleSalon($event)">
+      </app-salon-card>
+    </div>
+  </section>
+</div>

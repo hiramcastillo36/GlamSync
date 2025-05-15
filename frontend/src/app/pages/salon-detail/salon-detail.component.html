@@ -1,0 +1,73 @@
+<div class="salon-detail-container" *ngIf="salon">
+  <app-header
+    [showBreadcrumb]="true"
+    [salonId]="salon._id"
+    [salonName]="salon.name">
+  </app-header>
+
+  <div class="content-container">
+    <div class="salon-info-section">
+      <div class="salon-details">
+        <h1 class="salon-title">{{salon.name}}</h1>
+        <div class="salon-address">
+          <div class="address-container">
+            <div *ngFor="let address of salon.address | keyvalue" class="address-item">
+              <span class="address-label">{{address.key | titlecase}}:</span>
+              <span class="address-value">{{address.value}}</span>
+            </div>
+          </div>
+          <p>Tel: {{salon.phone}}</p>
+          <p>Horario de atención:</p>
+          <div class="working-hours">
+            <div *ngFor="let day of salon.workingHours | keyvalue" class="day-schedule">
+              <span class="day-name">{{day.key | titlecase}}:</span>
+              <span class="day-time">{{day.value}}</span>
+            </div>
+          </div>
+        </div>
+        <button mat-flat-button class="agendar-btn" (click)="agendarCita()">AGENDAR</button>
+      </div>
+
+      <div class="services-section">
+        <mat-card class="services-card">
+          <mat-card-content>
+            <h2 class="services-title">Nuestros servicios</h2>
+            <ul class="services-list">
+              <li *ngFor="let servicio of salon.servicios">
+                <mat-icon class="bullet-icon">fiber_manual_record</mat-icon>
+                {{servicio}}
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+
+    <div class="salon-image-section">
+      <img [src]="salon.imagen" alt="{{salon.name}}" class="main-image">
+
+      <div class="rating-section">
+        <p>¡No olvides calificar tu visita!</p>
+        <p class="link">Ver comentarios</p>
+        <app-rating-stars [rating]="salon.rating"></app-rating-stars>
+      </div>
+
+      <div class="packages-section">
+        <h2 class="packages-title">Conoce nuestros paquetes del mes</h2>
+        <div class="packages-container">
+          <div class="package" *ngFor="let paquete of salon.paquetes">
+            <div class="package-image-container" *ngIf="paquete._id === 1; else packageImage">
+              <div class="discount-icon">
+                <span class="percent-icon">%</span>
+              </div>
+            </div>
+            <ng-template #packageImage>
+              <img [src]="paquete.imagen" alt="{{paquete.nombre}}" class="package-image">
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`

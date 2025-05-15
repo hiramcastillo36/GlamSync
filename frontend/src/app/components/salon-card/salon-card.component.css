@@ -1,0 +1,48 @@
+.salon-card {
+    transition: transform 0.3s ease;
+    border-radius: 20px !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .salon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+  }
+  
+  .salon-card img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .salon-name {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .salon-description {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .ver-mas-btn {
+    background-color: #E0EBE8 !important;
+    color: #666 !important;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ver-mas-btn:hover {
+    background-color: #d0dbd8 !important;
+  }

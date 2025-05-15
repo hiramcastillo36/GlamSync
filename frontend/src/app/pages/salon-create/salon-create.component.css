@@ -1,0 +1,179 @@
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+h3 {
+    color: #666;
+    margin: 1.5rem 0 1rem;
+    font-size: 1.2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.working-hours-container {
+    margin-top: 1rem;
+}
+
+.day-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.day-name {
+    width: 120px;
+    font-weight: 500;
+}
+
+.hours-inputs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.time-separator {
+    color: #666;
+}
+
+.closed-message {
+    color: #dc3545;
+    font-style: italic;
+}
+
+/* Services Section Styles */
+.services-container {
+    margin-top: 1rem;
+}
+
+.service-input {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.service-input input {
+    flex: 1;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.service-item span {
+    font-size: 1rem;
+    color: #333;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-danger mat-icon {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+mat-form-field {
+    width: 150px;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}

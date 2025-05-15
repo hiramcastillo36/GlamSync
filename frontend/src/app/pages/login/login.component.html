@@ -1,0 +1,39 @@
+<div class="login-container">
+  <div class="login-image"></div>
+
+  <div class="login-form-container">
+    <div class="login-content">
+      <h1 class="title">GlamSync</h1>
+      <h2 class="subtitle">Inicio de sesión</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Correo electrónico:</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Ingresa tu correo..."
+            [ngClass]="{'invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">
+        </div>
+
+
+        <div class="form-group">
+          <label for="password">Ingresa tu contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Ingresa tu contraseña..."
+            [ngClass]="{'invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}">
+        </div>
+
+        <div class="button-container">
+          <button type="submit" class="btn-continue" [disabled]="loginForm.invalid">
+            CONTINUAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
