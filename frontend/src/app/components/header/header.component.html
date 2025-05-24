@@ -1,35 +1,32 @@
 <mat-toolbar color="white" class="header">
-  <div class="breadcrumb" *ngIf="showBreadcrumb">
-    <a routerLink="/home" class="logo">GlamSync</a>
-    <ng-container *ngIf="salonId && salonName">
-      <span class="separator">></span>
-      <a [routerLink]="['/salon', salonId]" class="salon-link">{{salonName}}</a>
-      <ng-container *ngIf="currentPage">
+    <div class="breadcrumb" *ngIf="showBreadcrumb">
+      <a routerLink="/home" class="logo">GlamSync</a>
+      <ng-container *ngIf="salonId && salonName">
         <span class="separator">></span>
-        <span class="current-page">{{currentPage}}</span>
+        <a [routerLink]="['/salon', salonId]" class="salon-link">{{salonName}}</a>
+        <ng-container *ngIf="currentPage">
+          <span class="separator">></span>
+          <span class="current-page">{{currentPage}}</span>
+        </ng-container>
       </ng-container>
-    </ng-container>
-  </div>
-  <span *ngIf="!showBreadcrumb" class="logo">GlamSync</span>
-  
-  <div class="header-actions">
-    <button mat-icon-button class="search-btn">
-      <mat-icon>search</mat-icon>
-    </button>
-    
-    <div class="menu-container">
-      <button 
-        mat-mini-fab 
-        class="profile-btn" 
-        aria-label="Menú de usuario"
-        (click)="toggleMenu()">
-        <mat-icon>person</mat-icon>
-      </button>
-      <app-slide-menu
-        [isOpen]="isMenuOpen"
-        (menuClosed)="closeMenu()"
-        (menuItemClicked)="onMenuItemClick($event)">
-      </app-slide-menu>
     </div>
-  </div>
-</mat-toolbar>
+    <span *ngIf="!showBreadcrumb" class="logo">GlamSync</span>
+
+    <div class="header-actions">
+      <button mat-icon-button class="search-btn">
+        <mat-icon>search</mat-icon>
+      </button>
+
+      <div class="menu-container">
+        <button mat-button (click)="toggleMenu()" class="profile-btn">
+            <mat-icon>account_circle</mat-icon>
+            <span>{{ currentUser?.email }}</span>
+          </button>
+        <app-slide-menu
+          [isOpen]="isMenuOpen"
+          (menuClosed)="closeMenu()"
+          (menuItemClicked)="onMenuItemClick($event)">
+        </app-slide-menu>
+      </div>
+    </div>
+  </mat-toolbar>
