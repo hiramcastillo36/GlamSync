@@ -27,9 +27,6 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
-
-
-
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe(
@@ -49,5 +46,9 @@ export class LoginComponent {
         this.loginForm.get(key)?.markAsTouched();
       });
     }
+  }
+  
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

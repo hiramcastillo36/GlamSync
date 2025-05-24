@@ -111,6 +111,22 @@ body {
   cursor: not-allowed;
 }
 
+.register-link {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #6b3f38;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .login-container {
     flex-direction: column;
