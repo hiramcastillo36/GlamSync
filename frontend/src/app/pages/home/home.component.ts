@@ -31,13 +31,12 @@ export class HomeComponent {
   salones: SalonCard[] = [];
 
   constructor(private router: Router, private salonService: SalonService) {
-    this.salonService.getSalones().subscribe((salones) => {
+    this.salonService.getAllSalons().subscribe((salones) => {
       this.salones = salones.map((salon) => ({
         ...salon,
         imagen: salon.images[0]
       }));
     });
-    console.log(this.salones);
 }
 
   verDetalleSalon(id: ID): void {
