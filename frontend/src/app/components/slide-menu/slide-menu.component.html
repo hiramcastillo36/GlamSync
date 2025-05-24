@@ -1,13 +1,13 @@
-<div 
+<div
   class="overlay"
   [class.show]="isOpen"
   (click)="closeMenu()">
 </div>
 
-<div 
+<div
   class="slide-menu"
   [class.open]="isOpen">
-  
+
   <div class="menu-header">
     <h2>Menú</h2>
     <button mat-icon-button (click)="closeMenu()" class="close-btn">
@@ -17,9 +17,9 @@
 
   <div class="menu-content">
     <div class="menu-section">
-      <button 
-        class="menu-item" 
-        (click)="onMenuItemClick('agenda-citas')"
+      <button
+        class="menu-item"
+        (click)="closeMenu()"
         routerLink="/citas-agendadas">
         <div class="menu-icon agenda-icon">
           <mat-icon>schedule</mat-icon>
@@ -27,9 +27,9 @@
         <span>Citas agendadas</span>
       </button>
 
-      <button 
-        class="menu-item" 
-        (click)="onMenuItemClick('citas')"
+      <button
+        class="menu-item"
+        (click)="closeMenu()"
         routerLink="/mis-citas">
         <div class="menu-icon citas-icon">
           <mat-icon>event</mat-icon>
@@ -37,9 +37,9 @@
         <span>Mis Citas</span>
       </button>
 
-      <button 
-        class="menu-item" 
-        (click)="onMenuItemClick('salones')"
+      <button
+        class="menu-item"
+        (click)="closeMenu()"
         routerLink="/mis-salones">
         <div class="menu-icon salones-icon">
           <mat-icon>business</mat-icon>
@@ -55,10 +55,10 @@
           <p>Súbelo a nuestra plataforma y llega a más clientes</p>
         </div>
       </div>
-      <button 
-        class="promotion-button" 
-        (click)="onMenuItemClick('crear-salon')"
-        routerLink="/salon-create">
+      <button
+        class="promotion-button"
+        (click)="closeMenu()"
+        routerLink="/create">
         Crear mi salón
       </button>
     </div>
