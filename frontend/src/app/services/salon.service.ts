@@ -1,28 +1,42 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SalonBase } from '../interfaces/salon.interface';
+import { SalonBase, SalonCard, SalonDetail } from '../interfaces/salon.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SalonService {
-    private http = inject(HttpClient);
-    private url: string = 'http://localhost:8080/api/salon';
+    private apiUrl = `${environment.apiUrl}/salon`;
 
-    constructor() {
+    constructor(private http: HttpClient) { }
 
+    private getHeaders(): HttpHeaders {
+        const token = localStorage.getItem('token');
+        return new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        });
     }
 
-    createSalon(salon: SalonBase): Observable<SalonBase> {
-        return this.http.post<SalonBase>(this.url, salon);
+    createSalon(salonData: SalonBase): Observable<any> {
+        return this.http.post(this.apiUrl, salonData, { headers: this.getHeaders() });
     }
 
-    getSalones(): Observable<SalonBase[]> {
-        return this.http.get<SalonBase[]>(this.url);
+    getSalonById(id: string): Observable<SalonDetail> {
+        return this.http.get<SalonDetail>(`${this.apiUrl}/${id}`);
     }
 
-    getSalonById(id: string): Observable<SalonBase> {
-        return this.http.get<SalonBase>(`${this.url}/${id}`);
+    updateSalon(id: string, salonData: Partial<SalonBase>): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${id}`, salonData, { headers: this.getHeaders() });
+    }
+
+    deleteSalon(id: string): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+    }
+
+    getAllSalons(): Observable<SalonCard[]> {
+        return this.http.get<SalonCard[]>(this.apiUrl);
     }
 }

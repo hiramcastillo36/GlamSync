@@ -1,350 +1,105 @@
-<div class="salon-create-container">
-  <app-header [showBreadcrumb]="true" [currentPage]="'Crear Salón'"></app-header>
+<div class="container">
+    <h1>Crear Salon</h1>
+    <form [formGroup]="salonForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
 
-  <div class="content-container">
-    <h1 class="salon-title">Crear nuevo salón</h1>
-
-    <app-reusable-stepper
-      [steps]="stepConfig"
-      [showCancelButton]="true"
-      [cancelButtonText]="'CANCELAR'"
-      [completeButtonText]="'CREAR SALÓN'"
-      (cancel)="onCancel()"
-      (complete)="onCreateSalon()"
-      (stepChange)="onStepChange($event)"
-      (next)="onNext($event)"
-      (previous)="onPrevious($event)">
-    </app-reusable-stepper>
-    
-    <ng-template #basicInfoTemplate>
-      <div class="step-content">
-        <h2 class="step-title">Información del salón</h2>
-        <form [formGroup]="basicInfoForm">
-          <div class="form-group">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Nombre del salón</mat-label>
-              <input matInput formControlName="name" placeholder="Nombre del salón">
-              <mat-error *ngIf="basicInfoForm.get('name')?.invalid && basicInfoForm.get('name')?.touched">
-                El nombre es requerido
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="form-group">
-            <h3 class="section-title">Dirección</h3>
-            <div formGroupName="address" class="address-container">
-              <mat-form-field appearance="outline">
-                <mat-label>Calle</mat-label>
-                <input matInput formControlName="street" placeholder="Calle y número">
-                <mat-error *ngIf="basicInfoForm.get('address.street')?.invalid && basicInfoForm.get('address.street')?.touched">
-                  La calle es requerida
-                </mat-error>
-              </mat-form-field>
-              
-              <mat-form-field appearance="outline">
-                <mat-label>Edificio/Interior</mat-label>
-                <input matInput formControlName="building" placeholder="Edificio o número interior (opcional)">
-              </mat-form-field>
-              
-              <mat-form-field appearance="outline">
-                <mat-label>Ciudad</mat-label>
-                <input matInput formControlName="city" placeholder="Ciudad">
-                <mat-error *ngIf="basicInfoForm.get('address.city')?.invalid && basicInfoForm.get('address.city')?.touched">
-                  La ciudad es requerida
-                </mat-error>
-              </mat-form-field>
-              
-              <mat-form-field appearance="outline">
-                <mat-label>Estado</mat-label>
-                <input matInput formControlName="state" placeholder="Estado">
-                <mat-error *ngIf="basicInfoForm.get('address.state')?.invalid && basicInfoForm.get('address.state')?.touched">
-                  El estado es requerido
-                </mat-error>
-              </mat-form-field>
-              
-              <mat-form-field appearance="outline">
-                <mat-label>Código Postal</mat-label>
-                <input matInput formControlName="zipCode" placeholder="Código Postal">
-                <mat-error *ngIf="basicInfoForm.get('address.zipCode')?.invalid && basicInfoForm.get('address.zipCode')?.touched">
-                  El código postal es requerido
-                </mat-error>
-              </mat-form-field>
+        <div formGroupName="address">
+            <h3>Dirección</h3>
+            <div class="form-group">
+                <label for="street">Calle</label>
+                <input type="text" class="form-control" id="street" formControlName="street">
             </div>
-          </div>
-
-          <div class="form-group">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Teléfono</mat-label>
-              <input matInput formControlName="phone" placeholder="Teléfono del salón">
-              <mat-error *ngIf="basicInfoForm.get('phone')?.invalid && basicInfoForm.get('phone')?.touched">
-                El teléfono es requerido
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="form-group">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Descripción</mat-label>
-              <textarea matInput formControlName="description" rows="4" placeholder="Describe tu salón..."></textarea>
-              <mat-error *ngIf="basicInfoForm.get('description')?.invalid && basicInfoForm.get('description')?.touched">
-                La descripción es requerida
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="form-group">
-            <h3 class="section-title">Horarios de atención</h3>
-            <div formGroupName="workingHours" class="working-hours-container">
-              <div class="day-row" *ngFor="let day of workingDays">
-                <div class="day-name">
-                  <mat-checkbox [formControlName]="day.value + 'Open'" color="primary">
-                    {{day.label}}
-                  </mat-checkbox>
-                </div>
-                
-                <div class="day-hours" *ngIf="basicInfoForm.get('workingHours.' + day.value + 'Open')?.value">
-                  <div class="hours-inputs">
-                    <mat-form-field appearance="outline">
-                      <mat-label>Apertura</mat-label>
-                      <input matInput type="time" [formControlName]="day.value + 'Start'">
-                    </mat-form-field>
-                    
-                    <span class="time-separator">a</span>
-                    
-                    <mat-form-field appearance="outline">
-                      <mat-label>Cierre</mat-label>
-                      <input matInput type="time" [formControlName]="day.value + 'End'">
-                    </mat-form-field>
-                  </div>
-                </div>
-                
-                <div class="closed-message" *ngIf="!basicInfoForm.get('workingHours.' + day.value + 'Open')?.value">
-                  <span>Cerrado</span>
-                </div>
-              </div>
+            <div class="form-group">
+                <label for="building">Edificio</label>
+                <input type="text" class="form-control" id="building" formControlName="building">
             </div>
-          </div>
-          
-          <div class="form-group">
-            <h3 class="section-title">Imagen del salón</h3>
-            <div class="image-upload-section">
-              <div class="image-preview-container">
-                <div class="image-preview">
-                  <img *ngIf="imagePreview" [src]="imagePreview" alt="Vista previa">
-                  <mat-icon *ngIf="!imagePreview">add_photo_alternate</mat-icon>
-                </div>
-                <button type="button" mat-stroked-button (click)="fileInput.click()">
-                  Seleccionar imagen
-                </button>
-                <input hidden type="file" #fileInput (change)="onFileSelected($event)" accept="image/*">
-              </div>
+            <div class="form-group">
+                <label for="city">Ciudad</label>
+                <input type="text" class="form-control" id="city" formControlName="city">
             </div>
-          </div>
-        </form>
-      </div>
-    </ng-template>
-
-    <ng-template #servicesTemplate>
-      <div class="step-content">
-        <h2 class="step-title">Servicios y paquetes del salón</h2>
-        <form [formGroup]="servicesForm">
-          
-          <div class="services-container">
-            <h3 class="section-title">Servicios individuales</h3>
-            <div class="service-input">
-              <mat-form-field appearance="outline" class="service-field">
-                <mat-label>Agregar servicio</mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="newService"
-                  [ngModelOptions]="{standalone: true}"
-                  placeholder="Nombre del servicio"
-                  (keyup.enter)="addService()">
-              </mat-form-field>
-              
-              <button
-                type="button"
-                mat-flat-button
-                color="accent"
-                (click)="addService()"
-                [disabled]="!newService.trim()">
-                <mat-icon>add</mat-icon> Agregar
-              </button>
+            <div class="form-group">
+                <label for="state">Estado</label>
+                <input type="text" class="form-control" id="state" formControlName="state">
             </div>
-
-            <div class="services-list" *ngIf="services.length > 0">
-              <div class="service-item" *ngFor="let service of services.controls; let i = index">
-                <span>{{service.value}}</span>
-                <button
-                  type="button"
-                  mat-icon-button
-                  color="warn"
-                  (click)="removeService(i)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
+            <div class="form-group">
+                <label for="zipCode">Código Postal</label>
+                <input type="text" class="form-control" id="zipCode" formControlName="zipCode">
             </div>
-            
-            <div class="no-services" *ngIf="services.length === 0">
-              <mat-icon>info</mat-icon>
-              <p>No se han agregado servicios individuales</p>
-            </div>
-          </div>
+        </div>
 
-          <div class="packages-container">
-            <h3 class="section-title">Paquetes y combos</h3>
-            <div class="package-input">
-              <div class="package-form">
-                <mat-form-field appearance="outline" class="package-name-field">
-                  <mat-label>Nombre del paquete</mat-label>
-                  <input
-                    matInput
-                    [(ngModel)]="newPackageName"
-                    [ngModelOptions]="{standalone: true}"
-                    placeholder="Ej: Combo Belleza Total">
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="package-description-field">
-                  <mat-label>Descripción</mat-label>
-                  <textarea
-                    matInput
-                    [(ngModel)]="newPackageDescription"
-                    [ngModelOptions]="{standalone: true}"
-                    rows="2"
-                    placeholder="Describe qué incluye el paquete">
-                  </textarea>
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline" class="package-price-field">
-                  <mat-label>Precio</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="newPackagePrice"
-                    [ngModelOptions]="{standalone: true}"
-                    placeholder="0"
-                    min="0">
-                  <span matPrefix>$</span>
-                </mat-form-field>
-                
-                <button
-                  type="button"
-                  mat-flat-button
-                  color="accent"
-                  (click)="addPackage()"
-                  [disabled]="!newPackageName.trim() || !newPackageDescription.trim() || newPackagePrice <= 0">
-                  <mat-icon>add</mat-icon> Agregar paquete
-                </button>
-              </div>
-            </div>
+        <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input type="text" class="form-control" id="phone" formControlName="phone">
+        </div>
 
-            <div class="packages-list" *ngIf="packages.length > 0">
-              <div class="package-item" *ngFor="let package of packages.controls; let i = index">
-                <div class="package-info">
-                  <h4 class="package-name">{{package.get('name')?.value}}</h4>
-                  <p class="package-description">{{package.get('description')?.value}}</p>
-                  <span class="package-price">${{package.get('price')?.value | number:'1.0-0'}}</span>
-                </div>
-                <button
-                  type="button"
-                  mat-icon-button
-                  color="warn"
-                  (click)="removePackage(i)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            </div>
-            
-            <div class="no-packages" *ngIf="packages.length === 0">
-              <mat-icon>local_offer</mat-icon>
-              <p>No se han agregado paquetes</p>
-              <small>Los paquetes son opcionales pero pueden ayudar a aumentar tus ventas</small>
-            </div>
-          </div>
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+        </div>
 
-          <div class="summary-info" *ngIf="services.length > 0 || packages.length > 0">
-            <mat-icon>info</mat-icon>
-            <p><strong>Resumen:</strong> {{services.length}} servicio(s) y {{packages.length}} paquete(s) agregados</p>
-          </div>
-        </form>
-      </div>
-    </ng-template>
-
-    <ng-template #confirmationTemplate>
-      <div class="step-content">
-        <h2 class="step-title">Confirmar información</h2>
-        <form [formGroup]="confirmationForm">
-          <div class="confirmation-content">
-            <div class="salon-summary">
-              <div class="summary-section">
-                <h3>Información básica</h3>
-                <div class="detail-row">
-                  <strong>Nombre:</strong> 
-                  <span>{{basicInfoForm.get('name')?.value || 'No especificado'}}</span>
-                </div>
-                <div class="detail-row">
-                  <strong>Teléfono:</strong> 
-                  <span>{{basicInfoForm.get('phone')?.value || 'No especificado'}}</span>
-                </div>
-                <div class="detail-row">
-                  <strong>Dirección:</strong> 
-                  <span>
-                    {{getFormattedAddress()}}
-                  </span>
-                </div>
-                <div class="detail-row description-row">
-                  <strong>Descripción:</strong> 
-                  <span>{{basicInfoForm.get('description')?.value || 'No especificada'}}</span>
-                </div>
-              </div>
-              
-              <div class="summary-section">
-                <h3>Horarios de atención</h3>
-                <div class="detail-row" *ngFor="let day of workingDays">
-                  <strong>{{day.label}}:</strong> 
-                  <span *ngIf="basicInfoForm.get('workingHours.' + day.value + 'Open')?.value">
-                    {{basicInfoForm.get('workingHours.' + day.value + 'Start')?.value}} - 
-                    {{basicInfoForm.get('workingHours.' + day.value + 'End')?.value}}
-                  </span>
-                  <span *ngIf="!basicInfoForm.get('workingHours.' + day.value + 'Open')?.value" class="closed-text">
-                    Cerrado
-                  </span>
-                </div>
-              </div>
-              
-              <div class="summary-section">
-                <h3>Servicios ({{services.length}})</h3>
-                <div class="services-summary" *ngIf="services.length > 0">
-                  <div class="service-tag" *ngFor="let service of services.controls">
-                    {{service.value}}
-                  </div>
-                </div>
-                <p *ngIf="services.length === 0" class="closed-text">
-                  <mat-icon>warning</mat-icon>
-                  No se han agregado servicios
-                </p>
-              </div>
-
-              <div class="summary-section" *ngIf="packages.length > 0">
-                <h3>Paquetes ({{packages.length}})</h3>
-                <div class="packages-summary">
-                  <div class="package-summary-item" *ngFor="let package of packages.controls">
-                    <div class="package-summary-info">
-                      <h4>{{package.get('name')?.value}}</h4>
-                      <p>{{package.get('description')?.value}}</p>
-                      <span class="price">${{package.get('price')?.value | number:'1.0-0'}}</span>
+        <div formGroupName="workingHours">
+            <h3>Horario de trabajo</h3>
+            <div class="working-hours-container">
+                <div class="day-row" *ngFor="let day of workingDays">
+                    <div class="day-name">
+                        {{day.label}}
                     </div>
-                  </div>
+                    <div class="day-hours" *ngIf="salonForm.get('workingHours.' + day.value + 'Open')?.value">
+                        <div class="hours-inputs">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hora de apertura</mat-label>
+                                <input matInput type="time" [formControlName]="day.value + 'Start'">
+                            </mat-form-field>
+                            <span class="time-separator">a</span>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hora de cierre</mat-label>
+                                <input matInput type="time" [formControlName]="day.value + 'End'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="closed-message" *ngIf="!salonForm.get('workingHours.' + day.value + 'Open')?.value">
+                        <span>Cerrado</span>
+                    </div>
                 </div>
-              </div>
-              
-              <mat-checkbox formControlName="confirmed" class="confirmation-checkbox" color="primary">
-                Confirmo que los datos ingresados son correctos y deseo crear el salón
-              </mat-checkbox>
             </div>
-          </div>
-        </form>
-      </div>
-    </ng-template>
-  </div>
+        </div>
+
+        <div class="form-group">
+            <h3>Servicios</h3>
+            <div class="services-container">
+                <div class="service-input">
+                    <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="newService"
+                        [ngModelOptions]="{standalone: true}"
+                        placeholder="Agregar nuevo servicio"
+                        (keyup.enter)="addService()">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        (click)="addService()">
+                        Agregar
+                    </button>
+                </div>
+
+                <div class="services-list">
+                    <div class="service-item" *ngFor="let service of services.controls; let i = index">
+                        <span>{{service.value}}</span>
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-sm"
+                            (click)="removeService(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!salonForm.valid">Crear</button>
+    </form>
 </div>
