@@ -42,7 +42,7 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   @ViewChild('serviciosTemplate', { static: true }) serviciosTemplate!: TemplateRef<any>;
   @ViewChild('fechaTemplate', { static: true }) fechaTemplate!: TemplateRef<any>;
   @ViewChild('confirmacionTemplate', { static: true }) confirmacionTemplate!: TemplateRef<any>;
-  
+
   stepConfig: StepConfig[] = [];
 
   salon: SalonDetail = {
@@ -59,7 +59,8 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     imagen: '/assets/images/nails.jpg',
     services: [],
     registerDate: new Date(),
-    isActive: true
+    isActive: true,
+    packages: [],
   };
 
   servicios: ServiceItem[] = [
@@ -84,7 +85,7 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     '09:00', '10:00', '11:00', '12:00',
     '13:00', '14:00', '16:00', '17:00', '18:00'
   ];
-  
+
   serviciosForm!: FormGroup;
   fechaForm!: FormGroup;
   confirmacionForm!: FormGroup;
