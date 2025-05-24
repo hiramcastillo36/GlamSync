@@ -1,5 +1,11 @@
 import { ID } from './types';
 
+export interface Package {
+  name: string;
+  description: string;
+  price: number;
+}
+
 export interface SalonBase {
   _id: ID;
   name: string;
@@ -10,6 +16,7 @@ export interface SalonBase {
   images: string[];
   rating: number;
   services: string[];
+  packages: Package[];
   registerDate: Date;
   isActive: boolean;
 }
