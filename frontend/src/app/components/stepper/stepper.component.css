@@ -1,269 +1,32 @@
+
 .appointments-stepper {
-    background-color: #fff;
-    margin-bottom: 2rem;
-  }
-  
-  ::ng-deep .mat-horizontal-stepper-header-container {
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  ::ng-deep .mat-step-header .mat-step-icon-selected {
-    background-color: #8B5C54;
-  }
-  
-  ::ng-deep .mat-step-header .mat-step-label.mat-step-label-active {
-    color: #333;
-    font-weight: 500;
-  }
-  
-  .step-content {
-    padding: 2rem 0;
-    min-height: 400px;
-  }
-  
-  .step-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: #333;
-  }
-  
-  .servicios-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .no-seleccionado {
-    display: flex;
-    align-items: center;
-    margin: 1rem 0;
-    color: #666;
-  }
-  
-  .no-seleccionado mat-icon {
-    margin-right: 0.5rem;
-    color: #8B5C54;
-  }
-  
-  .button-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .continuar-btn, .confirmar-btn {
-    background-color: #8B5C54 !important;
-    color: white !important;
-    padding: 0.5rem 2rem;
-  }
-  
-  .paquete-section {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-  }
-  
-  .paquete-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
-  
-  .paquete-subtitle {
-    color: #8B5C54;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-  }
-  
-  .paquete-select {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-  
-  .fecha-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .fecha-seleccionada h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: #8B5C54;
-    text-transform: uppercase;
-  }
-  
-  .calendario-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-  
-  ::ng-deep .mat-calendar-body-selected {
-    background-color: #8B5C54;
-    color: white;
-  }
-  
-  ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
-    border-color: #8B5C54;
-  }
-  
-  .horario-section {
-    margin: 2rem 0;
-  }
-  
-  .horario-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 1rem;
-  }
-  
-  .horarios-lista {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 1rem;
-  }
-  
-  .horario-item {
-    padding: 0.8rem 1.2rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .horario-item:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .horario-item.selected {
-    background-color: #8B5C54;
-    color: white;
-    border-color: #8B5C54;
-  }
-  
-  .profesional-section {
-    margin-top: 2rem;
-  }
-  
-  .profesional-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
-  
-  .profesional-subtitle {
-    color: #666;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .profesionales-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  
-  .profesional-seleccionado {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-  }
-  
-  .profesional-card {
-    display: flex;
-    align-items: center;
-  }
-  
-  .profesional-card-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 1.5rem;
-    overflow: hidden;
-  }
-  
-  .avatar-img-large {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .avatar-icon-large {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
-    color: #8B5C54;
-  }
-  
-  .confirmacion-contenido {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .resumen-cita {
-    padding: 2rem;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    margin-bottom: 1.5rem;
-  }
-  
-  .detalle-cita p {
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .detalle-cita p strong {
-    color: #333;
-  }
-  
-  .monto-total {
-    font-size: 1.2rem;
-    color: #8B5C54;
-    font-weight: 500;
-  }
-  
-  .confirmacion-checkbox {
-    margin-top: 1.5rem;
-    display: block;
-  }
-  
-  @media (max-width: 768px) {
-    .step-content {
-      padding: 1rem;
-    }
-    
-    .servicios-lista,
-    .profesionales-lista {
-      grid-template-columns: 1fr;
-    }
-    
-    .horarios-lista {
-      justify-content: center;
-    }
-    
-    .fecha-seleccionada h2 {
-      font-size: 1.5rem;
-    }
-    
-    .button-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.5rem;
-    }
-  }
+  background-color: #fff;
+  margin-bottom: 2rem;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+::ng-deep .mat-step-header .mat-step-icon-selected {
+  background-color: #8B5C54;
+}
+
+::ng-deep .mat-step-header .mat-step-label.mat-step-label-active {
+  color: #333;
+  font-weight: 500;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.continuar-btn, .confirmar-btn {
+  background-color: #8B5C54 !important;
+  color: white !important;
+  padding: 0.5rem 2rem;
+}
