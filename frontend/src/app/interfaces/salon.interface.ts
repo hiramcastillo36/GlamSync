@@ -18,7 +18,7 @@ export interface SalonBase {
   phone: string;
   description: string;
   workingHours: WorkingHours[];
-  images: string[];
+  image: string;
   rating: number;
   services: Service[];
   packages: Package[];
@@ -30,17 +30,21 @@ export interface SalonResponse {
   data: SalonBase[];
 }
 
+export interface SalonDetailResponse {
+  data: SalonBase;
+}
+
 export interface WorkingHours {
   day: string;
   time: string;
 }
 
 export interface SalonCard extends SalonBase {
-  imagen: string;
+  image: string;
 }
 
 export interface SalonDetail extends SalonCard {
   servicios: Service[];
   paquetes: Package[];
-  imagen: string;
+  image: string;
 }
