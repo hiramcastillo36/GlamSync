@@ -11,8 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { HeaderComponent } from '../../components/header/header.component';
 import { ReusableStepperComponent, StepConfig } from '../../components/stepper/stepper.component';
-import { ServiceItem } from '../../interfaces/service';
-import { PackageItem } from '../../interfaces/package';
+import { Service } from '../../interfaces/service';
+import { Package } from '../../interfaces/package.interface';
 import { Professional } from '../../interfaces/professional';
 import { SalonDetail } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
@@ -62,17 +62,9 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     packages: [],
   };
 
-  servicios: ServiceItem[] = [
-    { id: 1, nombre: 'Estilista', descripcion: 'Este servicio es un corte de cabello', precio: 250 },
-    { id: 2, nombre: 'Uñas acrílicas', descripcion: 'Aplicación de uñas acrílicas', precio: 350 },
-    { id: 3, nombre: 'Gel', descripcion: 'Aplicación de gel en uñas', precio: 300 },
-    { id: 4, nombre: 'Manicure', descripcion: 'Manicure tradicional', precio: 200 }
-  ];
+  servicios: Service[] = [];
 
-  paquetes: PackageItem[] = [
-    { id: 'p1', nombre: 'Combo Belleza (Uñas + Gel)', precio: 550, descripcion: 'Incluye uñas acrílicas y aplicación de gel' },
-    { id: 'p2', nombre: 'Spa Manos (Manicure + Tratamiento)', precio: 350, descripcion: 'Incluye manicure tradicional y tratamiento hidratante' }
-  ];
+  paquetes: Package[] = [];
 
   personas: Professional[] = [
     { id: 'a1', nombre: 'Andrea', especialidad: 'Estilista y Uñas', foto: 'assets/andrea.jpg' },
@@ -89,8 +81,8 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   fechaForm!: FormGroup;
   confirmacionForm!: FormGroup;
 
-  servicioSeleccionado: ServiceItem | null = null;
-  paqueteSeleccionado: PackageItem | null = null;
+  servicioSeleccionado: Service | null = null;
+  paqueteSeleccionado: Package | null = null;
   personaSeleccionada: Professional | null = null;
   fechaSeleccionada: Date = new Date();
   horarioSeleccionado: string = '';
@@ -174,16 +166,16 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     console.log(`Retrocediendo desde el paso ${currentStep + 1}`);
   }
 
-  seleccionarServicio(servicio: ServiceItem): void {
+  seleccionarServicio(servicio: Service): void {
     this.servicioSeleccionado = servicio;
     this.paqueteSeleccionado = null;
     this.serviciosForm.patchValue({
-      servicio: servicio.id,
+      servicio: servicio.name,
       paquete: ''
     });
   }
 
-  seleccionarPaquete(paquete: PackageItem): void {
+  seleccionarPaquete(paquete: Package): void {
     this.paqueteSeleccionado = paquete;
     this.servicioSeleccionado = null;
     this.serviciosForm.patchValue({ servicio: 'package_' + paquete.id });
@@ -226,9 +218,9 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   getTotalPrecio(): number {
     if (this.paqueteSeleccionado) {
-      return this.paqueteSeleccionado.precio;
+      return this.paqueteSeleccionado.price;
     }
-    return this.servicioSeleccionado ? this.servicioSeleccionado.precio : 0;
+    return this.servicioSeleccionado ? this.servicioSeleccionado.price : 0;
   }
 
   onCancel(): void {

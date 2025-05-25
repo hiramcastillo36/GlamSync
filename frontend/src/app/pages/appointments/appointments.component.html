@@ -17,35 +17,34 @@
       (next)="onNext($event)"
       (previous)="onPrevious($event)">
     </app-reusable-stepper>
-    
+
     <ng-template #serviciosTemplate>
       <div class="step-content">
         <h2 class="step-title">Selecciona tu servicio</h2>
         <form [formGroup]="serviciosForm">
-          
+
           <div class="servicios-lista">
-            <div 
+            <div
               *ngFor="let servicio of servicios"
               class="servicio-item"
-              [class.selected]="servicioSeleccionado?.id === servicio.id"
+              [class.selected]="servicioSeleccionado?._id === servicio._id"
               (click)="seleccionarServicio(servicio)">
-              <h3 class="servicio-nombre">{{servicio.nombre}}</h3>
-              <p class="servicio-descripcion">{{servicio.descripcion}}</p>
-              <p class="servicio-precio">{{servicio.precio | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+              <h3 class="servicio-nombre">{{servicio.name}}</h3>
+              <p class="servicio-precio">{{servicio.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
             </div>
           </div>
 
           <div class="paquete-section">
             <h3 class="paquete-title">¿Prefieres un paquete?</h3>
             <div class="paquetes-lista">
-              <div 
+              <div
                 *ngFor="let paquete of paquetes"
                 class="servicio-item"
                 [class.selected]="paqueteSeleccionado?.id === paquete.id"
                 (click)="seleccionarPaquete(paquete)">
-                <h3 class="servicio-nombre">{{paquete.nombre}}</h3>
-                <p class="servicio-descripcion">{{paquete.descripcion}}</p>
-                <p class="servicio-precio">{{paquete.precio | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+                <h3 class="servicio-nombre">{{paquete.name}}</h3>
+
+                <p class="servicio-precio">{{paquete.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
               </div>
             </div>
           </div>
@@ -58,7 +57,7 @@
       <div class="step-content">
         <h2 class="step-title">Selecciona fecha y hora</h2>
         <form [formGroup]="fechaForm">
-          
+
           <div class="fecha-header">
             <h3>{{getFechaMostrar()}}</h3>
           </div>
@@ -98,7 +97,7 @@
                   <p>Disponible</p>
                 </div>
               </div>
-              
+
               <div
                 *ngFor="let profesional of personas"
                 class="profesional-item"
@@ -123,22 +122,21 @@
       <div class="step-content">
         <h2 class="step-title">Confirma tu cita</h2>
         <form [formGroup]="confirmacionForm">
-          
+
           <div class="confirmacion-contenido">
             <div class="resumen-cita">
               <h3>Resumen de tu cita</h3>
               <div class="detalle-cita">
                 <p><strong>Salón:</strong> {{salon.name}}</p>
                 <p><strong>Dirección:</strong> {{salon.address}}</p>
-                
+
                 <ng-container *ngIf="paqueteSeleccionado; else servicioBlock">
-                  <p><strong>Paquete:</strong> {{paqueteSeleccionado.nombre}}</p>
-                  <p><strong>Descripción:</strong> {{paqueteSeleccionado.descripcion}}</p>
+                  <p><strong>Paquete:</strong> {{paqueteSeleccionado.name}}</p>
+                  <p><strong>Descripción:</strong> {{paqueteSeleccionado.description}}</p>
                 </ng-container>
 
                 <ng-template #servicioBlock>
-                  <p><strong>Servicio:</strong> {{servicioSeleccionado?.nombre || 'No seleccionado'}}</p>
-                  <p *ngIf="servicioSeleccionado"><strong>Descripción:</strong> {{servicioSeleccionado.descripcion}}</p>
+                  <p><strong>Servicio:</strong> {{servicioSeleccionado?.name || 'No seleccionado'}}</p>
                 </ng-template>
 
                 <p><strong>Fecha:</strong> {{getFechaMostrar()}}</p>
