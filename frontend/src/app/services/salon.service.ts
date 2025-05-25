@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SalonBase, SalonCard, SalonDetail } from '../interfaces/salon.interface';
+import { SalonBase, SalonCard, SalonDetail, SalonDetailResponse, SalonResponse } from '../interfaces/salon.interface';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -24,8 +24,8 @@ export class SalonService {
         return this.http.post(this.apiUrl, salonData, { headers: this.getHeaders() });
     }
 
-    getSalonById(id: string): Observable<SalonDetail> {
-        return this.http.get<SalonDetail>(`${this.apiUrl}/${id}`);
+    getSalonById(id: string): Observable<SalonDetailResponse> {
+        return this.http.get<SalonDetailResponse>(`${this.apiUrl}/${id}`);
     }
 
     updateSalon(id: string, salonData: Partial<SalonBase>): Observable<any> {
@@ -36,7 +36,11 @@ export class SalonService {
         return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
     }
 
-    getAllSalons(): Observable<SalonCard[]> {
-        return this.http.get<SalonCard[]>(this.apiUrl);
+    getAllSalons(): Observable<SalonResponse> {
+        return this.http.get<SalonResponse>(this.apiUrl);
+    }
+
+    getMySalones(): Observable<SalonResponse> {
+        return this.http.get<SalonResponse>(`${this.apiUrl}/admin`);
     }
 }
