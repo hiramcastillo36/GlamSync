@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { HeaderComponent } from '../../components/header/header.component';
 import { RatingStarsComponent } from '../../components/rating/rating.component';
-import { SalonDetail } from '../../interfaces/salon.interface';
+import { SalonBase, SalonDetail } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 import { SalonService } from '../../services/salon.service';
 
@@ -29,7 +29,8 @@ import { SalonService } from '../../services/salon.service';
 })
 export class SalonDetailComponent implements OnInit {
 
-  salon: SalonDetail | undefined;
+  salon: SalonBase | undefined;
+  image: File | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,13 +42,7 @@ ngOnInit() {
     this.route.params.subscribe(params => {
       const salonId: ID = params['id'];
       this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
-        this.salon = {
-          ...salon,
-          servicios: salon.services,
-          paquetes: [],
-          imagen: salon.images[0]
-        };
-        console.log(this.salon);
+        this.salon = salon.data;
       });
     });
   }
