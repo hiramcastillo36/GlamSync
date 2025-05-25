@@ -3,7 +3,6 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 class PackageRepository {
     async getPackagesBySalonId(salonId) {
-
         return await Package.find({ salonId });
     }
 }
