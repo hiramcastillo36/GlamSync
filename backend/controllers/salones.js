@@ -1,5 +1,24 @@
 const { response, request } = require("express");
 const { salonRepository } = require("../repositories/salon");
+const Service = require("../models/Service");
+const Package = require("../models/Package");
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB límite
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Solo se permiten archivos de imagen'), false);
+    }
+  }
+});
 
 const getSalonById = async (req = request, res = response) => {
     try {
@@ -26,9 +45,38 @@ const getSalonById = async (req = request, res = response) => {
 
 const createSalon = async (req = request, res = response) => {
     try {
-        const { name, address, phone, description, workingHours, images, services, packages } = req.body;
+        const { name, address, phone, description, workingHours, services, packages } = req.body;
 
         const administratorId = req.user._id;
+
+        let serviceIds = [];
+        if (services && services.length > 0) {
+            for (const serviceData of services) {
+                const newService = new Service({
+                    salonId: null,
+                    name: serviceData.name,
+                    price: serviceData.price,
+                    creationDate: new Date(),
+                    isActive: true
+                });
+                const savedService = await newService.save();
+                serviceIds.push(savedService._id);
+            }
+        }
+
+        let packageIds = [];
+        if (packages && packages.length > 0) {
+            for (const packageData of packages) {
+                const newPackage = new Package({
+                    salonId: null,
+                    name: packageData.name,
+                    description: packageData.description,
+                    price: packageData.price
+                });
+                const savedPackage = await newPackage.save();
+                packageIds.push(savedPackage._id);
+            }
+        }
 
         const salonData = {
             administratorId,
@@ -37,12 +85,19 @@ const createSalon = async (req = request, res = response) => {
             phone,
             description,
             workingHours,
-            images,
-            services,
-            packages
+            image: req.file,
+            services: serviceIds,
+            packages: packageIds,
+            registerDate: new Date(),
+            isActive: true
         };
 
+        console.log(salonData);
+
         const salon = await salonRepository.create(salonData);
+
+        await Service.updateMany({ _id: { $in: serviceIds } }, { salonId: salon._id });
+        await Package.updateMany({ _id: { $in: packageIds } }, { salonId: salon._id });
 
         res.status(201).json({
             success: true,
@@ -165,11 +220,57 @@ const getAllSalons = async (req = request, res = response) => {
     }
 };
 
+const getAdminSalones = async (req = request, res = response) => {
+    try {
+        const salons = await salonRepository.getAll({ administratorId: req.user._id });
+        res.json({
+            success: true,
+            data: salons
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: 'Error getting admin salons'
+        });
+    }
+};
+
+const getImage = async (req = request, res = response) => {
+    try {
+      const { salonId, imageIndex = 0 } = req.params;
+      const salon = await salonRepository.getById(salonId);
+
+      if (!salon || !salon.images || !salon.images[imageIndex]) {
+        return res.status(404).json({
+          success: false,
+          message: 'Imagen no encontrada'
+        });
+      }
+
+      const image = salon.images[imageIndex];
+
+      res.set({
+        'Content-Type': image.contentType,
+        'Content-Length': image.image.length
+      });
+
+      res.send(image.image);
+    } catch (error) {
+      console.error('Error getting image:', error);
+      res.status(400).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
 module.exports = {
     getSalonById,
     createSalon,
     updateSalon,
     deleteSalon,
     getSalones,
-    getAllSalons
+    getAllSalons,
+    getAdminSalones,
+    getImage
 };
