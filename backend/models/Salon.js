@@ -1,4 +1,12 @@
 const mongoose = require('mongoose');
+const Service = require('./Service');
+const Package = require('./Package');
+
+const imageSchema = new mongoose.Schema({
+    name: String,
+    contentType: String,
+    image: Buffer
+  });
 
 const SalonSchema = new mongoose.Schema({
   administratorId: mongoose.Schema.Types.ObjectId,
@@ -7,11 +15,20 @@ const SalonSchema = new mongoose.Schema({
   phone: String,
   description: String,
   workingHours: Object,
-  images: Array,
+  image: imageSchema,
   rating: Object,
-  services: Array,
+  services: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Service'
+  }],
+  packages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Package'
+  }],
   registerDate: Date,
   isActive: Boolean
 });
+
+
 
 module.exports = mongoose.model('Salon', SalonSchema);

@@ -1,5 +1,16 @@
 import { ID } from './types';
 
+export interface Service {
+  name: string;
+  price: number;
+}
+
+export interface Package {
+  name: string;
+  description: string;
+  price: number;
+}
+
 export interface SalonBase {
   _id: ID;
   name: string;
@@ -7,11 +18,20 @@ export interface SalonBase {
   phone: string;
   description: string;
   workingHours: WorkingHours[];
-  images: string[];
+  image: string;
   rating: number;
-  services: string[];
+  services: Service[];
+  packages: Package[];
   registerDate: Date;
   isActive: boolean;
+}
+
+export interface SalonResponse {
+  data: SalonBase[];
+}
+
+export interface SalonDetailResponse {
+  data: SalonBase;
 }
 
 export interface WorkingHours {
@@ -20,14 +40,15 @@ export interface WorkingHours {
 }
 
 export interface SalonCard extends SalonBase {
-  imagen: string;
+  image: string;
 }
 
 export interface SalonDetail extends SalonCard {
-  servicios: string[];
-  paquetes: Array<{
-    _id: ID;
-    nombre: string;
-    imagen: string;
-  }>;
+  servicios: Service[];
+  paquetes: Package[];
+  image: string;
+}
+
+export interface ServiceResponse {
+  data: Service[];
 }

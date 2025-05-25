@@ -1,514 +1,576 @@
 .appointments-container {
-    font-family: 'Roboto', sans-serif;
-    width: 100%;
-    max-width: 1920px;
-    margin: 0 auto;
-    overflow-x: hidden;
-  }
-  
-  .header {
-    font-family: 'Playfair Display', serif;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    height: 70px;
-  }
-  
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-  }
-  
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: #8B5C54;
-    font-weight: 500;
-    text-decoration: none;
-  }
-  
-  .salon-link {
-    color: #115A75;
-    text-decoration: none;
-  }
-  
-  .separator {
-    margin: 0 10px;
-    color: #8B5C54;
-  }
-  
-  .current-page {
-    color: #115A75;
-    font-family: 'Playfair Display', serif;
-  }
-  
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .favorite-btn, .search-btn {
-    color: #333;
-  }
-  
-  .profile-btn {
-    background-color: #8B5C54 !important;
-    color: white;
-  }
-  
-  .content-container {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .salon-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    color: #333;
-    font-weight: 500;
-  }
-  
-  .appointments-stepper {
-    background-color: #fff;
-    margin-bottom: 2rem;
-  }
-  
-  ::ng-deep .mat-horizontal-stepper-header-container {
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  ::ng-deep .mat-step-header .mat-step-icon-selected {
-    background-color: #8B5C54;
-  }
-  
-  ::ng-deep .mat-step-header .mat-step-label.mat-step-label-active {
-    color: #333;
-    font-weight: 500;
-  }
-  
-  .step-content {
-    padding: 2rem 0;
-    min-height: 400px;
-  }
-  
-  .step-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: #333;
-  }
-  
-  .servicios-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .servicio-item {
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .servicio-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  .servicio-item.selected {
-    border-color: #8B5C54;
-    background-color: #FAF0EF;
-  }
-  
-  .servicio-nombre {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-  
-  .servicio-descripcion {
-    color: #666;
-    margin-bottom: 0.5rem;
-  }
-  
-  .servicio-precio {
-    font-weight: 500;
-    color: #8B5C54;
-    font-size: 1.2rem;
-  }
-  
-  .servicio-seleccionado {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #e5f2f2 !important;
-    border-radius: 8px;
-  }
-  
-  .button-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  .continuar-btn, .confirmar-btn {
-    background-color: #8B5C54 !important;
-    color: white !important;
-    padding: 0.5rem 2rem;
-  }
-  
-  .fecha-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .fecha-seleccionada h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: #8B5C54;
-    text-transform: uppercase;
-  }
-  
-  .calendario-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-  
-  ::ng-deep .mat-calendar-body-selected {
-    background-color: #8B5C54;
-    color: white;
-  }
-  
-  ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
-    border-color: #8B5C54;
-  }
-  
-  .confirmacion-contenido {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .resumen-cita {
-    padding: 2rem;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .resumen-cita h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
-  .detalle-cita p {
-    margin-bottom: 0.8rem;
-    color: #666;
-    font-size: 1.1rem;
-  }
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  background-color: #fff;
+}
 
-  ::ng-deep .mat-horizontal-content-container {
-    padding: 0;
-  }
-  
+.header {
+  font-family: 'Playfair Display', serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 70px;
+}
+
+.breadcrumb {
+  font-family: 'Playfair Display', serif;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #8B5C54;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.salon-link {
+  color: #115A75;
+  text-decoration: none;
+}
+
+.separator {
+  margin: 0 10px;
+  color: #8B5C54;
+}
+
+.current-page {
+  color: #115A75;
+  font-family: 'Playfair Display', serif;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.favorite-btn, .search-btn {
+  color: #333;
+}
+
+.profile-btn {
+  background-color: #8B5C54 !important;
+  color: white;
+}
+
+.content-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.salon-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.appointments-stepper {
+  background-color: #fff;
+  margin-bottom: 2rem;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+
+::ng-deep .mat-step-header .mat-step-icon-selected {
+  background-color: #8B5C54;
+}
+
+::ng-deep .mat-step-header .mat-step-label.mat-step-label-active {
+  color: #333;
+  font-weight: 500;
+}
+
+.step-content {
+  padding: 2rem 0;
+  min-height: 400px;
+  background-color: #fff;
+}
+
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.servicios-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.servicio-item {
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.servicio-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #f8f5f3;
+}
+
+.servicio-item.selected {
+  border-color: #8B5C54;
+  background-color: #f5f0e8;
+  box-shadow: 0 2px 8px rgba(139, 92, 84, 0.2);
+}
+
+.servicio-nombre {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.servicio-descripcion {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.servicio-precio {
+  font-weight: 500;
+  color: #8B5C54;
+  font-size: 1.2rem;
+}
+
+.servicio-seleccionado {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f5f0e8 !important;
+  border-radius: 8px;
+  border: 1px solid #8B5C54;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.continuar-btn, .confirmar-btn {
+  background-color: #8B5C54 !important;
+  color: white !important;
+  padding: 0.5rem 2rem;
+}
+
+.fecha-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.fecha-seleccionada h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: #8B5C54;
+  text-transform: uppercase;
+}
+
+.calendario-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  background-color: #fff;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: #8B5C54;
+  color: white;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+  color: #000 !important;
+}
+
+::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: #8B5C54;
+}
+
+::ng-deep .mat-calendar {
+  background-color: #fff;
+}
+
+.confirmacion-contenido {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.resumen-cita {
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.resumen-cita h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.detalle-cita p {
+  margin-bottom: 0.8rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  padding: 0;
+  background-color: #fff !important;
+}
+
+/* Asegurar que el stepper completo tenga fondo blanco */
+::ng-deep .mat-stepper-horizontal {
+  background-color: #fff !important;
+}
+
+/* Eliminar cualquier fondo oscuro del contenido del stepper */
+::ng-deep .mat-horizontal-stepper-content {
+  background-color: #fff !important;
+}
+
+::ng-deep .mat-step-content {
+  background-color: #fff !important;
+}
+
+.step-content {
+  padding: 2rem;
+  min-height: 400px;
+  background-color: #fff;
+}
+
+.paquete-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+}
+
+.paquete-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.paquete-subtitle {
+  color: #115A75;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.paquete-select {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.paquete-seleccionado {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: #f5f0e8;
+  border-radius: 8px;
+  border-left: 4px solid #8B5C54;
+}
+
+.paquetes-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.horario-section {
+  margin: 2rem 0;
+}
+
+.horario-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.horarios-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.horario-item {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.horario-item:hover {
+  background-color: #f8f5f3;
+  border-color: #8B5C54;
+}
+
+.horario-item.selected {
+  background-color: #8B5C54;
+  color: white;
+  border-color: #8B5C54;
+}
+
+.profesional-section {
+  margin-top: 2rem;
+}
+
+.profesional-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.profesional-subtitle {
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.profesionales-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.profesional-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.profesional-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #f8f5f3;
+}
+
+.profesional-item.selected {
+  border-color: #8B5C54;
+  background-color: #f5f0e8;
+  box-shadow: 0 2px 8px rgba(139, 92, 84, 0.2);
+}
+
+.profesional-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  overflow: hidden;
+}
+
+.profesional-avatar mat-icon {
+  color: #8B5C54;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profesional-seleccionado {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: #f5f0e8;
+  border-radius: 8px;
+  border: 1px solid #8B5C54;
+}
+
+.profesional-card {
+  display: flex;
+  align-items: center;
+}
+
+.profesional-card-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.5rem;
+  overflow: hidden;
+}
+
+.avatar-img-large {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-icon-large {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #8B5C54;
+}
+
+.resumen-cita {
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0e0e0;
+}
+
+.detalle-cita p {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.detalle-cita p strong {
+  color: #333;
+}
+
+.precio-total {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid #8B5C54;
+}
+
+.monto-total {
+  font-size: 1.2rem;
+  color: #8B5C54;
+  font-weight: 500;
+}
+
+.confirmacion-checkbox {
+  margin-top: 1.5rem;
+  display: block;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: #8B5C54;
+}
+
+::ng-deep .mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: #8B5C54;
+}
+
+.servicio-item.disabled {
+  position: relative;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.disabled-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #8B5C54;
+  text-align: center;
+  padding: 1rem;
+}
+
+.disabled-overlay mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.disabled-overlay span {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
   .step-content {
-    padding: 2rem;
-    min-height: 400px;
-  }
-  
-  .paquete-section {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-  }
-  
-  .paquete-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
-  
-  .paquete-subtitle {
-    color: #666;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .paquete-select {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-  
-  .paquete-seleccionado {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    background-color: #FAF0EF;
-    border-radius: 8px;
-    border-left: 4px solid #8B5C54;
-  }
-  
-  .horario-section {
-    margin: 2rem 0;
-  }
-  
-  .horario-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 1rem;
-  }
-  
-  .horarios-lista {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 1rem;
-  }
-  
-  .horario-item {
-    padding: 0.8rem 1.2rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .horario-item:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .horario-item.selected {
-    background-color: #8B5C54;
-    color: white;
-    border-color: #8B5C54;
-  }
-  
-  .profesional-section {
-    margin-top: 2rem;
-  }
-  
-  .profesional-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
-  
-  .profesional-subtitle {
-    color: #666;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
+    padding: 1rem;
+    background-color: #fff;
   }
   
   .profesionales-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
+    grid-template-columns: 1fr;
   }
   
-  .profesional-item {
-    display: flex;
-    align-items: center;
+  .horarios-lista {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+    background-color: #fff;
+  }
+  
+  .content-container {
     padding: 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    background-color: #fff;
   }
   
-  .profesional-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .profesional-item.selected {
-    border-color: #8B5C54;
-    background-color: #FAF0EF;
-  }
-  
-  .profesional-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 1rem;
-    overflow: hidden;
-  }
-  
-  .profesional-avatar mat-icon {
-    color: #8B5C54;
-  }
-  
-  .avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .profesional-seleccionado {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-  }
-  
-  .profesional-card {
-    display: flex;
-    align-items: center;
-  }
-  
-  .profesional-card-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 1.5rem;
-    overflow: hidden;
-  }
-  
-  .avatar-img-large {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .avatar-icon-large {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
-    color: #8B5C54;
-  }
-  
-  .resumen-cita {
-    padding: 2rem;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    margin-bottom: 1.5rem;
-  }
-  
-  .detalle-cita p {
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .detalle-cita p strong {
-    color: #333;
-  }
-  
-  .monto-total {
-    font-size: 1.2rem;
-    color: #8B5C54;
-    font-weight: 500;
-  }
-  
-  .confirmacion-checkbox {
-    margin-top: 1.5rem;
-    display: block;
-  }
-  .servicio-item.disabled {
-    position: relative;
-    cursor: not-allowed;
-    opacity: 0.7;
-  }
-  
-  .disabled-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #8B5C54;
-    text-align: center;
-    padding: 1rem;
-  }
-  
-  .disabled-overlay mat-icon {
+  .salon-title {
     font-size: 2rem;
-    width: 2rem;
-    height: 2rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .disabled-overlay span {
-    font-size: 0.9rem;
-  }
-  
-  .paquete-subtitle {
-    color: #8B5C54;
-    font-weight: 500;
     margin-bottom: 1.5rem;
   }
   
-  @media (max-width: 768px) {
-    .step-content {
-      padding: 1rem;
-    }
-    
-    .profesionales-lista {
-      grid-template-columns: 1fr;
-    }
-    
-    .horarios-lista {
-      justify-content: center;
-    }
+  .servicios-lista {
+    grid-template-columns: 1fr;
   }
   
-  @media (max-width: 768px) {
-    .header {
-      padding: 0 1rem;
-    }
-    
-    .content-container {
-      padding: 1rem;
-    }
-    
-    .salon-title {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .servicios-lista {
-      grid-template-columns: 1fr;
-    }
-    
-    .button-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.5rem;
-    }
-    
-    .fecha-seleccionada h2 {
-      font-size: 1.5rem;
-    }
+  .button-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
   }
   
+  .fecha-seleccionada h2 {
+    font-size: 1.5rem;
+  }
+}

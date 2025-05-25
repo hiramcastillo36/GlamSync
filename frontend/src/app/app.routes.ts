@@ -5,6 +5,9 @@ import { SalonDetailComponent } from '../app/pages/salon-detail/salon-detail.com
 import { RegisterComponent } from './components/register/register.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { SalonCreateComponent } from './pages/salon-create/salon-create.component';
+import { MisSalonesComponent } from './pages/mis-salones/mis-salones.component';
+import { MisCitasComponent } from './pages/mis-citas/mis-citas.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,4 +17,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'salon/:id/appointments', component: AppointmentsComponent },
   { path: 'create', component: SalonCreateComponent },
+  { path: 'mis-salones', component: MisSalonesComponent },
+  { path: 'mis-citas', component: MisCitasComponent },
+
 ];

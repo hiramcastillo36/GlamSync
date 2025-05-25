@@ -27,16 +27,13 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
-
-
-
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe(
         {
           next: (res) => {
-            this.authService.saveToken(res.token);
-            this.authService.saveUser(res.user);
+            this.authService.saveToken(res.data.token);
+            this.authService.saveUser(res.data.user);
             this.router.navigate(['/home']);
           },
           error: (err) => {
@@ -49,5 +46,9 @@ export class LoginComponent {
         this.loginForm.get(key)?.markAsTouched();
       });
     }
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

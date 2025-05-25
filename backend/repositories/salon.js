@@ -1,40 +1,99 @@
 const Salon = require('../models/Salon');
 const ObjectId = require('mongoose').Types.ObjectId;
+const { UserRepository } = require('./user');
+
 
 class SalonRepository {
   async create(salonData) {
-    const salon = new Salon(salonData);
-    return await salon.save();
-  }
+    try {
+      const salon = new Salon(salonData);
 
-  async getAll() {
-    return await Salon.find({ isActive: true });
+      await UserRepository.update(salonData.administratorId, {
+        $push: { managedSalons: salon._id }
+      });
+
+      await UserRepository.update(salonData.administratorId, {
+        role: 'owner'
+      });
+
+      return await salon.save();
+    } catch (error) {
+      throw new Error(`Error creating salon: ${error.message}`);
+    }
   }
 
   async getById(id) {
-    if (!ObjectId.isValid(id)) {
-      return null;
+    try {
+      if (!ObjectId.isValid(id)) {
+        throw new Error('Invalid salon ID');
+      }
+      return await Salon.findById(id)
+        .populate('administratorId', 'name email');
+    } catch (error) {
+      throw new Error(`Error getting salon: ${error.message}`);
     }
-    return await Salon.findById(id);
   }
 
   async update(id, salonData) {
-    if (!ObjectId.isValid(id)) {
-      return null;
+    try {
+      if (!ObjectId.isValid(id)) {
+        throw new Error('Invalid salon ID');
+      }
+
+      // Validate required fields if they are being updated
+      if (salonData.name === '' || salonData.phone === '' || salonData.description === '') {
+        throw new Error('Required fields cannot be empty');
+      }
+
+      const salon = await Salon.findByIdAndUpdate(
+        id,
+        { $set: salonData },
+        { new: true, runValidators: true }
+      ).populate('administratorId', 'name email');
+
+      if (!salon) {
+        throw new Error('Salon not found');
+      }
+
+      return salon;
+    } catch (error) {
+      throw new Error(`Error updating salon: ${error.message}`);
     }
-    return await Salon.findByIdAndUpdate(id, salonData, { new: true });
   }
 
   async delete(id) {
-    if (!ObjectId.isValid(id)) {
-      return null;
+    try {
+      if (!ObjectId.isValid(id)) {
+        throw new Error('Invalid salon ID');
+      }
+
+      const salon = await Salon.findByIdAndUpdate(
+        id,
+        { isActive: false },
+        { new: true }
+      );
+
+      if (!salon) {
+        throw new Error('Salon not found');
+      }
+
+      return salon;
+    } catch (error) {
+      throw new Error(`Error deleting salon: ${error.message}`);
     }
-    return await Salon.findByIdAndDelete(id);
+  }
+
+  async getAll(query = {}) {
+    try {
+      return await Salon.find(query);
+    } catch (error) {
+      throw new Error(`Error getting salons: ${error.message}`);
+    }
   }
 }
 
 const salonRepository = new SalonRepository();
 
 module.exports = {
-    salonRepository
+  salonRepository
 };

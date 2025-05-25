@@ -1,0 +1,107 @@
+<div class="mis-citas-container">
+    <app-header
+      [showBreadcrumb]="true"
+      [currentPage]="'Mis Citas'">
+    </app-header>
+
+    <div class="content-container">
+      <div class="page-header">
+        <h1 class="page-title">Mis Citas</h1>
+        <p class="page-subtitle">Gestiona tus citas programadas</p>
+      </div>
+
+      <div class="citas-content" *ngIf="!isLoading">
+        <div class="empty-state" *ngIf="citas.length === 0">
+          <mat-icon class="empty-icon">event_busy</mat-icon>
+          <h3>No tienes citas programadas</h3>
+          <p>¡Agenda tu primera cita en uno de nuestros salones!</p>
+          <button mat-flat-button color="primary" routerLink="/home" class="cta-button">
+            Explorar Salones
+          </button>
+        </div>
+
+        <div class="citas-grid" *ngIf="citas.length > 0">
+          <mat-card class="cita-card" *ngFor="let cita of citas; let i = index">
+            <mat-card-header>
+              <div class="salon-info">
+                <h3 class="salon-name">{{cita.salon.name}}</h3>
+                <p class="salon-address">{{cita.salon.address}}</p>
+              </div>
+              <button mat-icon-button
+                      class="delete-btn"
+                      (click)="eliminarCita(cita._id.toString())"
+                      matTooltip="Eliminar cita">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-header>
+
+            <mat-card-content>
+              <div class="cita-details">
+                <div class="detail-item">
+                  <mat-icon class="detail-icon">event</mat-icon>
+                  <div class="detail-text">
+                    <span class="detail-label">Fecha</span>
+                    <span class="detail-value">{{formatearFecha(cita.fecha)}}</span>
+                  </div>
+                </div>
+
+                <div class="detail-item">
+                  <mat-icon class="detail-icon">access_time</mat-icon>
+                  <div class="detail-text">
+                    <span class="detail-label">Horario</span>
+                    <span class="detail-value">{{cita.horario}}</span>
+                  </div>
+                </div>
+
+                <div class="detail-item" *ngIf="cita.servicio">
+                  <mat-icon class="detail-icon">content_cut</mat-icon>
+                  <div class="detail-text">
+                    <span class="detail-label">Servicio</span>
+                    <span class="detail-value">{{cita.servicio.nombre}}</span>
+                  </div>
+                </div>
+
+                <div class="detail-item" *ngIf="cita.paquete">
+                  <mat-icon class="detail-icon">card_giftcard</mat-icon>
+                  <div class="detail-text">
+                    <span class="detail-label">Paquete</span>
+                    <span class="detail-value">{{cita.paquete.nombre}}</span>
+                  </div>
+                </div>
+
+                <div class="detail-item" *ngIf="cita.persona">
+                  <mat-icon class="detail-icon">person</mat-icon>
+                  <div class="detail-text">
+                    <span class="detail-label">Profesional</span>
+                    <span class="detail-value">{{cita.persona.nombre}}</span>
+                  </div>
+                </div>
+
+                <div class="detail-item" *ngIf="!cita.persona">
+                  <mat-icon class="detail-icon">people</mat-icon>
+                  <div class="detail-text">
+                    <span class="detail-label">Profesional</span>
+                    <span class="detail-value">Cualquiera disponible</span>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+
+            <mat-card-actions>
+              <div class="card-footer">
+                <div class="precio-total">
+                  <span class="precio-label">Total:</span>
+                  <span class="precio-valor">{{cita.precioTotal | currency:'MXN':'symbol-narrow':'1.0-0'}}</span>
+                </div>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="loading-state" *ngIf="isLoading">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+        <p>Cargando tus citas...</p>
+      </div>
+    </div>
+  </div>

@@ -1,56 +1,70 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { HeaderComponent } from '../../components/header/header.component';
-import { AppointmentStepperComponent } from '../../components/stepper/stepper.component';
-import { ServiceItem } from '../../interfaces/service';
-import { PackageItem } from '../../interfaces/package';
+import { ReusableStepperComponent, StepConfig } from '../../components/stepper/stepper.component';
+import { Package } from '../../interfaces/package.interface';
 import { Professional } from '../../interfaces/professional';
-import { AppointmentData } from '../../interfaces/appointment';
-import { SalonDetail } from '../../interfaces/salon.interface';
+import { SalonBase } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 import { SalonService } from '../../services/salon.service';
+import { PackageService } from '../../services/packege.service';
+import { Service } from '../../interfaces/service.interface';
+import { AppointmentService } from '../../services/appointment.service';
+import { CreateAppointmentRequest } from '../../interfaces/appointment.interface';
+
 @Component({
   selector: 'app-appointments',
   standalone: true,
   imports: [
     CommonModule,
     RouterModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
     HeaderComponent,
-    AppointmentStepperComponent
+    ReusableStepperComponent
   ],
   templateUrl: './appointments.component.html',
   styleUrls: ['./appointments.component.css']
 })
-export class AppointmentsComponent implements OnInit {
-  salon: SalonDetail = {
-    _id: 1,
-    name: 'Salon NailsByO',
-    address: 'Calle 123',
-    phone: '1234567890',
-    description: 'El mejor salón para uñas de la ciudad',
-    workingHours: [{day: 'L-V', time: '9:00 am - 5:00pm'}],
-    images: ['/assets/images/nails.jpg'],
-    rating: 3,
-    servicios: [],
-    paquetes: [],
-    imagen: '/assets/images/nails.jpg',
+export class AppointmentsComponent implements OnInit, AfterViewInit {
+  @ViewChild('serviciosTemplate', { static: true }) serviciosTemplate!: TemplateRef<any>;
+  @ViewChild('fechaTemplate', { static: true }) fechaTemplate!: TemplateRef<any>;
+  @ViewChild('confirmacionTemplate', { static: true }) confirmacionTemplate!: TemplateRef<any>;
+
+  stepConfig: StepConfig[] = [];
+
+  salon: SalonBase = {
+    _id: '',
+    name: '',
+    address: '',
+    phone: '',
+    description: '',
+    workingHours: [],
+    image: '',
+    rating: 0,
     services: [],
+    packages: [],
     registerDate: new Date(),
-    isActive: true
+    isActive: true,
   };
 
-  servicios: ServiceItem[] = [
-    { id: 1, nombre: 'Estilista', descripcion: 'Este servicio es un corte de cabello', precio: 250 },
-    { id: 2, nombre: 'Uñas acrílicas', descripcion: 'Aplicación de uñas acrílicas', precio: 350 },
-    { id: 3, nombre: 'Gel', descripcion: 'Aplicación de gel en uñas', precio: 300 },
-    { id: 4, nombre: 'Manicure', descripcion: 'Manicure tradicional', precio: 200 }
-  ];
-
-  paquetes: PackageItem[] = [
-    { id: 'p1', nombre: 'Combo Belleza (Uñas + Gel)', precio: 550, descripcion: 'Incluye uñas acrílicas y aplicación de gel' },
-    { id: 'p2', nombre: 'Spa Manos (Manicure + Tratamiento)', precio: 350, descripcion: 'Incluye manicure tradicional y tratamiento hidratante' }
-  ];
+  servicios: Service[] = [];
+  paquetes: Package[] = [];
 
   personas: Professional[] = [
     { id: 'a1', nombre: 'Andrea', especialidad: 'Estilista y Uñas', foto: 'assets/andrea.jpg' },
@@ -63,43 +77,221 @@ export class AppointmentsComponent implements OnInit {
     '13:00', '14:00', '16:00', '17:00', '18:00'
   ];
 
+  serviciosForm!: FormGroup;
+  fechaForm!: FormGroup;
+  confirmacionForm!: FormGroup;
+
+  servicioSeleccionado: Service | null = null;
+  paqueteSeleccionado: Package | null = null;
+  personaSeleccionada: Professional | null = null;
+  fechaSeleccionada: Date = new Date();
+  horarioSeleccionado: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private salonService: SalonService
+    private salonService: SalonService,
+    private formBuilder: FormBuilder,
+    private packageService: PackageService,
+    private appointmentService: AppointmentService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.initForms();
+    this.loadSalonData();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.stepConfig = [
+        {
+          label: 'Servicios',
+          content: this.serviciosTemplate,
+          formGroup: this.serviciosForm
+        },
+        {
+          label: 'Fecha y Hora',
+          content: this.fechaTemplate,
+          formGroup: this.fechaForm
+        },
+        {
+          label: 'Confirmación',
+          content: this.confirmacionTemplate,
+          formGroup: this.confirmacionForm
+        }
+      ];
+    });
+  }
+
+  loadSalonData(): void {
     this.route.params.subscribe(params => {
       const salonId: ID = params['id'];
+      console.log('Salon ID:', salonId);
+
+      // Cargar datos del salón
       this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
-        this.salon = {
-            _id: salon._id,
-            name: salon.name,
-            address: salon.address,
-            phone: salon.phone,
-            description: salon.description,
-            workingHours: salon.workingHours,
-            images: salon.images,
-            rating: salon.rating,
-            servicios: salon.services,
-            paquetes: [],
-            imagen: salon.images[0],
-            services: [],
-            registerDate: salon.registerDate,
-            isActive: salon.isActive
-        };
+        this.salon = salon.data;
+        console.log('Salon loaded:', this.salon);
+      });
+
+      // Cargar servicios
+      this.salonService.getServicesBySalonId(salonId.toString()).subscribe((services) => {
+        this.servicios = services.data;
+        console.log('Services loaded:', this.servicios);
+      });
+
+      // Cargar paquetes
+      this.packageService.getPackagesBySalonId(salonId.toString()).subscribe((packages) => {
+        this.paquetes = packages.data;
+        console.log('Packages loaded:', this.paquetes);
       });
     });
   }
 
-  onCancelAppointment(): void {
+  initForms(): void {
+    this.serviciosForm = this.formBuilder.group({
+      seleccion: ['', Validators.required] // Un solo campo para validar que se seleccionó algo
+    });
+
+    this.fechaForm = this.formBuilder.group({
+      fecha: [new Date(), Validators.required],
+      horario: ['', Validators.required]
+    });
+
+    this.confirmacionForm = this.formBuilder.group({
+      confirmado: [false, Validators.requiredTrue]
+    });
+  }
+
+  onStepChange(index: number): void {
+    console.log(`Cambiado al paso ${index + 1}`);
+  }
+
+  onNext(currentStep: number): void {
+    console.log(`Avanzando desde el paso ${currentStep + 1}`);
+
+    // Validar que se haya seleccionado un servicio o paquete antes de avanzar
+    if (currentStep === 0) {
+      if (!this.servicioSeleccionado && !this.paqueteSeleccionado) {
+        alert('Por favor selecciona un servicio o paquete antes de continuar');
+        return;
+      }
+      // Actualizar el form para que pase la validación
+      this.serviciosForm.patchValue({
+        seleccion: this.paqueteSeleccionado ? 'paquete' : 'servicio'
+      });
+    }
+  }
+
+  onPrevious(currentStep: number): void {
+    console.log(`Retrocediendo desde el paso ${currentStep + 1}`);
+  }
+
+  seleccionarServicio(servicio: Service): void {
+    // Solo permitir seleccionar si no hay paquete seleccionado
+    if (this.paqueteSeleccionado) {
+      this.paqueteSeleccionado = null;
+    }
+
+    this.servicioSeleccionado = servicio;
+    this.serviciosForm.patchValue({ seleccion: 'servicio' });
+
+    console.log('Servicio seleccionado:', servicio);
+  }
+
+  seleccionarPaquete(paquete: Package): void {
+    // Solo permitir seleccionar si no hay servicio seleccionado
+    if (this.servicioSeleccionado) {
+      this.servicioSeleccionado = null;
+    }
+
+    this.paqueteSeleccionado = paquete;
+    this.serviciosForm.patchValue({ seleccion: 'paquete' });
+
+    console.log('Paquete seleccionado:', paquete);
+  }
+
+  deseleccionarPaquete(): void {
+    this.paqueteSeleccionado = null;
+    this.serviciosForm.patchValue({ seleccion: '' });
+  }
+
+  deseleccionarServicio(): void {
+    this.servicioSeleccionado = null;
+    this.serviciosForm.patchValue({ seleccion: '' });
+  }
+
+  seleccionarFecha(event: Date | null): void {
+    if (event) {
+      this.fechaSeleccionada = event;
+      this.fechaForm.patchValue({ fecha: this.fechaSeleccionada });
+    }
+  }
+
+  seleccionarHorario(horario: string): void {
+    this.horarioSeleccionado = horario;
+    this.fechaForm.patchValue({ horario: horario });
+  }
+
+  seleccionarPersona(persona: Professional): void {
+    this.personaSeleccionada = persona;
+  }
+
+  limpiarPersona(): void {
+    this.personaSeleccionada = null;
+  }
+
+  getFechaMostrar(): string {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    };
+    return this.fechaSeleccionada.toLocaleDateString('es-ES', options);
+  }
+
+  getTotalPrecio(): number {
+    if (this.paqueteSeleccionado) {
+      return this.paqueteSeleccionado.price;
+    }
+    return this.servicioSeleccionado ? this.servicioSeleccionado.price : 0;
+  }
+
+  onCancel(): void {
     this.router.navigate(['/salon', this.salon._id]);
   }
 
-  onConfirmAppointment(data: AppointmentData): void {
-    console.log('Cita confirmada', data);
-    alert('¡Tu cita ha sido confirmada con éxito!');
-    this.router.navigate(['/home']);
+  onComplete(): void {
+    if (this.confirmacionForm.valid && (this.servicioSeleccionado || this.paqueteSeleccionado)) {
+
+      const appointmentDate = this.fechaSeleccionada.toISOString().split('T')[0]; // "2025-05-25"
+
+      const appointmentData: CreateAppointmentRequest = {
+        salonId: this.salon._id,
+        serviceId: this.servicioSeleccionado?._id || "",
+        packageId: this.paqueteSeleccionado?._id || "",
+        professionalId: "",
+        appointmentDate: new Date(appointmentDate),
+        appointmentTime: this.horarioSeleccionado,
+        totalPrice: this.getTotalPrecio(),
+      };
+
+      console.log('Datos de la cita a enviar:', appointmentData);
+
+      this.appointmentService.createAppointment(appointmentData).subscribe({
+        next: (response) => {
+          console.log('Cita creada exitosamente:', response);
+          alert('¡Tu cita ha sido confirmada con éxito!');
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.error('Error al crear la cita:', error);
+          alert('Error al crear la cita. Por favor intenta de nuevo.');
+        }
+      });
+    } else {
+      alert('Por favor completa todos los campos requeridos');
+    }
   }
 }

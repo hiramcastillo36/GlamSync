@@ -1,0 +1,122 @@
+<div class="mis-salones-container">
+    <app-header
+      [showBreadcrumb]="true"
+      [currentPage]="'Mis Salones'">
+    </app-header>
+
+    <div class="content-container">
+      <div class="page-header">
+        <div class="header-content">
+          <h1 class="page-title">Mis Salones</h1>
+          <p class="page-subtitle">Administra tus negocios registrados</p>
+        </div>
+        <button mat-fab
+                color="primary"
+                class="add-salon-btn"
+                (click)="crearNuevoSalon()"
+                matTooltip="Crear nuevo salón">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      <div class="salones-content" *ngIf="!isLoading">
+        <div class="empty-state" *ngIf="salones.length === 0">
+          <mat-icon class="empty-icon">store</mat-icon>
+          <h3>No tienes salones registrados</h3>
+          <p>¡Crea tu primer salón y comienza a recibir clientes!</p>
+          <button mat-flat-button
+                  color="primary"
+                  (click)="crearNuevoSalon()"
+                  class="cta-button">
+            <mat-icon>add</mat-icon>
+            Crear Mi Primer Salón
+          </button>
+        </div>
+
+        <div class="salones-grid" *ngIf="salones.length > 0">
+          <mat-card class="salon-card" *ngFor="let salon of salones; let i = index">
+            <div class="card-header">
+              <div class="status-badge" [class.active]="salon.isActive" [class.inactive]="!salon.isActive">
+                {{salon.isActive ? 'Activo' : 'Inactivo'}}
+              </div>
+              <div class="card-actions">
+                <button mat-icon-button
+                        class="action-btn edit-btn"
+                        (click)="editarSalon(salon._id.toString())"
+                        matTooltip="Editar salón">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button
+                        class="action-btn delete-btn"
+                        (click)="eliminarSalon(salon, i)"
+                        matTooltip="Eliminar salón">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <mat-card-content class="card-content">
+              <h3 class="salon-name">{{salon.name}}</h3>
+              <div class="salon-info">
+                <div class="info-item">
+                  <mat-icon class="info-icon">location_on</mat-icon>
+                  <span class="info-text">{{salon.address}}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon class="info-icon">phone</mat-icon>
+                  <span class="info-text">{{salon.phone}}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon class="info-icon">schedule</mat-icon>
+                  <span class="info-text">{{salon.workingHours}}</span>
+                </div>
+                <div class="info-item">
+                  <mat-icon class="info-icon">date_range</mat-icon>
+                  <span class="info-text">Registrado: {{formatearFecha(salon.registerDate)}}</span>
+                </div>
+              </div>
+
+              <p class="salon-description">{{salon.description}}</p>
+
+              <!-- <div class="rating-section">
+                <app-rating-stars [rating]="salon.rating"></app-rating-stars>
+                <span class="rating-text">{{salon.rating}} estrellas</span>
+              </div> -->
+
+              <div class="services-section">
+                <h4 class="services-title">Servicios:</h4>
+                <div class="services-tags">
+                  <span class="service-tag" *ngFor="let service of salon.services">
+                    {{service}}
+                  </span>
+                </div>
+              </div>
+            </mat-card-content>
+
+            <mat-card-actions class="card-footer">
+              <button mat-button
+                      class="toggle-status-btn"
+                      [class.activate]="!salon.isActive"
+                      [class.deactivate]="salon.isActive"
+                      (click)="toggleSalonStatus(salon)">
+                <mat-icon>{{salon.isActive ? 'pause' : 'play_arrow'}}</mat-icon>
+                {{salon.isActive ? 'Desactivar' : 'Activar'}}
+              </button>
+
+              <button mat-button
+                      class="view-detail-btn"
+                      (click)="verDetalleSalon(salon._id.toString())">
+                <mat-icon>visibility</mat-icon>
+                Ver Detalles
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="loading-state" *ngIf="isLoading">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+        <p>Cargando tus salones...</p>
+      </div>
+    </div>
+  </div>

@@ -19,9 +19,9 @@
           <p>Tel: {{salon.phone}}</p>
           <p>Horario de atención:</p>
           <div class="working-hours">
-            <div *ngFor="let day of salon.workingHours | keyvalue" class="day-schedule">
-              <span class="day-name">{{day.key | titlecase}}:</span>
-              <span class="day-time">{{day.value}}</span>
+            <div *ngFor="let schedule of salon.workingHours" class="day-schedule">
+              <span class="day-name">{{schedule.day | titlecase}}:</span>
+              <span class="day-time">{{schedule.time}}</span>
             </div>
           </div>
         </div>
@@ -33,9 +33,9 @@
           <mat-card-content>
             <h2 class="services-title">Nuestros servicios</h2>
             <ul class="services-list">
-              <li *ngFor="let servicio of salon.servicios">
+              <li *ngFor="let servicio of services">
                 <mat-icon class="bullet-icon">fiber_manual_record</mat-icon>
-                {{servicio}}
+                {{servicio.name}}
               </li>
             </ul>
           </mat-card-content>
@@ -45,7 +45,7 @@
 
 
     <div class="salon-image-section">
-      <img [src]="salon.imagen" alt="{{salon.name}}" class="main-image">
+      <img [src]="image" alt="{{salon.name}}" class="main-image">
 
       <div class="rating-section">
         <p>¡No olvides calificar tu visita!</p>
@@ -56,15 +56,10 @@
       <div class="packages-section">
         <h2 class="packages-title">Conoce nuestros paquetes del mes</h2>
         <div class="packages-container">
-          <div class="package" *ngFor="let paquete of salon.paquetes">
-            <div class="package-image-container" *ngIf="paquete._id === 1; else packageImage">
-              <div class="discount-icon">
-                <span class="percent-icon">%</span>
-              </div>
-            </div>
-            <ng-template #packageImage>
-              <img [src]="paquete.imagen" alt="{{paquete.nombre}}" class="package-image">
-            </ng-template>
+          <div class="package" *ngFor="let paquete of packages">
+            <h3 class="package-title">{{paquete.name}}</h3>
+            <p class="package-description">{{paquete.description}}</p>
+            <p class="package-price">{{paquete.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
           </div>
         </div>
       </div>

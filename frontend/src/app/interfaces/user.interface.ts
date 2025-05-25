@@ -1,5 +1,14 @@
 export interface User {
-    msg: string;
-    token: string;
-    user: any;
-  }
+    _id: string;
+    email: string;
+    role: string;
+    managedSalons?: string[];
+}
+
+export interface AuthResponse {
+    success: boolean;
+    data: {
+        token: string;
+        user: User;
+    };
+}

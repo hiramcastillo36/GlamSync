@@ -15,7 +15,10 @@ class Server {
 
         this.paths = {
             auth: "/api/auth",
-            salon: "/api/salon"
+            salon: "/api/salon",
+            service: "/api/service",
+            package: "/api/package",
+            appointment: "/api/appointment"
         }
 
         this.middlewares();
@@ -26,6 +29,9 @@ class Server {
     routes(){
         this.app.use(this.paths.auth, require("../routes/auth"));
         this.app.use(this.paths.salon, require("../routes/salon"));
+        this.app.use(this.paths.service, require("../routes/service"));
+        this.app.use(this.paths.package, require("../routes/package"));
+        this.app.use(this.paths.appointment, require("../routes/appointment"));
         this.app.get("/", (req, res) => {
             res.send("API is running...");
         });
@@ -33,7 +39,8 @@ class Server {
 
     middlewares(){
         this.app.use(cors(this.corsOptions));
-        this.app.use(express.json());
+        this.app.use(express.json({ limit: '50mb' }));
+        this.app.use(express.urlencoded({ limit: '50mb', extended: true }));
     }
 
     listen(){

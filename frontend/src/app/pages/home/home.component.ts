@@ -22,7 +22,6 @@ import { SalonService } from '../../services/salon.service';
     MatIconModule,
     HeaderComponent,
     SalonCardComponent,
-    //RatingStarsComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -31,14 +30,14 @@ export class HomeComponent {
   salones: SalonCard[] = [];
 
   constructor(private router: Router, private salonService: SalonService) {
-    this.salonService.getSalones().subscribe((salones) => {
-      this.salones = salones.map((salon) => ({
+    this.salonService.getAllSalons().subscribe((salones) => {
+      console.log(salones);
+      this.salones = salones.data.map((salon) => ({
         ...salon,
-        imagen: salon.images[0]
+        image: salon.image
       }));
     });
-    console.log(this.salones);
-}
+    }
 
   verDetalleSalon(id: ID): void {
     this.router.navigate(['/salon', id]);
