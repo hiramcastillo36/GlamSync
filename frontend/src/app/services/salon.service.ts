@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SalonBase, SalonCard, SalonDetail, SalonDetailResponse, SalonResponse } from '../interfaces/salon.interface';
+import { SalonBase, SalonCard, SalonDetail, SalonDetailResponse, SalonResponse, ServiceResponse } from '../interfaces/salon.interface';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -42,5 +42,9 @@ export class SalonService {
 
     getMySalones(): Observable<SalonResponse> {
         return this.http.get<SalonResponse>(`${this.apiUrl}/admin`);
+    }
+
+    getServicesBySalonId(id: string): Observable<ServiceResponse> {
+        return this.http.get<ServiceResponse>(`http://localhost:8080/api/service/salon/${id}`, {headers: this.getHeaders()});
     }
 }
