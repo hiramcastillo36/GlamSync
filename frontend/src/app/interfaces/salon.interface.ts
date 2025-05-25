@@ -48,3 +48,7 @@ export interface SalonDetail extends SalonCard {
   paquetes: Package[];
   image: string;
 }
+
+export interface ServiceResponse {
+  data: Service[];
+}
