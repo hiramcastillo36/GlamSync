@@ -9,3 +9,13 @@ export interface ServiceItem {
   categoria?: string;
   disponible?: boolean;
 }
+
+export interface Service {
+    _id: ID;
+    name: string;
+    price: number;
+  }
+
+  export interface ServiceResponse {
+    data: Service[];
+  }
