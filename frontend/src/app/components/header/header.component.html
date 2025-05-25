@@ -1,4 +1,5 @@
 <mat-toolbar color="white" class="header">
+    <!-- Breadcrumb Section -->
     <div class="breadcrumb" *ngIf="showBreadcrumb">
       <a routerLink="/home" class="logo">GlamSync</a>
       <ng-container *ngIf="salonId && salonName">
@@ -10,23 +11,75 @@
         </ng-container>
       </ng-container>
     </div>
+
+    <!-- Logo Simple -->
     <span *ngIf="!showBreadcrumb" class="logo">GlamSync</span>
 
+    <!-- Spacer para empujar elementos a la derecha -->
+    <span class="spacer"></span>
+
+    <!-- Header Actions -->
     <div class="header-actions">
-      <button mat-icon-button class="search-btn">
+      <!-- Search Button -->
+      <button mat-icon-button class="search-btn" matTooltip="Buscar">
         <mat-icon>search</mat-icon>
       </button>
 
-      <div class="menu-container">
-        <button mat-button (click)="toggleMenu()" class="profile-btn">
-            <mat-icon>account_circle</mat-icon>
-            <span>{{ currentUser?.email }}</span>
+      <!-- Authenticated User Section -->
+      <div class="user-section" *ngIf="isAuthenticated && !loading">
+        <!-- User Info Display -->
+        <div class="user-info">
+          <mat-icon class="user-avatar">account_circle</mat-icon>
+          <span class="user-email">{{ getUserEmail() }}</span>
+        </div>
+
+        <!-- Action Buttons for Authenticated User -->
+        <div class="user-actions">
+          <button mat-icon-button
+                  (click)="toggleMenu()"
+                  class="menu-btn"
+                  matTooltip="Menú">
+            <mat-icon>menu</mat-icon>
           </button>
-        <app-slide-menu
-          [isOpen]="isMenuOpen"
-          (menuClosed)="closeMenu()"
-          (menuItemClicked)="onMenuItemClick($event)">
-        </app-slide-menu>
+
+          <button mat-icon-button
+                  (click)="logout()"
+                  class="logout-btn"
+                  matTooltip="Cerrar Sesión">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Login Section for Non-Authenticated Users -->
+      <div class="auth-section" *ngIf="!isAuthenticated && !loading">
+        <button mat-stroked-button
+                (click)="login()"
+                class="login-btn"
+                color="primary">
+          <mat-icon>login</mat-icon>
+          <span>Iniciar Sesión</span>
+        </button>
+
+        <button mat-button
+                (click)="register()"
+                class="register-btn"
+                color="primary">
+          <mat-icon>person_add</mat-icon>
+          <span>Registrarse</span>
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-section" *ngIf="loading">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
       </div>
     </div>
+
+    <!-- Slide Menu Component -->
+    <app-slide-menu
+      [isOpen]="isMenuOpen"
+      (menuClosed)="closeMenu()"
+      (menuItemClicked)="onMenuItemClick($event)">
+    </app-slide-menu>
   </mat-toolbar>
