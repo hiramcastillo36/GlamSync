@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
-const PackageSchema = new mongoose.Schema({
+const ServiceSchema = new mongoose.Schema({
     salonId: mongoose.Schema.Types.ObjectId,
     name: String,
-    description: String,
     price: Number,
     creationDate: Date,
     isActive: Boolean
 });
 
-module.exports = mongoose.model('Package', PackageSchema);
+module.exports = mongoose.model('Service', ServiceSchema);
