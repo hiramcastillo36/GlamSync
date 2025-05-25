@@ -29,10 +29,12 @@ class AppointmentRepository {
         if (!ObjectId.isValid(id)) {
             return null;
         }
-        return await Appointment.findByIdAndDelete(id);
+        return await Appointment.findByIdAndUpdate(id, { isActive: false }, { new: true });
     }
 }
 
+const appointmentRepository = new AppointmentRepository();
+
 module.exports = {
-    AppointmentRepository
+    appointmentRepository
 };

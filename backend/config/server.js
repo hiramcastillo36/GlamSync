@@ -17,7 +17,8 @@ class Server {
             auth: "/api/auth",
             salon: "/api/salon",
             service: "/api/service",
-            package: "/api/package"
+            package: "/api/package",
+            appointment: "/api/appointment"
         }
 
         this.middlewares();
@@ -30,6 +31,7 @@ class Server {
         this.app.use(this.paths.salon, require("../routes/salon"));
         this.app.use(this.paths.service, require("../routes/service"));
         this.app.use(this.paths.package, require("../routes/package"));
+        this.app.use(this.paths.appointment, require("../routes/appointment"));
         this.app.get("/", (req, res) => {
             res.send("API is running...");
         });

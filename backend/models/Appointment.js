@@ -1,22 +1,55 @@
 const mongoose = require('mongoose');
 
 const AppointmentSchema = new mongoose.Schema({
-  userId: mongoose.Schema.Types.ObjectId,
-  salonId: mongoose.Schema.Types.ObjectId,
-  serviceId: mongoose.Schema.Types.ObjectId,
-  employeeId: mongoose.Schema.Types.ObjectId,
-  packageId: mongoose.Schema.Types.ObjectId,
-  userInfo: Object,
-  salonInfo: Object,
-  serviceInfo: Object,
-  employeeInfo: Object,
-  packageInfo: Object,
-  dateTime: Date,
-  status: String,
-  notes: String,
-  review: Object,
-  creationDate: Date,
-  updateDate: Date
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  salonId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Salon',
+    required: true
+  },
+  serviceId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Service',
+    required: false
+  },
+  packageId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Package',
+    required: false
+  },
+  appointmentDate: {
+    type: Date,
+    required: true
+  },
+  appointmentTime: {
+    type: String,
+    required: true,
+    // Formato: "09:00", "14:30", etc.
+  },
+  totalPrice: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'completed', 'cancelled'],
+    default: 'pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.model('Appointment', AppointmentSchema);
