@@ -32,8 +32,8 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe(
         {
           next: (res) => {
-            this.authService.saveToken(res.token);
-            this.authService.saveUser(res.user);
+            this.authService.saveToken(res.data.token);
+            this.authService.saveUser(res.data.user);
             this.router.navigate(['/home']);
           },
           error: (err) => {
@@ -47,7 +47,7 @@ export class LoginComponent {
       });
     }
   }
-  
+
   goToRegister() {
     this.router.navigate(['/register']);
   }
