@@ -19,9 +19,9 @@
           <p>Tel: {{salon.phone}}</p>
           <p>Horario de atención:</p>
           <div class="working-hours">
-            <div *ngFor="let day of salon.workingHours | keyvalue" class="day-schedule">
-              <span class="day-name">{{day.key | titlecase}}:</span>
-              <span class="day-time">{{day.value}}</span>
+            <div *ngFor="let schedule of salon.workingHours" class="day-schedule">
+              <span class="day-name">{{schedule.day | titlecase}}:</span>
+              <span class="day-time">{{schedule.time}}</span>
             </div>
           </div>
         </div>
@@ -33,9 +33,9 @@
           <mat-card-content>
             <h2 class="services-title">Nuestros servicios</h2>
             <ul class="services-list">
-              <li *ngFor="let servicio of salon.services">
+              <li *ngFor="let servicio of services">
                 <mat-icon class="bullet-icon">fiber_manual_record</mat-icon>
-                {{servicio}}
+                {{servicio.name}}
               </li>
             </ul>
           </mat-card-content>
@@ -56,7 +56,10 @@
       <div class="packages-section">
         <h2 class="packages-title">Conoce nuestros paquetes del mes</h2>
         <div class="packages-container">
-          <div class="package" *ngFor="let paquete of salon.packages">
+          <div class="package" *ngFor="let paquete of packages">
+            <h3 class="package-title">{{paquete.name}}</h3>
+            <p class="package-description">{{paquete.description}}</p>
+            <p class="package-price">{{paquete.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
           </div>
         </div>
       </div>

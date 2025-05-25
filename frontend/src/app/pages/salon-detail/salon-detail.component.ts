@@ -7,9 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { HeaderComponent } from '../../components/header/header.component';
 import { RatingStarsComponent } from '../../components/rating/rating.component';
-import { SalonBase, SalonDetail } from '../../interfaces/salon.interface';
+import { SalonBase, SalonDetail, Service } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 import { SalonService } from '../../services/salon.service';
+import { Package } from '../../interfaces/package.interface';
+import { PackageService } from '../../services/packege.service';
 
 @Component({
   selector: 'app-salon-detail',
@@ -31,11 +33,14 @@ export class SalonDetailComponent implements OnInit {
 
   salon: SalonBase | undefined;
   image: File | undefined;
+  services: Service[] = [];
+  packages: Package[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private salonService: SalonService
+    private salonService: SalonService,
+    private packageService: PackageService
  ) {}
 
 ngOnInit() {
@@ -45,6 +50,17 @@ ngOnInit() {
         this.salon = salon.data;
       });
     });
+
+    this.route.params.subscribe(params => {
+        const salonId: ID = params['id'];
+        this.salonService.getServicesBySalonId(salonId.toString()).subscribe((services) => {
+          this.services = services.data;
+        });
+
+        this.packageService.getPackagesBySalonId(salonId.toString()).subscribe((packages) => {
+          this.packages = packages.data;
+        });
+      });
   }
 
   agendarCita(): void {
