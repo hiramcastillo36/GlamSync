@@ -1,5 +1,10 @@
 import { ID } from './types';
 
+export interface Service {
+  name: string;
+  price: number;
+}
+
 export interface Package {
   name: string;
   description: string;
@@ -15,10 +20,14 @@ export interface SalonBase {
   workingHours: WorkingHours[];
   images: string[];
   rating: number;
-  services: string[];
+  services: Service[];
   packages: Package[];
   registerDate: Date;
   isActive: boolean;
+}
+
+export interface SalonResponse {
+  data: SalonBase[];
 }
 
 export interface WorkingHours {
@@ -31,10 +40,7 @@ export interface SalonCard extends SalonBase {
 }
 
 export interface SalonDetail extends SalonCard {
-  servicios: string[];
-  paquetes: Array<{
-    _id: ID;
-    nombre: string;
-    imagen: string;
-  }>;
+  servicios: Service[];
+  paquetes: Package[];
+  imagen: string;
 }
