@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ServiceItem } from '../../interfaces/service';
+import { ServiceItem } from '../../interfaces/service.interface';
 
 @Component({
   selector: 'app-service-card',
@@ -21,13 +21,13 @@ export class ServiceCardComponent {
   @Input() disabled: boolean = false;
   @Output() select = new EventEmitter<ServiceItem>();
   @Output() deselect = new EventEmitter<void>();
-  
+
   onSelect(): void {
     if (!this.disabled) {
       this.select.emit(this.service);
     }
   }
-  
+
   onDeselect(): void {
     this.deselect.emit();
   }

@@ -11,12 +11,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { HeaderComponent } from '../../components/header/header.component';
 import { ReusableStepperComponent, StepConfig } from '../../components/stepper/stepper.component';
-import { Service } from '../../interfaces/service';
 import { Package } from '../../interfaces/package.interface';
 import { Professional } from '../../interfaces/professional';
-import { SalonDetail } from '../../interfaces/salon.interface';
+import { SalonBase } from '../../interfaces/salon.interface';
 import { ID } from '../../interfaces/types';
 import { SalonService } from '../../services/salon.service';
+import { PackageService } from '../../services/packege.service';
+import { Service } from '../../interfaces/service.interface';
 
 @Component({
   selector: 'app-appointments',
@@ -45,22 +46,20 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   stepConfig: StepConfig[] = [];
 
-  salon: SalonDetail = {
-    _id: 1,
-    name: 'Salon NailsByO',
-    address: 'Calle 123',
-    phone: '1234567890',
-    description: 'El mejor salón para uñas de la ciudad',
-    workingHours: [{day: 'L-V', time: '9:00 am - 5:00pm'}],
-    image: "",
-    rating: 3,
-    servicios: [],
-    paquetes: [],
-    services: [],
-    registerDate: new Date(),
-    isActive: true,
-    packages: [],
-  };
+    salon: SalonBase = {
+        _id: '',
+        name: '',
+        address: '',
+        phone: '',
+        description: '',
+        workingHours: [],
+        image: '',
+        rating: 0,
+        services: [],
+        packages: [],
+        registerDate: new Date(),
+        isActive: true,
+    };
 
   servicios: Service[] = [];
 
@@ -91,12 +90,42 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private salonService: SalonService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private packageService: PackageService
+  ) {
+    this.route.params.subscribe(params => {
+      const salonId: ID = params['id'];
+      this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
+        this.salon = salon.data;
+      });
+
+      this.salonService.getServicesBySalonId(salonId.toString()).subscribe((services) => {
+        this.servicios = services.data;
+      });
+
+      this.packageService.getPackagesBySalonId(salonId.toString()).subscribe((packages) => {
+        this.paquetes = packages.data;
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.initForms();
     this.loadSalonData();
+
+    console.log(this.salon);
+
+    this.salonService.getServicesBySalonId(this.salon._id.toString()).subscribe((services) => {
+        console.log(services);
+        this.servicios = services.data;
+    });
+
+    this.packageService.getPackagesBySalonId(this.salon._id.toString()).subscribe((packages) => {
+      this.paquetes = packages.data;
+    });
+
+    console.log(this.servicios);
+    console.log(this.paquetes);
   }
 
   ngAfterViewInit(): void {
@@ -125,6 +154,9 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(params => {
       const salonId: ID = params['id'];
       console.log('Salon ID:', salonId);
+      this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
+        this.salon = salon.data;
+      });
     });
   }
 

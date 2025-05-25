@@ -27,8 +27,7 @@
             <div
               *ngFor="let servicio of servicios"
               class="servicio-item"
-              [class.selected]="servicioSeleccionado?._id === servicio._id"
-              (click)="seleccionarServicio(servicio)">
+>
               <h3 class="servicio-nombre">{{servicio.name}}</h3>
               <p class="servicio-precio">{{servicio.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
             </div>
@@ -82,38 +81,6 @@
             </div>
           </div>
 
-          <div class="profesional-section">
-            <h3 class="profesional-title">Profesional (opcional)</h3>
-            <div class="profesionales-lista">
-              <div
-                class="profesional-item"
-                [class.selected]="!personaSeleccionada"
-                (click)="limpiarPersona()">
-                <div class="profesional-avatar">
-                  <mat-icon>person_outline</mat-icon>
-                </div>
-                <div class="profesional-info">
-                  <h4>Cualquier profesional</h4>
-                  <p>Disponible</p>
-                </div>
-              </div>
-
-              <div
-                *ngFor="let profesional of personas"
-                class="profesional-item"
-                [class.selected]="personaSeleccionada?.id === profesional.id"
-                (click)="seleccionarPersona(profesional)">
-                <div class="profesional-avatar">
-                  <mat-icon>person</mat-icon>
-                </div>
-                <div class="profesional-info">
-                  <h4>{{profesional.nombre}}</h4>
-                  <p>{{profesional.especialidad}}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </form>
       </div>
     </ng-template>
@@ -141,7 +108,6 @@
 
                 <p><strong>Fecha:</strong> {{getFechaMostrar()}}</p>
                 <p><strong>Horario:</strong> {{horarioSeleccionado || 'No seleccionado'}}</p>
-                <p><strong>Profesional:</strong> {{personaSeleccionada?.nombre || 'Cualquier profesional disponible'}}</p>
 
                 <div class="precio-total">
                   <p class="monto-total"><strong>Total: {{getTotalPrecio() | currency:'MXN':'symbol-narrow':'1.0-0'}}</strong></p>

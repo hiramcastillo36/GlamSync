@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SalonBase, SalonCard, SalonDetail, SalonDetailResponse, SalonResponse, ServiceResponse } from '../interfaces/salon.interface';
+import { SalonBase, SalonCard, SalonDetail, SalonDetailResponse, SalonResponse } from '../interfaces/salon.interface';
 import { environment } from '../../environments/environment';
+import { ServiceResponse } from '../interfaces/service.interface';
 
 @Injectable({
     providedIn: 'root'
