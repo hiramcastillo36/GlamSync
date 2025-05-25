@@ -18,6 +18,8 @@ import { ID } from '../../interfaces/types';
 import { SalonService } from '../../services/salon.service';
 import { PackageService } from '../../services/packege.service';
 import { Service } from '../../interfaces/service.interface';
+import { AppointmentService } from '../../services/appointment.service';
+import { CreateAppointmentRequest } from '../../interfaces/appointment.interface';
 
 @Component({
   selector: 'app-appointments',
@@ -46,23 +48,22 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   stepConfig: StepConfig[] = [];
 
-    salon: SalonBase = {
-        _id: '',
-        name: '',
-        address: '',
-        phone: '',
-        description: '',
-        workingHours: [],
-        image: '',
-        rating: 0,
-        services: [],
-        packages: [],
-        registerDate: new Date(),
-        isActive: true,
-    };
+  salon: SalonBase = {
+    _id: '',
+    name: '',
+    address: '',
+    phone: '',
+    description: '',
+    workingHours: [],
+    image: '',
+    rating: 0,
+    services: [],
+    packages: [],
+    registerDate: new Date(),
+    isActive: true,
+  };
 
   servicios: Service[] = [];
-
   paquetes: Package[] = [];
 
   personas: Professional[] = [
@@ -91,41 +92,13 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     private router: Router,
     private salonService: SalonService,
     private formBuilder: FormBuilder,
-    private packageService: PackageService
-  ) {
-    this.route.params.subscribe(params => {
-      const salonId: ID = params['id'];
-      this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
-        this.salon = salon.data;
-      });
-
-      this.salonService.getServicesBySalonId(salonId.toString()).subscribe((services) => {
-        this.servicios = services.data;
-      });
-
-      this.packageService.getPackagesBySalonId(salonId.toString()).subscribe((packages) => {
-        this.paquetes = packages.data;
-      });
-    });
-  }
+    private packageService: PackageService,
+    private appointmentService: AppointmentService
+  ) {}
 
   ngOnInit(): void {
     this.initForms();
     this.loadSalonData();
-
-    console.log(this.salon);
-
-    this.salonService.getServicesBySalonId(this.salon._id.toString()).subscribe((services) => {
-        console.log(services);
-        this.servicios = services.data;
-    });
-
-    this.packageService.getPackagesBySalonId(this.salon._id.toString()).subscribe((packages) => {
-      this.paquetes = packages.data;
-    });
-
-    console.log(this.servicios);
-    console.log(this.paquetes);
   }
 
   ngAfterViewInit(): void {
@@ -154,16 +127,30 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(params => {
       const salonId: ID = params['id'];
       console.log('Salon ID:', salonId);
+
+      // Cargar datos del salón
       this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
         this.salon = salon.data;
+        console.log('Salon loaded:', this.salon);
+      });
+
+      // Cargar servicios
+      this.salonService.getServicesBySalonId(salonId.toString()).subscribe((services) => {
+        this.servicios = services.data;
+        console.log('Services loaded:', this.servicios);
+      });
+
+      // Cargar paquetes
+      this.packageService.getPackagesBySalonId(salonId.toString()).subscribe((packages) => {
+        this.paquetes = packages.data;
+        console.log('Packages loaded:', this.paquetes);
       });
     });
   }
 
   initForms(): void {
     this.serviciosForm = this.formBuilder.group({
-      servicio: ['', Validators.required],
-      paquete: ['']
+      seleccion: ['', Validators.required] // Un solo campo para validar que se seleccionó algo
     });
 
     this.fechaForm = this.formBuilder.group({
@@ -174,16 +161,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     this.confirmacionForm = this.formBuilder.group({
       confirmado: [false, Validators.requiredTrue]
     });
-
-    this.serviciosForm.get('paquete')?.valueChanges.subscribe(paqueteId => {
-      if (paqueteId) {
-        this.paqueteSeleccionado = this.paquetes.find(p => String(p.id) === String(paqueteId)) || null;
-        this.servicioSeleccionado = null;
-        this.serviciosForm.patchValue({ servicio: '' });
-      } else {
-        this.paqueteSeleccionado = null;
-      }
-    });
   }
 
   onStepChange(index: number): void {
@@ -192,6 +169,18 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   onNext(currentStep: number): void {
     console.log(`Avanzando desde el paso ${currentStep + 1}`);
+
+    // Validar que se haya seleccionado un servicio o paquete antes de avanzar
+    if (currentStep === 0) {
+      if (!this.servicioSeleccionado && !this.paqueteSeleccionado) {
+        alert('Por favor selecciona un servicio o paquete antes de continuar');
+        return;
+      }
+      // Actualizar el form para que pase la validación
+      this.serviciosForm.patchValue({
+        seleccion: this.paqueteSeleccionado ? 'paquete' : 'servicio'
+      });
+    }
   }
 
   onPrevious(currentStep: number): void {
@@ -199,23 +188,37 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   }
 
   seleccionarServicio(servicio: Service): void {
+    // Solo permitir seleccionar si no hay paquete seleccionado
+    if (this.paqueteSeleccionado) {
+      this.paqueteSeleccionado = null;
+    }
+
     this.servicioSeleccionado = servicio;
-    this.paqueteSeleccionado = null;
-    this.serviciosForm.patchValue({
-      servicio: servicio.name,
-      paquete: ''
-    });
+    this.serviciosForm.patchValue({ seleccion: 'servicio' });
+
+    console.log('Servicio seleccionado:', servicio);
   }
 
   seleccionarPaquete(paquete: Package): void {
+    // Solo permitir seleccionar si no hay servicio seleccionado
+    if (this.servicioSeleccionado) {
+      this.servicioSeleccionado = null;
+    }
+
     this.paqueteSeleccionado = paquete;
-    this.servicioSeleccionado = null;
-    this.serviciosForm.patchValue({ servicio: 'package_' + paquete.id });
+    this.serviciosForm.patchValue({ seleccion: 'paquete' });
+
+    console.log('Paquete seleccionado:', paquete);
   }
 
   deseleccionarPaquete(): void {
     this.paqueteSeleccionado = null;
-    this.serviciosForm.patchValue({ paquete: '' });
+    this.serviciosForm.patchValue({ seleccion: '' });
+  }
+
+  deseleccionarServicio(): void {
+    this.servicioSeleccionado = null;
+    this.serviciosForm.patchValue({ seleccion: '' });
   }
 
   seleccionarFecha(event: Date | null): void {
@@ -260,20 +263,35 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   }
 
   onComplete(): void {
-    if (this.confirmacionForm.valid) {
-      const appointmentData = {
-        salon: this.salon,
-        servicio: this.servicioSeleccionado,
-        paquete: this.paqueteSeleccionado,
-        fecha: this.fechaSeleccionada,
-        horario: this.horarioSeleccionado,
-        persona: this.personaSeleccionada,
-        precioTotal: this.getTotalPrecio()
+    if (this.confirmacionForm.valid && (this.servicioSeleccionado || this.paqueteSeleccionado)) {
+
+      const appointmentDate = this.fechaSeleccionada.toISOString().split('T')[0]; // "2025-05-25"
+
+      const appointmentData: CreateAppointmentRequest = {
+        salonId: this.salon._id,
+        serviceId: this.servicioSeleccionado?._id || "",
+        packageId: this.paqueteSeleccionado?._id || "",
+        professionalId: "",
+        appointmentDate: new Date(appointmentDate),
+        appointmentTime: this.horarioSeleccionado,
+        totalPrice: this.getTotalPrecio(),
       };
 
-      console.log('Cita confirmada:', appointmentData);
-      alert('¡Tu cita ha sido confirmada con éxito!');
-      this.router.navigate(['/home']);
+      console.log('Datos de la cita a enviar:', appointmentData);
+
+      this.appointmentService.createAppointment(appointmentData).subscribe({
+        next: (response) => {
+          console.log('Cita creada exitosamente:', response);
+          alert('¡Tu cita ha sido confirmada con éxito!');
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.error('Error al crear la cita:', error);
+          alert('Error al crear la cita. Por favor intenta de nuevo.');
+        }
+      });
+    } else {
+      alert('Por favor completa todos los campos requeridos');
     }
   }
 }

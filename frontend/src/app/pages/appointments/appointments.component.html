@@ -1,127 +1,127 @@
 <div class="appointments-container">
-  <app-header
-    [showBreadcrumb]="true"
-    [salonId]="salon._id"
-    [salonName]="salon.name"
-    [currentPage]="'Agenda'">
-  </app-header>
+    <app-header
+      [showBreadcrumb]="true"
+      [salonId]="salon._id"
+      [salonName]="salon.name"
+      [currentPage]="'Agenda'">
+    </app-header>
 
-  <div class="content-container">
-    <h1 class="salon-title">{{salon.name}}</h1>
+    <div class="content-container">
+      <h1 class="salon-title">{{salon.name}}</h1>
 
-    <app-reusable-stepper
-      [steps]="stepConfig"
-      [completeButtonText]="'CONFIRMAR CITA'"
-      (complete)="onComplete()"
-      (stepChange)="onStepChange($event)"
-      (next)="onNext($event)"
-      (previous)="onPrevious($event)">
-    </app-reusable-stepper>
+      <app-reusable-stepper
+        [steps]="stepConfig"
+        [completeButtonText]="'CONFIRMAR CITA'"
+        (complete)="onComplete()"
+        (stepChange)="onStepChange($event)"
+        (next)="onNext($event)"
+        (previous)="onPrevious($event)">
+      </app-reusable-stepper>
 
-    <ng-template #serviciosTemplate>
-      <div class="step-content">
-        <h2 class="step-title">Selecciona tu servicio</h2>
-        <form [formGroup]="serviciosForm">
+      <ng-template #serviciosTemplate>
+        <div class="step-content">
+          <h2 class="step-title">Selecciona tu servicio</h2>
+          <form [formGroup]="serviciosForm">
 
-          <div class="servicios-lista">
-            <div
-              *ngFor="let servicio of servicios"
-              class="servicio-item"
->
-              <h3 class="servicio-nombre">{{servicio.name}}</h3>
-              <p class="servicio-precio">{{servicio.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
-            </div>
-          </div>
-
-          <div class="paquete-section">
-            <h3 class="paquete-title">¿Prefieres un paquete?</h3>
-            <div class="paquetes-lista">
+            <div class="servicios-lista">
               <div
-                *ngFor="let paquete of paquetes"
+                *ngFor="let servicio of servicios"
                 class="servicio-item"
-                [class.selected]="paqueteSeleccionado?.id === paquete.id"
-                (click)="seleccionarPaquete(paquete)">
-                <h3 class="servicio-nombre">{{paquete.name}}</h3>
-
-                <p class="servicio-precio">{{paquete.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+                [class.selected]="servicioSeleccionado?._id === servicio._id"
+                (click)="seleccionarServicio(servicio)">
+                <h3 class="servicio-nombre">{{servicio.name}}</h3>
+                <p class="servicio-precio">{{servicio.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
               </div>
             </div>
-          </div>
 
-        </form>
-      </div>
-    </ng-template>
-
-    <ng-template #fechaTemplate>
-      <div class="step-content">
-        <h2 class="step-title">Selecciona fecha y hora</h2>
-        <form [formGroup]="fechaForm">
-
-          <div class="fecha-header">
-            <h3>{{getFechaMostrar()}}</h3>
-          </div>
-
-          <div class="calendario-container">
-            <mat-calendar
-              [selected]="fechaSeleccionada"
-              (selectedChange)="seleccionarFecha($event)">
-            </mat-calendar>
-          </div>
-
-          <div class="horario-section">
-            <h3 class="horario-title">Horarios disponibles</h3>
-            <div class="horarios-lista">
-              <div
-                *ngFor="let horario of horariosDisponibles"
-                class="horario-item"
-                [class.selected]="horarioSeleccionado === horario"
-                (click)="seleccionarHorario(horario)">
-                {{horario}}
-              </div>
-            </div>
-          </div>
-
-        </form>
-      </div>
-    </ng-template>
-
-    <ng-template #confirmacionTemplate>
-      <div class="step-content">
-        <h2 class="step-title">Confirma tu cita</h2>
-        <form [formGroup]="confirmacionForm">
-
-          <div class="confirmacion-contenido">
-            <div class="resumen-cita">
-              <h3>Resumen de tu cita</h3>
-              <div class="detalle-cita">
-                <p><strong>Salón:</strong> {{salon.name}}</p>
-                <p><strong>Dirección:</strong> {{salon.address}}</p>
-
-                <ng-container *ngIf="paqueteSeleccionado; else servicioBlock">
-                  <p><strong>Paquete:</strong> {{paqueteSeleccionado.name}}</p>
-                  <p><strong>Descripción:</strong> {{paqueteSeleccionado.description}}</p>
-                </ng-container>
-
-                <ng-template #servicioBlock>
-                  <p><strong>Servicio:</strong> {{servicioSeleccionado?.name || 'No seleccionado'}}</p>
-                </ng-template>
-
-                <p><strong>Fecha:</strong> {{getFechaMostrar()}}</p>
-                <p><strong>Horario:</strong> {{horarioSeleccionado || 'No seleccionado'}}</p>
-
-                <div class="precio-total">
-                  <p class="monto-total"><strong>Total: {{getTotalPrecio() | currency:'MXN':'symbol-narrow':'1.0-0'}}</strong></p>
+            <div class="paquete-section">
+              <h3 class="paquete-title">¿Prefieres un paquete?</h3>
+              <div class="paquetes-lista">
+                <div
+                  *ngFor="let paquete of paquetes"
+                  class="servicio-item"
+                [class.selected]="paqueteSeleccionado?._id === paquete._id"
+                  (click)="seleccionarPaquete(paquete)">
+                  <h3 class="servicio-nombre">{{paquete.name}}</h3>
+                  <p class="servicio-precio">{{paquete.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
                 </div>
               </div>
-
-              <mat-checkbox formControlName="confirmado" class="confirmacion-checkbox">
-                Confirmo los detalles de mi cita
-              </mat-checkbox>
             </div>
-          </div>
 
-        </form>
-      </div>
-    </ng-template>
+          </form>
+        </div>
+      </ng-template>
+
+      <ng-template #fechaTemplate>
+        <div class="step-content">
+          <h2 class="step-title">Selecciona fecha y hora</h2>
+          <form [formGroup]="fechaForm">
+
+            <div class="fecha-header">
+              <h3>{{getFechaMostrar()}}</h3>
+            </div>
+
+            <div class="calendario-container">
+              <mat-calendar
+                [selected]="fechaSeleccionada"
+                (selectedChange)="seleccionarFecha($event)">
+              </mat-calendar>
+            </div>
+
+            <div class="horario-section">
+              <h3 class="horario-title">Horarios disponibles</h3>
+              <div class="horarios-lista">
+                <div
+                  *ngFor="let horario of horariosDisponibles"
+                  class="horario-item"
+                  [class.selected]="horarioSeleccionado === horario"
+                  (click)="seleccionarHorario(horario)">
+                  {{horario}}
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </ng-template>
+
+      <ng-template #confirmacionTemplate>
+        <div class="step-content">
+          <h2 class="step-title">Confirma tu cita</h2>
+          <form [formGroup]="confirmacionForm">
+
+            <div class="confirmacion-contenido">
+              <div class="resumen-cita">
+                <h3>Resumen de tu cita</h3>
+                <div class="detalle-cita">
+                  <p><strong>Salón:</strong> {{salon.name}}</p>
+                  <p><strong>Dirección:</strong> {{salon.address}}</p>
+
+                  <ng-container *ngIf="paqueteSeleccionado; else servicioBlock">
+                    <p><strong>Paquete:</strong> {{paqueteSeleccionado.name}}</p>
+                    <p><strong>Descripción:</strong> {{paqueteSeleccionado.description}}</p>
+                  </ng-container>
+
+                  <ng-template #servicioBlock>
+                    <p><strong>Servicio:</strong> {{servicioSeleccionado?.name || 'No seleccionado'}}</p>
+                  </ng-template>
+
+                  <p><strong>Fecha:</strong> {{getFechaMostrar()}}</p>
+                  <p><strong>Horario:</strong> {{horarioSeleccionado || 'No seleccionado'}}</p>
+
+                  <div class="precio-total">
+                    <p class="monto-total"><strong>Total: {{getTotalPrecio() | currency:'MXN':'symbol-narrow':'1.0-0'}}</strong></p>
+                  </div>
+                </div>
+
+                <mat-checkbox formControlName="confirmado" class="confirmacion-checkbox">
+                  Confirmo los detalles de mi cita
+                </mat-checkbox>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </ng-template>
+    </div>
   </div>
-</div>

@@ -1,7 +1,7 @@
 import { ID } from './types';
 
 export interface Package {
-  id: ID;
+  _id: ID;
   name: string;
   description: string;
   price: number;
