@@ -50,6 +50,30 @@ const createAppointment = async (req = request, res = response) => {
     }
 };
 
+const getAppointmentsByUserId = async (req = request, res = response) => {
+    const appointments = await appointmentRepository.getAppointmentsByUserId(req.user._id.toString());
+
+    console.log(req.user._id.toString());
+
+    console.log(appointments);
+
+    res.json({
+        success: true,
+        data: appointments
+    });
+};
+
+const deleteAppointment = async (req = request, res = response) => {
+    const { id } = req.params;
+    const appointment = await appointmentRepository.delete(id);
+    res.json({
+        success: true,
+        data: appointment
+    });
+};
+
 module.exports = {
-    createAppointment
+    createAppointment,
+    getAppointmentsByUserId,
+    deleteAppointment
 };

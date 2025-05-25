@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Appointment, CreateAppointmentRequest } from '../interfaces/appointment.interface';
+import { Appointment, AppointmentResponse, CreateAppointmentRequest } from '../interfaces/appointment.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -22,5 +22,13 @@ export class AppointmentService {
 
     createAppointment(appointment: CreateAppointmentRequest): Observable<Appointment> {
         return this.http.post<Appointment>(`${this.apiUrl}`, appointment, { headers: this.getHeaders() });
+    }
+
+    getAppointmentsByUserId(): Observable<{ data: AppointmentResponse[] }> {
+        return this.http.get<{data: AppointmentResponse[]}>(`${this.apiUrl}`, { headers: this.getHeaders() });
+    }
+
+    deleteAppointment(appointmentId: string): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${appointmentId}`, { headers: this.getHeaders() });
     }
 }
