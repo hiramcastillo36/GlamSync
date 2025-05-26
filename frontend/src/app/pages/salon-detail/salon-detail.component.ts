@@ -12,6 +12,7 @@ import { ID } from '../../interfaces/types';
 import { SalonService } from '../../services/salon.service';
 import { Package } from '../../interfaces/package.interface';
 import { PackageService } from '../../services/packege.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-salon-detail',
@@ -24,7 +25,7 @@ import { PackageService } from '../../services/packege.service';
     MatIconModule,
     MatListModule,
     HeaderComponent,
-    RatingStarsComponent
+    RatingStarsComponent,
   ],
   templateUrl: './salon-detail.component.html',
   styleUrls: ['./salon-detail.component.css']
@@ -40,7 +41,8 @@ export class SalonDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private salonService: SalonService,
-    private packageService: PackageService
+    private packageService: PackageService,
+    private authService: AuthService
  ) {}
 
 ngOnInit() {
@@ -64,6 +66,11 @@ ngOnInit() {
   }
 
   agendarCita(): void {
+    if (!this.authService.isAuthenticated()) {
+    this.router.navigate(['/login']);
+    return;
+    }
     this.router.navigate(['/salon', this.salon?._id, 'appointments']);
   }
 }
+

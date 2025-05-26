@@ -72,6 +72,11 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleMenu() {
+    
+    if (!this.authService.isAuthenticated()) {
+    this.router.navigate(['/login']);
+    return;
+  }
     this.isMenuOpen = !this.isMenuOpen;
   }
 
@@ -99,3 +104,4 @@ export class HeaderComponent implements OnInit {
     this.currentUser = null;
   }
 }
+

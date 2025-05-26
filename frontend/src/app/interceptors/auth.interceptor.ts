@@ -3,7 +3,11 @@ import { HttpInterceptorFn } from '@angular/common/http';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
 
-  if (token && !req.url.includes('/auth/')) {
+  const publicUrls = ['/auth/', '/salon'];
+
+  const isPublicUrl = publicUrls.some(url => req.url.includes(url));
+
+  if (token && !isPublicUrl) {
     const authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -15,3 +19,4 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req);
 };
+
