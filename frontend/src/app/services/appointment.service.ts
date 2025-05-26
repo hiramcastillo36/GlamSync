@@ -31,4 +31,12 @@ export class AppointmentService {
     deleteAppointment(appointmentId: string): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${appointmentId}`, { headers: this.getHeaders() });
     }
+
+    getAppointmentsBySalonId(salonId: string): Observable<{ data: AppointmentResponse[] }> {
+        return this.http.get<{data: AppointmentResponse[]}>(`${this.apiUrl}/salon/${salonId}`, { headers: this.getHeaders() });
+    }
+
+    getAppointmentsAdmin(): Observable<{ data: AppointmentResponse[] }> {
+        return this.http.get<{data: AppointmentResponse[]}>(`${this.apiUrl}/admin`, { headers: this.getHeaders() });
+    }
 }

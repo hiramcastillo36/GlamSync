@@ -1,68 +1,55 @@
 <div class="citas-agendadas-container">
-    <app-header 
+    <app-header
       [showBreadcrumb]="true"
       [currentPage]="'Citas Agendadas'">
     </app-header>
-  
+
     <div class="content-container">
       <div class="page-header">
         <h1 class="page-title">Citas Agendadas</h1>
         <p class="page-subtitle">Gestiona las citas de tus clientes</p>
       </div>
-  
+
       <div class="filters-section" *ngIf="!isLoading && citasAgendadas.length > 0">
         <div class="filter-chips">
-          <mat-chip-listbox>
-            <mat-chip-option 
-              *ngFor="let option of statusOptions"
-              [value]="option.value"
-              [selected]="selectedStatus === option.value"
-              (selectionChange)="selectedStatus = option.value">
-              {{option.label}}
-            </mat-chip-option>
-          </mat-chip-listbox>
+
         </div>
         <div class="results-count">
           {{filteredCitas.length}} cita{{filteredCitas.length !== 1 ? 's' : ''}} encontrada{{filteredCitas.length !== 1 ? 's' : ''}}
         </div>
       </div>
-  
+
       <div class="citas-content" *ngIf="!isLoading">
         <div class="empty-state" *ngIf="citasAgendadas.length === 0">
           <mat-icon class="empty-icon">event_busy</mat-icon>
           <h3>No hay citas agendadas</h3>
           <p>Aún no tienes citas programadas en tus salones</p>
         </div>
-  
+
         <div class="empty-filtered" *ngIf="citasAgendadas.length > 0 && filteredCitas.length === 0">
           <mat-icon class="empty-icon">filter_list_off</mat-icon>
           <h3>No hay citas con este filtro</h3>
           <p>Intenta cambiar el filtro para ver más resultados</p>
         </div>
-  
+
         <div class="citas-grid" *ngIf="filteredCitas.length > 0">
           <mat-card class="cita-card" *ngFor="let cita of filteredCitas">
             <mat-card-header>
               <div class="client-info">
-                <h3 class="client-name">{{cita.clientName}}</h3>
-                <p class="salon-name">{{cita.salon.name}}</p>
+                <h3 class="client-name">{{cita.salonId.name}}</h3>
+                <p class="salon-name">{{cita.salonId.address}}</p>
               </div>
               <div class="card-actions">
-                <mat-chip 
-                  class="status-chip"
-                  [style.background-color]="getStatusInfo(cita.status).color"
-                  [style.color]="'white'">
-                  {{getStatusInfo(cita.status).label}}
-                </mat-chip>
-                <button mat-icon-button 
-                        class="delete-btn" 
+
+                <button mat-icon-button
+                        class="delete-btn"
                         (click)="eliminarCita(cita)"
                         matTooltip="Eliminar cita">
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
             </mat-card-header>
-  
+
             <mat-card-content>
               <div class="cita-details">
                 <div class="detail-row">
@@ -70,97 +57,58 @@
                     <mat-icon class="detail-icon">event</mat-icon>
                     <div class="detail-text">
                       <span class="detail-label">Fecha</span>
-                      <span class="detail-value">{{formatearFecha(cita.fecha)}}</span>
+                      <span class="detail-value">{{cita.appointmentDate}}</span>
                     </div>
                   </div>
-                  
+
                   <div class="detail-item">
                     <mat-icon class="detail-icon">access_time</mat-icon>
                     <div class="detail-text">
                       <span class="detail-label">Horario</span>
-                      <span class="detail-value">{{formatearHora(cita.horario)}}</span>
+                      <span class="detail-value">{{cita.appointmentTime}}</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="detail-row">
-                  <div class="detail-item" *ngIf="cita.persona">
-                    <mat-icon class="detail-icon">person</mat-icon>
-                    <div class="detail-text">
-                      <span class="detail-label">Profesional</span>
-                      <span class="detail-value">{{cita.persona.nombre}}</span>
-                    </div>
-                  </div>
-  
-                  <div class="detail-item" *ngIf="!cita.persona">
-                    <mat-icon class="detail-icon">people</mat-icon>
-                    <div class="detail-text">
-                      <span class="detail-label">Profesional</span>
-                      <span class="detail-value">Cualquiera disponible</span>
-                    </div>
-                  </div>
+
+
+
                 </div>
-  
                 <div class="service-info">
-                  <div class="service-item" *ngIf="cita.servicio">
-                    <mat-icon class="service-icon">content_cut</mat-icon>
-                    <div class="service-details">
-                      <h4 class="service-name">{{cita.servicio.nombre}}</h4>
-                      <p class="service-description">{{cita.servicio.descripcion}}</p>
+                    <div class="service-item" *ngIf="cita.serviceId">
+                      <mat-icon class="service-icon">content_cut</mat-icon>
+                      <div class="service-details">
+                        <h4 class="service-name">{{cita.serviceId.name}}</h4>
+
+                      </div>
+                    </div>
+
+                    <div class="service-item" *ngIf="cita.packageId">
+                      <mat-icon class="service-icon">card_giftcard</mat-icon>
+                      <div class="service-details">
+                        <h4 class="service-name">{{cita.packageId.name}}</h4>
+                        <p class="service-description">{{cita.packageId.description}}</p>
+                      </div>
                     </div>
                   </div>
-  
-                  <div class="service-item" *ngIf="cita.paquete">
-                    <mat-icon class="service-icon">card_giftcard</mat-icon>
-                    <div class="service-details">
-                      <h4 class="service-name">{{cita.paquete.nombre}}</h4>
-                      <p class="service-description">{{cita.paquete.descripcion}}</p>
-                    </div>
+
+                  <div class="booking-info">
+                    <span class="booking-date">Agendada: {{cita.appointmentDate}}</span>
+                    <span class="precio-total">{{cita.totalPrice | currency:'MXN':'symbol-narrow':'1.0-0'}}</span>
                   </div>
-                </div>
-  
-                <div class="booking-info">
-                  <span class="booking-date">Agendada: {{formatearFecha(cita.createdAt)}}</span>
-                  <span class="precio-total">{{cita.precioTotal | currency:'MXN':'symbol-narrow':'1.0-0'}}</span>
-                </div>
+
+
+
               </div>
             </mat-card-content>
-  
+
             <mat-card-actions class="card-footer">
-              <div class="status-actions" *ngIf="cita.status === 'pending'">
-                <button mat-button 
-                        class="confirm-btn"
-                        (click)="changeAppointmentStatus(cita, 'confirmed')">
-                  <mat-icon>check_circle</mat-icon>
-                  Confirmar
-                </button>
-                <button mat-button 
-                        class="cancel-btn"
-                        (click)="changeAppointmentStatus(cita, 'cancelled')">
-                  <mat-icon>cancel</mat-icon>
-                  Cancelar
-                </button>
-              </div>
-  
-              <div class="status-actions" *ngIf="cita.status === 'confirmed'">
-                <button mat-button 
-                        class="complete-btn"
-                        (click)="changeAppointmentStatus(cita, 'completed')">
-                  <mat-icon>done_all</mat-icon>
-                  Completar
-                </button>
-                <button mat-button 
-                        class="cancel-btn"
-                        (click)="changeAppointmentStatus(cita, 'cancelled')">
-                  <mat-icon>cancel</mat-icon>
-                  Cancelar
-                </button>
-              </div>
             </mat-card-actions>
           </mat-card>
         </div>
       </div>
-  
+
       <div class="loading-state" *ngIf="isLoading">
         <mat-icon class="loading-icon">hourglass_empty</mat-icon>
         <p>Cargando citas agendadas...</p>

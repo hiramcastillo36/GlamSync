@@ -42,7 +42,7 @@ export class MisSalonesComponent implements OnInit {
     }
 
     toggleSalonStatus(salon: SalonBase) {
-        this.salonService.updateSalon(salon._id.toString(), { isActive: !salon.isActive }).subscribe({
+        this.salonService.updateStatus(salon._id.toString(), { isActive: !salon.isActive }).subscribe({
             next: () => {
                 salon.isActive = !salon.isActive;
             }
@@ -56,7 +56,10 @@ export class MisSalonesComponent implements OnInit {
     eliminarSalon(salon: SalonBase, index: number) {
         this.salonService.deleteSalon(salon._id.toString()).subscribe({
             next: () => {
-                this.salones.splice(index, 1);
+                this.salones = this.salones.filter(s => s._id !== salon._id);
+            },
+            error: (error) => {
+                console.error('Error deleting salon:', error);
             }
         });
     }

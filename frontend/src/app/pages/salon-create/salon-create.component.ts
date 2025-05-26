@@ -103,7 +103,8 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
       }),
       phone: ['', Validators.required],
       description: ['', Validators.required],
-      workingHours: this.formBuilder.group({})
+      workingHours: this.formBuilder.group({}),
+      image: ['', Validators.required]
     });
 
     this.workingDays.forEach(day => {
@@ -287,7 +288,7 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
         description: this.basicInfoForm.get('description')?.value,
         workingHours: formattedWorkingHours,
         rating: 0,
-        image: "",
+        image: this.basicInfoForm.get('image')?.value,
         services: servicesArray,
         packages: packagesArray,
         registerDate: new Date(),

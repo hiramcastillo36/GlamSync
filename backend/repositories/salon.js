@@ -67,11 +67,7 @@ class SalonRepository {
         throw new Error('Invalid salon ID');
       }
 
-      const salon = await Salon.findByIdAndUpdate(
-        id,
-        { isActive: false },
-        { new: true }
-      );
+      const salon = await Salon.findByIdAndDelete(id);
 
       if (!salon) {
         throw new Error('Salon not found');

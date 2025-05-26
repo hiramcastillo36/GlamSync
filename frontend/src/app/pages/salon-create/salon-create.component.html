@@ -84,6 +84,16 @@
 
             <div class="form-group">
               <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Imagen del salón</mat-label>
+                <input matInput formControlName="image" placeholder="Imagen del salón">
+                <mat-error *ngIf="basicInfoForm.get('image')?.invalid && basicInfoForm.get('image')?.touched">
+                  La imagen es requerida
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Descripción</mat-label>
                 <textarea matInput formControlName="description" rows="4" placeholder="Describe tu salón..."></textarea>
                 <mat-error *ngIf="basicInfoForm.get('description')?.invalid && basicInfoForm.get('description')?.touched">
@@ -297,7 +307,8 @@
                   <h3>Servicios ({{services.length}})</h3>
                   <div class="services-summary" *ngIf="services.length > 0">
                     <div class="service-tag" *ngFor="let service of services.controls">
-                      {{service.value}}
+                      <span class="service-name">{{service.get('name')?.value}} </span>
+                      <span class="service-price">${{service.get('price')?.value | number:'1.0-0'}}</span>
                     </div>
                   </div>
                   <p *ngIf="services.length === 0" class="closed-text">

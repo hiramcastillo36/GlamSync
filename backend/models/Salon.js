@@ -15,7 +15,7 @@ const SalonSchema = new mongoose.Schema({
   phone: String,
   description: String,
   workingHours: Object,
-  image: imageSchema,
+  image: String,
   rating: Object,
   services: [{
     type: mongoose.Schema.Types.ObjectId,

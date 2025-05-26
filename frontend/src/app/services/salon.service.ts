@@ -38,14 +38,18 @@ export class SalonService {
     }
 
     getAllSalons(): Observable<SalonResponse> {
-        return this.http.get<SalonResponse>(this.apiUrl);
+        return this.http.get<SalonResponse>(this.apiUrl, { params: { isActive: true } });
     }
 
     getMySalones(): Observable<SalonResponse> {
-        return this.http.get<SalonResponse>(`${this.apiUrl}/admin`);
+        return this.http.get<SalonResponse>(`${this.apiUrl}/admin`, { headers: this.getHeaders() });
     }
 
     getServicesBySalonId(id: string): Observable<ServiceResponse> {
         return this.http.get<ServiceResponse>(`http://localhost:8080/api/service/salon/${id}`, {headers: this.getHeaders()});
+    }
+
+    updateStatus(id: string, status: { isActive: boolean }): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${id}/active`, status, { headers: this.getHeaders() });
     }
 }

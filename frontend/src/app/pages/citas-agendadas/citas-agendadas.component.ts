@@ -6,6 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { HeaderComponent } from '../../components/header/header.component';
+import { AppointmentResponse } from '../../interfaces/appointment.interface';
+import { Appointment } from '../../interfaces/appointment.interface';
+import { AppointmentService } from '../../services/appointment.service';
 
 @Component({
   selector: 'app-citas-agendadas',
@@ -23,7 +26,7 @@ import { HeaderComponent } from '../../components/header/header.component';
   styleUrls: ['./citas-agendadas.component.css']
 })
 export class CitasAgendadasComponent implements OnInit {
-  citasAgendadas: any[] = [];
+  citasAgendadas: AppointmentResponse[] = [];
   isLoading: boolean = false;
   selectedStatus: string = 'all';
 
@@ -35,7 +38,9 @@ export class CitasAgendadasComponent implements OnInit {
     { value: 'cancelled', label: 'Canceladas' }
   ];
 
-  constructor() {}
+  constructor(
+    private appointmentService: AppointmentService
+  ) {}
 
   ngOnInit() {
     this.loadCitasAgendadas();
@@ -46,6 +51,9 @@ export class CitasAgendadasComponent implements OnInit {
   }
 
   loadCitasAgendadas() {
+    this.appointmentService.getAppointmentsAdmin().subscribe((citas) => {
+      this.citasAgendadas = citas.data;
+    });
   }
 
   formatearFecha(fecha: Date) {

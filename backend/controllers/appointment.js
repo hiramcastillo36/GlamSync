@@ -14,7 +14,7 @@ const createAppointment = async (req = request, res = response) => {
 
         if (serviceId == "") {
             const newAppointment = await appointmentRepository.create({
-                userId: req.user.id,
+                userId: req.user._id,
                 salonId,
                 packageId,
                 appointmentDate,
@@ -28,7 +28,7 @@ const createAppointment = async (req = request, res = response) => {
             });
         } else {
             const newAppointment = await appointmentRepository.create({
-                userId: req.user.id,
+                userId: req.user._id,
                 salonId,
                 serviceId,
                 appointmentDate,
@@ -72,8 +72,29 @@ const deleteAppointment = async (req = request, res = response) => {
     });
 };
 
+const getAppointmentsBySalonId = async (req = request, res = response) => {
+    const { id } = req.params;
+    const appointments = await appointmentRepository.getAppointmentsBySalonId(id);
+    res.json({
+        success: true,
+        data: appointments
+    });
+};
+
+const getAppointmentsByAdmin = async (req = request, res = response) => {
+    const appointments = await appointmentRepository.getAppointmentsByAdmin(
+        req.user._id.toString()
+    );
+    res.json({
+        success: true,
+        data: appointments
+    });
+};
+
 module.exports = {
     createAppointment,
     getAppointmentsByUserId,
-    deleteAppointment
+    deleteAppointment,
+    getAppointmentsBySalonId,
+    getAppointmentsByAdmin
 };

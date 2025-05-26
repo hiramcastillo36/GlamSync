@@ -45,7 +45,7 @@ const getSalonById = async (req = request, res = response) => {
 
 const createSalon = async (req = request, res = response) => {
     try {
-        const { name, address, phone, description, workingHours, services, packages } = req.body;
+        const { name, address, phone, description, workingHours, services, packages, image } = req.body;
 
         const administratorId = req.user._id;
 
@@ -85,7 +85,7 @@ const createSalon = async (req = request, res = response) => {
             phone,
             description,
             workingHours,
-            image: req.file,
+            image,
             services: serviceIds,
             packages: packageIds,
             registerDate: new Date(),
@@ -161,6 +161,8 @@ const deleteSalon = async (req = request, res = response) => {
     try {
         const { id } = req.params;
 
+        console.log(id);
+
         const salon = await salonRepository.getById(id);
 
         if (!salon) {
@@ -175,7 +177,9 @@ const deleteSalon = async (req = request, res = response) => {
             });
         }
 
-        await salonRepository.delete(id);
+        const deletedSalon = await salonRepository.delete(id);
+
+        console.log(deletedSalon);
 
         res.json({
             success: true,
@@ -191,7 +195,11 @@ const deleteSalon = async (req = request, res = response) => {
 
 const getSalones = async (req = request, res = response) => {
     try {
-        const salons = await salonRepository.getAll();
+        const salons = await salonRepository.getAll(
+            {
+                isActive: true
+            }
+        );
 
         res.json({
             success: true,
@@ -223,6 +231,16 @@ const getAllSalons = async (req = request, res = response) => {
 const getAdminSalones = async (req = request, res = response) => {
     try {
         const salons = await salonRepository.getAll({ administratorId: req.user._id });
+
+        for (const salon of salons) {
+
+            const services = await Service.find({ salonId: salon._id });
+            const packages = await Package.find({ salonId: salon._id });
+            salon.services = services;
+            salon.packages = packages;
+        }
+
+        console.log(salons);
         res.json({
             success: true,
             data: salons
@@ -264,6 +282,34 @@ const getImage = async (req = request, res = response) => {
     }
   }
 
+const updateActiveSalon = async (req = request, res = response) => {
+    try {
+        const { id } = req.params;
+        const { isActive } = req.body;
+
+        const salon = await salonRepository.getById(id);
+
+        if (!salon) {
+            return res.status(404).json({
+                error: 'Salon not found'
+            });
+        }
+
+        const updatedSalon = await salonRepository.update(id, { isActive });
+
+        res.json({
+            success: true,
+            message: 'Salon updated successfully',
+            data: updatedSalon
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: 'Error updating salon'
+        });
+    }
+}
+
 module.exports = {
     getSalonById,
     createSalon,
@@ -272,5 +318,6 @@ module.exports = {
     getSalones,
     getAllSalons,
     getAdminSalones,
-    getImage
+    getImage,
+    updateActiveSalon
 };

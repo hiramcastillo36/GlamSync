@@ -41,12 +41,6 @@
               </div>
               <div class="card-actions">
                 <button mat-icon-button
-                        class="action-btn edit-btn"
-                        (click)="editarSalon(salon._id.toString())"
-                        matTooltip="Editar salón">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button
                         class="action-btn delete-btn"
                         (click)="eliminarSalon(salon, i)"
                         matTooltip="Eliminar salón">
@@ -68,7 +62,11 @@
                 </div>
                 <div class="info-item">
                   <mat-icon class="info-icon">schedule</mat-icon>
-                  <span class="info-text">{{salon.workingHours}}</span>
+                  <div class="working-hours">
+                    <div *ngFor="let schedule of salon.workingHours">
+                      <span class="info-text">{{schedule.day | titlecase}}: {{schedule.time}}</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="info-item">
                   <mat-icon class="info-icon">date_range</mat-icon>
@@ -87,7 +85,16 @@
                 <h4 class="services-title">Servicios:</h4>
                 <div class="services-tags">
                   <span class="service-tag" *ngFor="let service of salon.services">
-                    {{service}}
+                    {{service.name}}
+                  </span>
+                </div>
+              </div>
+
+              <div class="services-section">
+                <h4 class="services-title">Servicios:</h4>
+                <div class="services-tags">
+                  <span class="service-tag" *ngFor="let package of salon.packages">
+                    {{package.name}}
                   </span>
                 </div>
               </div>
@@ -103,12 +110,6 @@
                 {{salon.isActive ? 'Desactivar' : 'Activar'}}
               </button>
 
-              <button mat-button
-                      class="view-detail-btn"
-                      (click)="verDetalleSalon(salon._id.toString())">
-                <mat-icon>visibility</mat-icon>
-                Ver Detalles
-              </button>
             </mat-card-actions>
           </mat-card>
         </div>
