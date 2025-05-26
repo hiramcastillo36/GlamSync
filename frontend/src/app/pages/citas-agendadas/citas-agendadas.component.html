@@ -78,22 +78,12 @@
                     <mat-icon class="detail-icon">access_time</mat-icon>
                     <div class="detail-text">
                       <span class="detail-label">Horario</span>
-                      <span class="detail-value">{{cita.horario}}</span>
+                      <span class="detail-value">{{formatearHora(cita.horario)}}</span>
                     </div>
                   </div>
                 </div>
-  
+
                 <div class="detail-row">
-                  <div class="detail-item">
-                    <mat-icon class="detail-icon">phone</mat-icon>
-                    <div class="detail-text">
-                      <span class="detail-label">Teléfono</span>
-                      <span class="detail-value phone-link" (click)="contactarCliente(cita.clientPhone)">
-                        {{cita.clientPhone}}
-                      </span>
-                    </div>
-                  </div>
-  
                   <div class="detail-item" *ngIf="cita.persona">
                     <mat-icon class="detail-icon">person</mat-icon>
                     <div class="detail-text">
@@ -130,7 +120,7 @@
                 </div>
   
                 <div class="booking-info">
-                  <span class="booking-date">Agendada: {{formatearFechaCorta(cita.createdAt)}}</span>
+                  <span class="booking-date">Agendada: {{formatearFecha(cita.createdAt)}}</span>
                   <span class="precio-total">{{cita.precioTotal | currency:'MXN':'symbol-narrow':'1.0-0'}}</span>
                 </div>
               </div>
@@ -164,15 +154,6 @@
                         (click)="changeAppointmentStatus(cita, 'cancelled')">
                   <mat-icon>cancel</mat-icon>
                   Cancelar
-                </button>
-              </div>
-  
-              <div class="contact-actions">
-                <button mat-icon-button 
-                        class="contact-btn"
-                        (click)="contactarCliente(cita.clientPhone)"
-                        matTooltip="Contactar por WhatsApp">
-                  <mat-icon>message</mat-icon>
                 </button>
               </div>
             </mat-card-actions>

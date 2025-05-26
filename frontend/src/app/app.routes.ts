@@ -7,6 +7,7 @@ import { AppointmentsComponent } from './pages/appointments/appointments.compone
 import { SalonCreateComponent } from './pages/salon-create/salon-create.component';
 import { MisSalonesComponent } from './pages/mis-salones/mis-salones.component';
 import { MisCitasComponent } from './pages/mis-citas/mis-citas.component';
+import { CitasAgendadasComponent } from './pages/citas-agendadas/citas-agendadas.component';
 
 
 export const routes: Routes = [
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'create', component: SalonCreateComponent },
   { path: 'mis-salones', component: MisSalonesComponent },
   { path: 'mis-citas', component: MisCitasComponent },
+  { path: 'citas-agendadas', component: CitasAgendadasComponent }
 
 ];
