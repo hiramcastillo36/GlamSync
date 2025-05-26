@@ -71,8 +71,29 @@
                     <span class="detail-value price-value">${{cita.totalPrice | number:'1.2-2'}}</span>
                   </div>
                 </div>
-              </div>
+
+                <!-- Form para calificar -->
+                <div class="rating-form" *ngIf="!cita.rated">
+                  <h4 class="rating-title">Califica tu experiencia</h4>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Calificación</mat-label>
+                    <mat-select (selectionChange)="calificarCita(cita._id.toString(), $event.value)">
+                      <mat-option value="1">1</mat-option>
+                      <mat-option value="2">2</mat-option>
+                      <mat-option value="3">3</mat-option>
+                      <mat-option value="4">4</mat-option>
+                      <mat-option value="5">5</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-flat-button color="primary" class="rating-button">Calificar</button>
+                </div>
+
+                <div class="rating-display" *ngIf="cita.rated">
+                    <h4 class="rating-title">Ya calificaste esta cita</h4>
+                </div>
+                </div>
             </mat-card-content>
+
           </mat-card>
         </div>
       </div>

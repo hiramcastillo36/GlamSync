@@ -52,4 +52,8 @@ export class SalonService {
     updateStatus(id: string, status: { isActive: boolean }): Observable<any> {
         return this.http.put(`${this.apiUrl}/${id}/active`, status, { headers: this.getHeaders() });
     }
+
+    updateRating(appointmentId: string, rating: number): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${appointmentId}/rating`, { rating }, { headers: this.getHeaders() });
+    }
 }

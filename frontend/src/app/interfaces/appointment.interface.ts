@@ -32,6 +32,8 @@ export interface AppointmentResponse {
     appointmentDate: Date;
     appointmentTime: string;
     totalPrice: number;
+    rating?: number;
+    rated?: boolean;
 }
 
 

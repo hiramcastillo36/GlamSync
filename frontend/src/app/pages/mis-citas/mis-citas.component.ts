@@ -9,6 +9,9 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { Appointment, AppointmentResponse } from '../../interfaces/appointment.interface';
 import { AppointmentService } from '../../services/appointment.service';
 import { AuthService } from '../../services/auth.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { SalonService } from '../../services/salon.service';
 
 @Component({
   selector: 'app-mis-citas',
@@ -21,6 +24,8 @@ import { AuthService } from '../../services/auth.service';
     MatCardModule,
     MatListModule,
     HeaderComponent,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
   templateUrl: './mis-citas.component.html',
   styleUrls: ['./mis-citas.component.css']
@@ -30,7 +35,8 @@ export class MisCitasComponent implements OnInit {
   isLoading: boolean = true;
 
   constructor(
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private salonService: SalonService
   ) {}
 
   ngOnInit() {
@@ -55,6 +61,14 @@ export class MisCitasComponent implements OnInit {
 
   eliminarCita(citaId: string) {
     this.appointmentService.deleteAppointment(citaId).subscribe({
+      next: () => {
+        this.loadCitas();
+      }
+    });
+  }
+
+  calificarCita(citaId: string, rating: number) {
+    this.salonService.updateRating(citaId, rating).subscribe({
       next: () => {
         this.loadCitas();
       }

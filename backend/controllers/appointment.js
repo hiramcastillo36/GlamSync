@@ -33,7 +33,8 @@ const createAppointment = async (req = request, res = response) => {
                 serviceId,
                 appointmentDate,
                 appointmentTime,
-                totalPrice
+                totalPrice,
+                rated: false
             });
 
             res.status(201).json({

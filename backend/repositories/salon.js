@@ -86,6 +86,23 @@ class SalonRepository {
       throw new Error(`Error getting salons: ${error.message}`);
     }
   }
+
+  async updateRating(id, rating, ratingCount) {
+    try {
+      return await Salon.findByIdAndUpdate(
+        id,
+        {
+          $set: {
+            rating: rating,
+            ratingCount: ratingCount
+          }
+        },
+        { new: true }
+      );
+    } catch (error) {
+      throw new Error(`Error updating rating: ${error.message}`);
+    }
+  }
 }
 
 const salonRepository = new SalonRepository();

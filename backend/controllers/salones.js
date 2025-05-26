@@ -3,6 +3,8 @@ const { salonRepository } = require("../repositories/salon");
 const Service = require("../models/Service");
 const Package = require("../models/Package");
 const multer = require('multer');
+const { appointmentRepository } = require("../repositories/appointment");
+const mongoose = require('mongoose');
 
 const storage = multer.memoryStorage();
 
@@ -89,7 +91,9 @@ const createSalon = async (req = request, res = response) => {
             services: serviceIds,
             packages: packageIds,
             registerDate: new Date(),
-            isActive: true
+            isActive: true,
+            rating: 0,
+            ratingCount: 0
         };
 
         console.log(salonData);
@@ -310,6 +314,95 @@ const updateActiveSalon = async (req = request, res = response) => {
     }
 }
 
+const updateRating = async (req = request, res = response) => {
+    const session = await mongoose.startSession();
+
+    try {
+        await session.startTransaction();
+
+        const { id } = req.params;
+        const { rating } = req.body;
+
+        const newRating = parseInt(rating);
+
+        console.log(newRating);
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid appointment ID format'
+            });
+        }
+
+
+        const appointment = await appointmentRepository.getById(id);
+
+        if (!appointment) {
+            return res.status(404).json({
+                success: false,
+                error: 'Appointment not found'
+            });
+        }
+
+        if (appointment.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                error: 'You can only rate your own appointments'
+            });
+        }
+
+
+        const salon = await salonRepository.getById(appointment.salonId.toString());
+
+        if (!salon) {
+            return res.status(404).json({
+                success: false,
+                error: 'Salon not found'
+            });
+        }
+
+        const currentRating = salon.rating || 0;
+        const currentCount = salon.ratingCount || 0;
+
+        let newRatingAverage;
+        if (currentCount === 0) {
+            newRatingAverage = newRating;
+        } else {
+            const totalPoints = (currentRating * currentCount) + newRating;
+            newRatingAverage = totalPoints / (currentCount + 1);
+        }
+
+        newRatingAverage = parseFloat(newRatingAverage.toFixed(2));
+        const newCount = currentCount + 1;
+
+        const updatedSalon = await salonRepository.updateRating(salon._id, newRatingAverage, newCount, { session });
+        await appointmentRepository.update(id, { rated: true, rating: newRatingAverage }, { session });
+
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            message: 'Rating submitted successfully',
+            data: {
+                salon: updatedSalon,
+                newRating: newRatingAverage,
+                totalRatings: newCount,
+                submittedRating: newRatingAverage,
+                previousRating: currentRating
+            }
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        console.error('Error updating salon rating:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error updating salon rating'
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
 module.exports = {
     getSalonById,
     createSalon,
@@ -319,5 +412,6 @@ module.exports = {
     getAllSalons,
     getAdminSalones,
     getImage,
-    updateActiveSalon
+    updateActiveSalon,
+    updateRating
 };

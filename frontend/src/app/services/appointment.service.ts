@@ -39,4 +39,5 @@ export class AppointmentService {
     getAppointmentsAdmin(): Observable<{ data: AppointmentResponse[] }> {
         return this.http.get<{data: AppointmentResponse[]}>(`${this.apiUrl}/admin`, { headers: this.getHeaders() });
     }
+
 }
