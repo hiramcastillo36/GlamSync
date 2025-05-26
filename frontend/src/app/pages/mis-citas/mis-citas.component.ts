@@ -6,6 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { HeaderComponent } from '../../components/header/header.component';
+import { Appointment, AppointmentResponse } from '../../interfaces/appointment.interface';
+import { AppointmentService } from '../../services/appointment.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-mis-citas',
@@ -23,16 +26,22 @@ import { HeaderComponent } from '../../components/header/header.component';
   styleUrls: ['./mis-citas.component.css']
 })
 export class MisCitasComponent implements OnInit {
-  citas: any[] = [];
+  citas: AppointmentResponse[] = [];
   isLoading: boolean = true;
 
-  constructor() {}
+  constructor(
+    private appointmentService: AppointmentService
+  ) {}
 
   ngOnInit() {
     this.loadCitas();
   }
 
   loadCitas() {
+    this.appointmentService.getAppointmentsByUserId().subscribe((citas) => {
+      console.log(citas);
+      this.citas = citas.data;
+    });
     this.isLoading = false;
   }
 
@@ -45,10 +54,10 @@ export class MisCitasComponent implements OnInit {
   }
 
   eliminarCita(citaId: string) {
-    // this.citaService.deleteCita(citaId).subscribe({
-    //   next: () => {
-    //     this.citas = this.citas.filter(c => c._id !== citaId);
-    //   }
-    // });
+    this.appointmentService.deleteAppointment(citaId).subscribe({
+      next: () => {
+        this.loadCitas();
+      }
+    });
   }
 }

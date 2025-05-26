@@ -18,6 +18,15 @@ class AppointmentRepository {
         return await Appointment.findById(id);
     }
 
+    async getAppointmentsByUserId(userId) {
+        return await Appointment.find({
+            userId: new ObjectId(userId)
+        }).populate('salonId', 'name address')
+          .populate('serviceId', 'name price')
+          .populate('packageId', 'name price')
+          .sort({ appointmentDate: -1, appointmentTime: -1 });
+    }
+
     async update(id, appointmentData) {
         if (!ObjectId.isValid(id)) {
             return null;
@@ -26,10 +35,7 @@ class AppointmentRepository {
     }
 
     async delete(id) {
-        if (!ObjectId.isValid(id)) {
-            return null;
-        }
-        return await Appointment.findByIdAndUpdate(id, { isActive: false }, { new: true });
+        return await Appointment.findByIdAndDelete(id);
     }
 }
 
