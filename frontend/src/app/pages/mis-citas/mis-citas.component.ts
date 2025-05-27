@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { SalonService } from '../../services/salon.service';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-mis-citas',
@@ -26,6 +27,7 @@ import { SalonService } from '../../services/salon.service';
     HeaderComponent,
     MatFormFieldModule,
     MatSelectModule,
+    ReactiveFormsModule
   ],
   templateUrl: './mis-citas.component.html',
   styleUrls: ['./mis-citas.component.css']
@@ -33,11 +35,17 @@ import { SalonService } from '../../services/salon.service';
 export class MisCitasComponent implements OnInit {
   citas: AppointmentResponse[] = [];
   isLoading: boolean = true;
+  ratingForm: FormGroup;
 
   constructor(
     private appointmentService: AppointmentService,
-    private salonService: SalonService
-  ) {}
+    private salonService: SalonService,
+    private fb: FormBuilder
+  ) {
+    this.ratingForm = this.fb.group({
+      rating: ['', Validators.required]
+    });
+  }
 
   ngOnInit() {
     this.loadCitas();
@@ -68,10 +76,17 @@ export class MisCitasComponent implements OnInit {
   }
 
   calificarCita(citaId: string, rating: number) {
-    this.salonService.updateRating(citaId, rating).subscribe({
-      next: () => {
-        this.loadCitas();
-      }
-    });
+    if (this.ratingForm.valid) {
+      this.salonService.updateRating(citaId, rating).subscribe({
+        next: () => {
+          this.loadCitas();
+          this.ratingForm.reset();
+        },
+        error: (error) => {
+          console.error('Error al calificar:', error);
+          alert('No se pudo calificar la cita. Por favor intenta de nuevo.');
+        }
+      });
+    }
   }
 }

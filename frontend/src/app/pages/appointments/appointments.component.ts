@@ -156,7 +156,7 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   initForms(): void {
     this.serviciosForm = this.formBuilder.group({
-      seleccion: ['', Validators.required] 
+      seleccion: ['', Validators.required]
     });
 
     this.fechaForm = this.formBuilder.group({
@@ -273,6 +273,7 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   closeModal() {
     this.showModalFlag = false;
+    this.router.navigate(['/mis-citas']);
   }
 
   onComplete(): void {
@@ -296,10 +297,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
         next: (response) => {
           console.log('Cita creada exitosamente:', response);
           this.showAlert('success', '¡Éxito!', '¡La cita ha sido creada exitosamente!');
-          setTimeout(() => {
-            this.router.navigate(['/mis-citas']);
-          }, 3000);
-          
         },
         error: (error) => {
           console.error('Error al crear la cita:', error);
@@ -311,4 +308,3 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     }
   }
 }
-
