@@ -119,9 +119,23 @@
                 </mat-checkbox>
               </div>
             </div>
-
+            
           </form>
         </div>
       </ng-template>
+       <div *ngIf="showModalFlag" class="simple-modal-overlay" (click)="closeModal()">
+                <div class="simple-modal" (click)="$event.stopPropagation()">
+                  <div class="modal-content">
+                    <div class="modal-icon" [ngClass]="modalType">
+                      <mat-icon>{{ modalType === 'success' ? 'check_circle' : 'error' }}</mat-icon>
+                    </div>
+                    <h3>{{ modalTitle }}</h3>
+                    <p>{{ modalMessage }}</p>
+                    <button mat-flat-button class="modal-button" (click)="closeModal()">
+                      Aceptar
+                    </button>
+                  </div>
+                </div>
+            </div>
     </div>
   </div>

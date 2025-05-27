@@ -49,6 +49,12 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
   newPackageDescription: string = '';
   newPackagePrice: number = 0;
 
+  showModalFlag = false;
+  modalType = 'success';
+  modalTitle = '';
+  modalMessage = '';
+
+
   workingDays = [
     { label: 'Lunes', value: 'Lunes' },
     { label: 'Martes', value: 'Martes' },
@@ -139,6 +145,17 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
 
   get packages() {
     return this.servicesForm.get('packages') as FormArray;
+  }
+
+  showAlert(type: 'success' | 'error', title: string, message: string) {
+    this.modalType = type;
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.showModalFlag = true;
+  }
+
+  closeModal() {
+    this.showModalFlag = false;
   }
 
   addService(): void {
@@ -297,15 +314,17 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
 
       console.log('Datos del salón a crear:', salonData);
 
-      this.salonService.createSalon(salonData).subscribe({
+       this.salonService.createSalon(salonData).subscribe({
         next: (response) => {
           console.log('Salon created successfully:', response);
-          alert('¡El salón ha sido creado exitosamente!');
-          this.router.navigate(['/home']);
+          this.showAlert('success', '¡Éxito!', '¡El salón ha sido creado exitosamente!');
+          setTimeout(() => {
+            this.router.navigate(['/mis-salones']);
+          }, 3000);
         },
         error: (error) => {
           console.error('Error creating salon:', error);
-          alert('Error al crear el salón. Por favor, inténtalo de nuevo.');
+          this.showAlert('error', 'Error', 'Error al crear el salón. Por favor, inténtalo de nuevo.');
         }
       });
 
