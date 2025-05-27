@@ -156,7 +156,7 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   initForms(): void {
     this.serviciosForm = this.formBuilder.group({
-      seleccion: ['', Validators.required] // Un solo campo para validar que se seleccionó algo
+      seleccion: ['', Validators.required] 
     });
 
     this.fechaForm = this.formBuilder.group({
@@ -176,13 +176,11 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   onNext(currentStep: number): void {
     console.log(`Avanzando desde el paso ${currentStep + 1}`);
 
-    // Validar que se haya seleccionado un servicio o paquete antes de avanzar
     if (currentStep === 0) {
       if (!this.servicioSeleccionado && !this.paqueteSeleccionado) {
         alert('Por favor selecciona un servicio o paquete antes de continuar');
         return;
       }
-      // Actualizar el form para que pase la validación
       this.serviciosForm.patchValue({
         seleccion: this.paqueteSeleccionado ? 'paquete' : 'servicio'
       });
@@ -194,7 +192,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   }
 
   seleccionarServicio(servicio: Service): void {
-    // Solo permitir seleccionar si no hay paquete seleccionado
     if (this.paqueteSeleccionado) {
       this.paqueteSeleccionado = null;
     }
@@ -206,7 +203,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   }
 
   seleccionarPaquete(paquete: Package): void {
-    // Solo permitir seleccionar si no hay servicio seleccionado
     if (this.servicioSeleccionado) {
       this.servicioSeleccionado = null;
     }
@@ -301,8 +297,9 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
           console.log('Cita creada exitosamente:', response);
           this.showAlert('success', '¡Éxito!', '¡La cita ha sido creada exitosamente!');
           setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 3000); 
+            this.router.navigate(['/mis-citas']);
+          }, 3000);
+          
         },
         error: (error) => {
           console.error('Error al crear la cita:', error);

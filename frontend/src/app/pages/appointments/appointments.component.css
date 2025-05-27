@@ -527,7 +527,9 @@
   font-size: 0.9rem;
 }
 
- .simple-modal-overlay {
+
+
+  .simple-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;

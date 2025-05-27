@@ -319,8 +319,8 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
           console.log('Salon created successfully:', response);
           this.showAlert('success', '¡Éxito!', '¡El salón ha sido creado exitosamente!');
           setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 3000); 
+            this.router.navigate(['/mis-salones']);
+          }, 3000);
         },
         error: (error) => {
           console.error('Error creating salon:', error);
