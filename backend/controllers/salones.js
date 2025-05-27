@@ -34,6 +34,8 @@ const createSalon = async (req = request, res = response) => {
 
         const administratorId = req.user._id;
 
+        console.log(packages);
+
         let serviceIds = [];
         if (services && services.length > 0) {
             for (const serviceData of services) {
@@ -45,19 +47,27 @@ const createSalon = async (req = request, res = response) => {
                     isActive: true
                 });
                 const savedService = await newService.save();
-                serviceIds.push(savedService._id);
+                serviceIds.push({
+                    _id: savedService._id,
+                    name: savedService.name
+                });
             }
         }
 
         let packageIds = [];
         if (packages && packages.length > 0) {
             for (const packageData of packages) {
+                // Encontrar los IDs de los servicios que coinciden con los nombres en el paquete
+                const packageServiceIds = serviceIds
+                    .filter(service => packageData.services.includes(service.name))
+                    .map(service => service._id);
+
                 const newPackage = new Package({
                     salonId: null,
                     name: packageData.name,
                     description: packageData.description,
                     price: packageData.price,
-                    services: serviceIds
+                    services: packageServiceIds
                 });
                 const savedPackage = await newPackage.save();
                 packageIds.push(savedPackage._id);

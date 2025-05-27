@@ -661,6 +661,43 @@
   margin-right: 0.5rem;
 }
 
+.salon-address-modal {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #f8f5f3;
+  border-radius: 8px;
+}
+
+.salon-address-modal h3 {
+  color: #333;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+}
+
+.salon-address-modal .address-container {
+  margin-bottom: 0.5rem;
+}
+
+.salon-address-modal .address-item {
+  display: flex;
+  margin-bottom: 0.3rem;
+}
+
+.salon-address-modal .address-label {
+  font-weight: 500;
+  min-width: 100px;
+  color: #666;
+}
+
+.salon-address-modal .address-value {
+  color: #333;
+}
+
+.salon-address-modal p {
+  margin: 0.5rem 0 0 0;
+  color: #666;
+}
+
 .package-price-section {
   display: flex;
   justify-content: space-between;
