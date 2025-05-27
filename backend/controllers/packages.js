@@ -4,7 +4,12 @@ const { packageRepository } = require("../repositories/package");
 const getPackagesBySalonId = async (req = request, res = response) => {
     try {
         const { salonId } = req.params;
-        const packages = await packageRepository.getPackagesBySalonId(salonId);
+        const packages = await packageRepository.getPackagesBySalonId(salonId, {
+            populate: {
+                path: "services",
+                select: "name price"
+            }
+        });
 
         res.json({
             success: true,

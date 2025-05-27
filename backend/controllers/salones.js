@@ -223,7 +223,10 @@ const getAdminSalones = async (req = request, res = response) => {
         for (const salon of salons) {
 
             const services = await Service.find({ salonId: salon._id });
-            const packages = await Package.find({ salonId: salon._id });
+            const packages = await Package.find({ salonId: salon._id }).populate({
+                path: "services",
+                select: "name price"
+            });
             salon.services = services;
             salon.packages = packages;
         }

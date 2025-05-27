@@ -3,7 +3,10 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 class PackageRepository {
     async getPackagesBySalonId(salonId) {
-        return await Package.find({ salonId });
+        return await Package.find({ salonId }).populate({
+            path: "services",
+            select: "name price"
+        });
     }
 
     async createPackage(name, description, price, salonId, services) {

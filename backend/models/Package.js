@@ -7,7 +7,10 @@ const PackageSchema = new mongoose.Schema({
     price: Number,
     creationDate: Date,
     isActive: Boolean,
-    services: [mongoose.Schema.Types.ObjectId]
+    services: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service'
+    }]
 });
 
 module.exports = mongoose.model('Package', PackageSchema);
