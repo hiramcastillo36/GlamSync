@@ -48,6 +48,13 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
   newPackageName: string = '';
   newPackageDescription: string = '';
   newPackagePrice: number = 0;
+  selectedServices: string[] = [];
+
+  showModalFlag = false;
+  modalType = 'success';
+  modalTitle = '';
+  modalMessage = '';
+
 
   workingDays = [
     { label: 'Lunes', value: 'Lunes' },
@@ -103,7 +110,8 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
       }),
       phone: ['', Validators.required],
       description: ['', Validators.required],
-      workingHours: this.formBuilder.group({})
+      workingHours: this.formBuilder.group({}),
+      image: ['', Validators.required]
     });
 
     this.workingDays.forEach(day => {
@@ -140,6 +148,17 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
     return this.servicesForm.get('packages') as FormArray;
   }
 
+  showAlert(type: 'success' | 'error', title: string, message: string) {
+    this.modalType = type;
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.showModalFlag = true;
+  }
+
+  closeModal() {
+    this.showModalFlag = false;
+  }
+
   addService(): void {
     if (this.newService.trim() && this.newServicePrice > 0) {
       const serviceControl = this.formBuilder.group({
@@ -162,11 +181,12 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
   }
 
   addPackage(): void {
-    if (this.newPackageName.trim() && this.newPackageDescription.trim() && this.newPackagePrice > 0) {
+    if (this.newPackageName.trim() && this.newPackageDescription.trim() && this.newPackagePrice > 0 && this.selectedServices.length > 0) {
       const packageControl = this.formBuilder.group({
         name: [this.newPackageName.trim(), Validators.required],
         description: [this.newPackageDescription.trim(), Validators.required],
-        price: [this.newPackagePrice, [Validators.required, Validators.min(1)]]
+        price: [this.newPackagePrice, [Validators.required, Validators.min(1)]],
+        services: [this.selectedServices, Validators.required]
       });
 
       this.packages.push(packageControl);
@@ -174,6 +194,7 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
       this.newPackageName = '';
       this.newPackageDescription = '';
       this.newPackagePrice = 0;
+      this.selectedServices = [];
 
       this.servicesForm.markAsDirty();
       this.servicesForm.updateValueAndValidity();
@@ -287,7 +308,7 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
         description: this.basicInfoForm.get('description')?.value,
         workingHours: formattedWorkingHours,
         rating: 0,
-        image: "",
+        image: this.basicInfoForm.get('image')?.value,
         services: servicesArray,
         packages: packagesArray,
         registerDate: new Date(),
@@ -296,15 +317,17 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
 
       console.log('Datos del salón a crear:', salonData);
 
-      this.salonService.createSalon(salonData).subscribe({
+       this.salonService.createSalon(salonData).subscribe({
         next: (response) => {
           console.log('Salon created successfully:', response);
-          alert('¡El salón ha sido creado exitosamente!');
-          this.router.navigate(['/home']);
+          this.showAlert('success', '¡Éxito!', '¡El salón ha sido creado exitosamente!');
+          setTimeout(() => {
+            this.router.navigate(['/mis-salones']);
+          }, 3000);
         },
         error: (error) => {
           console.error('Error creating salon:', error);
-          alert('Error al crear el salón. Por favor, inténtalo de nuevo.');
+          this.showAlert('error', 'Error', 'Error al crear el salón. Por favor, inténtalo de nuevo.');
         }
       });
 

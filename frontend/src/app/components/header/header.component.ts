@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ID } from '../../interfaces/types';
 import { SlideMenuComponent } from '../slide-menu/slide-menu.component';
 import { AuthService } from '../../services/auth.service';
@@ -22,6 +23,7 @@ import { UserService } from '../../services/user.service';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    MatTooltipModule,
     SlideMenuComponent
   ],
   templateUrl: './header.component.html',
@@ -46,24 +48,46 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadUserData();
+    this.checkAuthenticationStatus();
+  }
+
+  checkAuthenticationStatus() {
+    if (this.authService.isAuthenticated()) {
+      this.loadUserData();
+    } else {
+      this.currentUser = null;
+      this.loading = false;
+    }
   }
 
   loadUserData() {
     this.loading = true;
     this.error = null;
 
+    const localUser = this.authService.getUser();
+    if (localUser && localUser._id) {
+      this.currentUser = localUser;
+      this.loading = false;
+      return;
+    }
+
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
         this.currentUser = user;
+        this.authService.saveUser(user);
         this.loading = false;
       },
       error: (error) => {
         console.error('Error loading user data:', error);
         this.error = 'Error loading user data';
+        this.currentUser = null;
         this.loading = false;
       }
     });
+  }
+
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated() && this.currentUser !== null;
   }
 
   getUserDisplayName(): string {
@@ -71,7 +95,30 @@ export class HeaderComponent implements OnInit {
     return this.currentUser.email.split('@')[0];
   }
 
+  getUserEmail(): string {
+    return this.currentUser?.email || '';
+  }
+
+  login() {
+    this.router.navigate(['/login']);
+  }
+
+  register() {
+    this.router.navigate(['/register']);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.currentUser = null;
+    this.closeMenu();
+  }
+
   toggleMenu() {
+    
+    if (!this.authService.isAuthenticated()) {
+    this.router.navigate(['/login']);
+    return;
+  }
     this.isMenuOpen = !this.isMenuOpen;
   }
 
@@ -90,12 +137,20 @@ export class HeaderComponent implements OnInit {
       case 'logout':
         this.logout();
         break;
+      default:
+        console.log('Menu item clicked:', item);
     }
     this.closeMenu();
   }
 
-  logout() {
-    this.authService.logout();
-    this.currentUser = null;
+  goToProfile() {
+    this.router.navigate(['/profile']);
+    this.closeMenu();
+  }
+
+  goToSettings() {
+    this.router.navigate(['/settings']);
+    this.closeMenu();
   }
 }
+

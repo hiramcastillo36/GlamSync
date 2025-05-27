@@ -15,12 +15,26 @@ export interface AppointmentData {
 
 export interface Appointment {
   _id: ID;
-  salon: SalonDetail;
-  servicio: Service | null;
-  paquete: Package | null;
-  fecha: Date;
-  hora: string;
-  precioTotal: number;
+  salonId: ID;
+  serviceId: ID;
+  packageId: ID;
+  professionalId: ID;
+  appointmentDate: Date;
+  appointmentTime: string;
+  totalPrice: number;
+}
+
+export interface AppointmentResponse {
+    _id: ID;
+    salonId: SalonDetail;
+    serviceId: Service;
+    packageId: Package;
+    appointmentDate: Date;
+    appointmentTime: string;
+    totalPrice: number;
+    rating?: number;
+    rated?: boolean;
+    status?: string;
 }
 
 

@@ -84,6 +84,16 @@
 
             <div class="form-group">
               <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Imagen del salón</mat-label>
+                <input matInput formControlName="image" placeholder="Imagen del salón">
+                <mat-error *ngIf="basicInfoForm.get('image')?.invalid && basicInfoForm.get('image')?.touched">
+                  La imagen es requerida
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Descripción</mat-label>
                 <textarea matInput formControlName="description" rows="4" placeholder="Describe tu salón..."></textarea>
                 <mat-error *ngIf="basicInfoForm.get('description')?.invalid && basicInfoForm.get('description')?.touched">
@@ -208,12 +218,25 @@
                     <span matPrefix>$</span>
                   </mat-form-field>
 
+                  <mat-form-field appearance="outline" class="package-services-field">
+                    <mat-label>Servicios incluidos</mat-label>
+                    <mat-select
+                      [(ngModel)]="selectedServices"
+                      [ngModelOptions]="{standalone: true}"
+                      multiple
+                      placeholder="Selecciona los servicios">
+                      <mat-option *ngFor="let service of services.controls" [value]="service.get('name')?.value">
+                        {{service.get('name')?.value}} - ${{service.get('price')?.value | number:'1.0-0'}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
                   <button
                     type="button"
                     mat-flat-button
                     color="accent"
                     (click)="addPackage()"
-                    [disabled]="!newPackageName.trim() || !newPackageDescription.trim() || newPackagePrice <= 0">
+                    [disabled]="!newPackageName.trim() || !newPackageDescription.trim() || newPackagePrice <= 0 || selectedServices.length === 0">
                     <mat-icon>add</mat-icon> Agregar paquete
                   </button>
                 </div>
@@ -297,7 +320,8 @@
                   <h3>Servicios ({{services.length}})</h3>
                   <div class="services-summary" *ngIf="services.length > 0">
                     <div class="service-tag" *ngFor="let service of services.controls">
-                      {{service.value}}
+                      <span class="service-name">{{service.get('name')?.value}} </span>
+                      <span class="service-price">${{service.get('price')?.value | number:'1.0-0'}}</span>
                     </div>
                   </div>
                   <p *ngIf="services.length === 0" class="closed-text">
@@ -313,6 +337,14 @@
                       <div class="package-summary-info">
                         <h4>{{package.get('name')?.value}}</h4>
                         <p>{{package.get('description')?.value}}</p>
+                        <div class="package-services">
+                          <strong>Servicios incluidos:</strong>
+                          <ul>
+                            <li *ngFor="let service of package.get('services')?.value">
+                              {{service}}
+                            </li>
+                          </ul>
+                        </div>
                         <span class="price">${{package.get('price')?.value | number:'1.0-0'}}</span>
                       </div>
                     </div>
@@ -322,9 +354,24 @@
                 <mat-checkbox formControlName="confirmed" class="confirmation-checkbox" color="primary">
                   Confirmo que los datos ingresados son correctos y deseo crear el salón
                 </mat-checkbox>
+
               </div>
             </div>
           </form>
+          <div *ngIf="showModalFlag" class="simple-modal-overlay" (click)="closeModal()">
+                <div class="simple-modal" (click)="$event.stopPropagation()">
+                  <div class="modal-content">
+                    <div class="modal-icon" [ngClass]="modalType">
+                      <mat-icon>{{ modalType === 'success' ? 'check_circle' : 'error' }}</mat-icon>
+                    </div>
+                    <h3>{{ modalTitle }}</h3>
+                    <p>{{ modalMessage }}</p>
+                    <button mat-flat-button class="modal-button" (click)="closeModal()">
+                      Aceptar
+                    </button>
+                  </div>
+                </div>
+            </div>
         </div>
       </ng-template>
     </div>

@@ -41,12 +41,6 @@
               </div>
               <div class="card-actions">
                 <button mat-icon-button
-                        class="action-btn edit-btn"
-                        (click)="editarSalon(salon._id.toString())"
-                        matTooltip="Editar salón">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button
                         class="action-btn delete-btn"
                         (click)="eliminarSalon(salon, i)"
                         matTooltip="Eliminar salón">
@@ -68,7 +62,11 @@
                 </div>
                 <div class="info-item">
                   <mat-icon class="info-icon">schedule</mat-icon>
-                  <span class="info-text">{{salon.workingHours}}</span>
+                  <div class="working-hours">
+                    <div *ngFor="let schedule of salon.workingHours">
+                      <span class="info-text">{{schedule.day | titlecase}}: {{schedule.time}}</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="info-item">
                   <mat-icon class="info-icon">date_range</mat-icon>
@@ -84,12 +82,95 @@
               </div> -->
 
               <div class="services-section">
-                <h4 class="services-title">Servicios:</h4>
+                <div class="section-header">
+                  <h4 class="services-title">Servicios:</h4>
+                  <button mat-icon-button
+                          class="add-btn"
+                          (click)="toggleServiceForm(salon)"
+                          matTooltip="Agregar servicio">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                </div>
                 <div class="services-tags">
                   <span class="service-tag" *ngFor="let service of salon.services">
-                    {{service}}
+                    {{service.name}}
                   </span>
                 </div>
+                <!-- Formulario para nuevo servicio -->
+                <form *ngIf="editingSalon?._id === salon._id && showServiceForm"
+                      [formGroup]="serviceForm"
+                      (ngSubmit)="agregarServicio(salon)"
+                      class="add-form">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nombre del servicio</mat-label>
+                    <input matInput formControlName="name" required>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput formControlName="description" required></textarea>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Precio</mat-label>
+                    <input matInput type="number" formControlName="price" required>
+                    <span matPrefix>$&nbsp;</span>
+                  </mat-form-field>
+                  <div class="form-actions">
+                    <button mat-button type="button" (click)="cancelarServicio()">Cancelar</button>
+                    <button mat-flat-button color="primary" type="submit" [disabled]="!serviceForm.valid">
+                      Agregar Servicio
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="services-section">
+                <div class="section-header">
+                  <h4 class="services-title">Paquetes:</h4>
+                  <button mat-icon-button
+                          class="add-btn"
+                          (click)="togglePackageForm(salon)"
+                          matTooltip="Agregar paquete">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                </div>
+                <div class="services-tags">
+                  <span class="service-tag" *ngFor="let package of salon.packages">
+                    {{package.name}}
+                  </span>
+                </div>
+                <!-- Formulario para nuevo paquete -->
+                <form *ngIf="editingSalon?._id === salon._id && showPackageForm"
+                      [formGroup]="packageForm"
+                      (ngSubmit)="agregarPaquete(salon)"
+                      class="add-form">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nombre del paquete</mat-label>
+                    <input matInput formControlName="name" required>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput formControlName="description" required></textarea>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Precio</mat-label>
+                    <input matInput type="number" formControlName="price" required>
+                    <span matPrefix>$&nbsp;</span>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Servicios incluidos</mat-label>
+                    <mat-select formControlName="services" multiple required>
+                      <mat-option *ngFor="let service of salon.services" [value]="service._id">
+                        {{service.name}} - ${{service.price | number:'1.0-0'}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="form-actions">
+                    <button mat-button type="button" (click)="cancelarPaquete()">Cancelar</button>
+                    <button mat-flat-button color="primary" type="submit" [disabled]="!packageForm.valid">
+                      Agregar Paquete
+                    </button>
+                  </div>
+                </form>
               </div>
             </mat-card-content>
 
@@ -103,12 +184,6 @@
                 {{salon.isActive ? 'Desactivar' : 'Activar'}}
               </button>
 
-              <button mat-button
-                      class="view-detail-btn"
-                      (click)="verDetalleSalon(salon._id.toString())">
-                <mat-icon>visibility</mat-icon>
-                Ver Detalles
-              </button>
             </mat-card-actions>
           </mat-card>
         </div>

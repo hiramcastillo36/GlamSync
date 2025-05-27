@@ -12,6 +12,7 @@ import { ID } from '../../interfaces/types';
 import { SalonService } from '../../services/salon.service';
 import { Package } from '../../interfaces/package.interface';
 import { PackageService } from '../../services/packege.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-salon-detail',
@@ -24,7 +25,7 @@ import { PackageService } from '../../services/packege.service';
     MatIconModule,
     MatListModule,
     HeaderComponent,
-    RatingStarsComponent
+
   ],
   templateUrl: './salon-detail.component.html',
   styleUrls: ['./salon-detail.component.css']
@@ -36,34 +37,90 @@ export class SalonDetailComponent implements OnInit {
   services: Service[] = [];
   packages: Package[] = [];
 
+  currentSlide: number = 0;
+  packagesWithImages: (Package & { imageUrl: string })[] = [];
+  showPackageModal: boolean = false;
+  selectedPackage: (Package & { imageUrl: string }) | null = null;
+
+  private packageImages: string[] = [
+    'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=400&h=300&fit=crop'
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private salonService: SalonService,
-    private packageService: PackageService
- ) {}
+    private packageService: PackageService,
+    private authService: AuthService
+  ) {}
 
-ngOnInit() {
+  ngOnInit() {
     this.route.params.subscribe(params => {
       const salonId: ID = params['id'];
       this.salonService.getSalonById(salonId.toString()).subscribe((salon) => {
         this.salon = salon.data;
+        console.log(this.salon);
       });
     });
 
     this.route.params.subscribe(params => {
-        const salonId: ID = params['id'];
-        this.salonService.getServicesBySalonId(salonId.toString()).subscribe((services) => {
-          this.services = services.data;
-        });
-
-        this.packageService.getPackagesBySalonId(salonId.toString()).subscribe((packages) => {
-          this.packages = packages.data;
-        });
+      const salonId: ID = params['id'];
+      this.salonService.getServicesBySalonId(salonId.toString()).subscribe((services) => {
+        this.services = services.data;
+        console.log(this.services);
       });
+
+      this.packageService.getPackagesBySalonId(salonId.toString()).subscribe((packages) => {
+        this.packages = packages.data;
+        this.packagesWithImages = this.packages.map((pkg, index) => ({
+          ...pkg,
+          imageUrl: this.packageImages[index % this.packageImages.length]
+        }));
+        console.log(this.packagesWithImages);
+      });
+    });
+  }
+
+  openPackageDetails(pkg: Package & { imageUrl: string }): void {
+    this.selectedPackage = pkg;
+    this.showPackageModal = true;
+  }
+
+  closePackageModal(): void {
+    this.showPackageModal = false;
+    this.selectedPackage = null;
   }
 
   agendarCita(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    if (this.showPackageModal) {
+      this.closePackageModal();
+    }
     this.router.navigate(['/salon', this.salon?._id, 'appointments']);
+  }
+
+  // Métodos para el carrusel
+  nextSlide(): void {
+    if (this.packagesWithImages.length > 3) {
+      const maxSlide = this.packagesWithImages.length - 3;
+      this.currentSlide = Math.min(this.currentSlide + 1, maxSlide);
+    }
+  }
+
+  prevSlide(): void {
+    if (this.packagesWithImages.length > 0) {
+      this.currentSlide = Math.max(this.currentSlide - 1, 0);
+    }
+  }
+
+  goToSlide(index: number): void {
+    this.currentSlide = index;
   }
 }

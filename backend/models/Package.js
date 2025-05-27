@@ -6,7 +6,11 @@ const PackageSchema = new mongoose.Schema({
     description: String,
     price: Number,
     creationDate: Date,
-    isActive: Boolean
+    isActive: Boolean,
+    services: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service'
+    }]
 });
 
 module.exports = mongoose.model('Package', PackageSchema);

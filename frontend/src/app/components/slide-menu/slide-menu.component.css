@@ -210,6 +210,17 @@
   margin-bottom: 0;
 }
 
+.logout-button {
+  margin-top: 4rem; 
+  color: #8B5C54 !important;
+}
+
+.logout-button mat-icon,
+.logout-button span {
+  color: #8B5C54 !important;
+}
+
+
 @media (max-width: 768px) {
   .slide-menu {
     width: 320px;
@@ -340,4 +351,8 @@
     padding: 0.6rem 0.8rem; 
     font-size: 0.75rem; 
   }
+  .logout-button {
+  margin-top: 2rem; 
+  color: #8B5C54 !important;
+}
 }

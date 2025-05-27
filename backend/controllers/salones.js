@@ -2,23 +2,8 @@ const { response, request } = require("express");
 const { salonRepository } = require("../repositories/salon");
 const Service = require("../models/Service");
 const Package = require("../models/Package");
-const multer = require('multer');
-
-const storage = multer.memoryStorage();
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB límite
-  },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Solo se permiten archivos de imagen'), false);
-    }
-  }
-});
+const { appointmentRepository } = require("../repositories/appointment");
+const mongoose = require('mongoose');
 
 const getSalonById = async (req = request, res = response) => {
     try {
@@ -45,7 +30,7 @@ const getSalonById = async (req = request, res = response) => {
 
 const createSalon = async (req = request, res = response) => {
     try {
-        const { name, address, phone, description, workingHours, services, packages } = req.body;
+        const { name, address, phone, description, workingHours, services, packages, image } = req.body;
 
         const administratorId = req.user._id;
 
@@ -71,7 +56,8 @@ const createSalon = async (req = request, res = response) => {
                     salonId: null,
                     name: packageData.name,
                     description: packageData.description,
-                    price: packageData.price
+                    price: packageData.price,
+                    services: serviceIds
                 });
                 const savedPackage = await newPackage.save();
                 packageIds.push(savedPackage._id);
@@ -85,11 +71,13 @@ const createSalon = async (req = request, res = response) => {
             phone,
             description,
             workingHours,
-            image: req.file,
+            image,
             services: serviceIds,
             packages: packageIds,
             registerDate: new Date(),
-            isActive: true
+            isActive: true,
+            rating: 0,
+            ratingCount: 0
         };
 
         console.log(salonData);
@@ -161,6 +149,8 @@ const deleteSalon = async (req = request, res = response) => {
     try {
         const { id } = req.params;
 
+        console.log(id);
+
         const salon = await salonRepository.getById(id);
 
         if (!salon) {
@@ -175,7 +165,9 @@ const deleteSalon = async (req = request, res = response) => {
             });
         }
 
-        await salonRepository.delete(id);
+        const deletedSalon = await salonRepository.delete(id);
+
+        console.log(deletedSalon);
 
         res.json({
             success: true,
@@ -191,7 +183,11 @@ const deleteSalon = async (req = request, res = response) => {
 
 const getSalones = async (req = request, res = response) => {
     try {
-        const salons = await salonRepository.getAll();
+        const salons = await salonRepository.getAll(
+            {
+                isActive: true
+            }
+        );
 
         res.json({
             success: true,
@@ -223,6 +219,19 @@ const getAllSalons = async (req = request, res = response) => {
 const getAdminSalones = async (req = request, res = response) => {
     try {
         const salons = await salonRepository.getAll({ administratorId: req.user._id });
+
+        for (const salon of salons) {
+
+            const services = await Service.find({ salonId: salon._id });
+            const packages = await Package.find({ salonId: salon._id }).populate({
+                path: "services",
+                select: "name price"
+            });
+            salon.services = services;
+            salon.packages = packages;
+        }
+
+        console.log(salons);
         res.json({
             success: true,
             data: salons
@@ -264,6 +273,123 @@ const getImage = async (req = request, res = response) => {
     }
   }
 
+const updateActiveSalon = async (req = request, res = response) => {
+    try {
+        const { id } = req.params;
+        const { isActive } = req.body;
+
+        const salon = await salonRepository.getById(id);
+
+        if (!salon) {
+            return res.status(404).json({
+                error: 'Salon not found'
+            });
+        }
+
+        const updatedSalon = await salonRepository.update(id, { isActive });
+
+        res.json({
+            success: true,
+            message: 'Salon updated successfully',
+            data: updatedSalon
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: 'Error updating salon'
+        });
+    }
+}
+
+const updateRating = async (req = request, res = response) => {
+    const session = await mongoose.startSession();
+
+    try {
+        await session.startTransaction();
+
+        const { id } = req.params;
+        const { rating } = req.body;
+
+        const newRating = parseInt(rating);
+
+        console.log(newRating);
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid appointment ID format'
+            });
+        }
+
+
+        const appointment = await appointmentRepository.getById(id);
+
+        if (!appointment) {
+            return res.status(404).json({
+                success: false,
+                error: 'Appointment not found'
+            });
+        }
+
+        if (appointment.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({
+                success: false,
+                error: 'You can only rate your own appointments'
+            });
+        }
+
+
+        const salon = await salonRepository.getById(appointment.salonId.toString());
+
+        if (!salon) {
+            return res.status(404).json({
+                success: false,
+                error: 'Salon not found'
+            });
+        }
+
+        const currentRating = salon.rating || 0;
+        const currentCount = salon.ratingCount || 0;
+
+        let newRatingAverage;
+        if (currentCount === 0) {
+            newRatingAverage = newRating;
+        } else {
+            const totalPoints = (currentRating * currentCount) + newRating;
+            newRatingAverage = totalPoints / (currentCount + 1);
+        }
+
+        newRatingAverage = parseFloat(newRatingAverage.toFixed(2));
+        const newCount = currentCount + 1;
+
+        const updatedSalon = await salonRepository.updateRating(salon._id, newRatingAverage, newCount, { session });
+        await appointmentRepository.update(id, { rated: true, rating: newRatingAverage }, { session });
+
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            message: 'Rating submitted successfully',
+            data: {
+                salon: updatedSalon,
+                newRating: newRatingAverage,
+                totalRatings: newCount,
+                submittedRating: newRatingAverage,
+                previousRating: currentRating
+            }
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        console.error('Error updating salon rating:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error updating salon rating'
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
 module.exports = {
     getSalonById,
     createSalon,
@@ -272,5 +398,7 @@ module.exports = {
     getSalones,
     getAllSalons,
     getAdminSalones,
-    getImage
+    getImage,
+    updateActiveSalon,
+    updateRating
 };

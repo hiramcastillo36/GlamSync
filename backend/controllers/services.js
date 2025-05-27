@@ -10,6 +10,16 @@ const getServicesBySalonId = async (req = request, res = response) => {
     });
 };
 
+const createService = async (req = request, res = response) => {
+    const { name, price, salonId } = req.body;
+    const service = await ServiceRepository.createService(name, price, salonId);
+    res.json({
+        success: true,
+        data: service
+    });
+};
+
 module.exports = {
     getServicesBySalonId,
+    createService
 };

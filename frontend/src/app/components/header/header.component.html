@@ -10,23 +10,55 @@
         </ng-container>
       </ng-container>
     </div>
+
     <span *ngIf="!showBreadcrumb" class="logo">GlamSync</span>
 
-    <div class="header-actions">
-      <button mat-icon-button class="search-btn">
-        <mat-icon>search</mat-icon>
-      </button>
+    <span class="spacer"></span>
 
-      <div class="menu-container">
-        <button mat-button (click)="toggleMenu()" class="profile-btn">
-            <mat-icon>account_circle</mat-icon>
-            <span>{{ currentUser?.email }}</span>
+    <div class="header-actions">
+      <div class="user-section" *ngIf="isAuthenticated && !loading">
+        <div class="user-info">
+          <mat-icon class="user-avatar">account_circle</mat-icon>
+          <span class="user-email">{{ getUserEmail() }}</span>
+        </div>
+
+        <div class="user-actions">
+          <button mat-icon-button
+                  (click)="toggleMenu()"
+                  class="menu-btn"
+                  matTooltip="Menú">
+            <mat-icon>menu</mat-icon>
           </button>
-        <app-slide-menu
-          [isOpen]="isMenuOpen"
-          (menuClosed)="closeMenu()"
-          (menuItemClicked)="onMenuItemClick($event)">
-        </app-slide-menu>
+
+        </div>
+      </div>
+
+      <div class="auth-section" *ngIf="!isAuthenticated && !loading">
+        <button mat-stroked-button
+                (click)="login()"
+                class="login-btn"
+                color="primary">
+          <mat-icon>login</mat-icon>
+          <span>Iniciar Sesión</span>
+        </button>
+
+        <button mat-button
+                (click)="register()"
+                class="register-btn"
+                color="primary">
+          <mat-icon>person_add</mat-icon>
+          <span>Registrarse</span>
+        </button>
+      </div>
+
+      <div class="loading-section" *ngIf="loading">
+        <mat-icon class="loading-icon">hourglass_empty</mat-icon>
       </div>
     </div>
+
+    <app-slide-menu
+      [isOpen]="isMenuOpen"
+      (menuClosed)="closeMenu()"
+      (menuItemClicked)="onMenuItemClick($event)">
+    </app-slide-menu>
   </mat-toolbar>

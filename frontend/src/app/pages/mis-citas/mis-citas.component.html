@@ -3,13 +3,11 @@
       [showBreadcrumb]="true"
       [currentPage]="'Mis Citas'">
     </app-header>
-
     <div class="content-container">
       <div class="page-header">
         <h1 class="page-title">Mis Citas</h1>
         <p class="page-subtitle">Gestiona tus citas programadas</p>
       </div>
-
       <div class="citas-content" *ngIf="!isLoading">
         <div class="empty-state" *ngIf="citas.length === 0">
           <mat-icon class="empty-icon">event_busy</mat-icon>
@@ -19,86 +17,128 @@
             Explorar Salones
           </button>
         </div>
-
         <div class="citas-grid" *ngIf="citas.length > 0">
           <mat-card class="cita-card" *ngFor="let cita of citas; let i = index">
             <mat-card-header>
               <div class="salon-info">
-                <h3 class="salon-name">{{cita.salon.name}}</h3>
-                <p class="salon-address">{{cita.salon.address}}</p>
+                <h3 class="salon-name">Salón: {{cita.salonId.name}}</h3>
+                <span class="appointment-id">ID: {{cita._id}}</span>
               </div>
-              <button mat-icon-button
-                      class="delete-btn"
-                      (click)="eliminarCita(cita._id.toString())"
-                      matTooltip="Eliminar cita">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <div class="card-actions">
+                <button mat-icon-button
+                        class="edit-btn"
+                        (click)="toggleEditForm(cita)"
+                        matTooltip="Editar cita">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button
+                        class="cancel-btn"
+                        (click)="eliminarCita(cita._id.toString())"
+                        matTooltip="Cancelar cita">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </div>
             </mat-card-header>
-
             <mat-card-content>
               <div class="cita-details">
-                <div class="detail-item">
-                  <mat-icon class="detail-icon">event</mat-icon>
-                  <div class="detail-text">
-                    <span class="detail-label">Fecha</span>
-                    <span class="detail-value">{{formatearFecha(cita.fecha)}}</span>
+                <!-- Form para editar fecha y hora -->
+                <form *ngIf="editingCita?._id === cita._id" [formGroup]="editForm" (ngSubmit)="actualizarCita(cita._id.toString())" class="edit-form">
+                  <div class="form-row">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Fecha</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="fecha">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Hora</mat-label>
+                      <mat-select formControlName="hora">
+                        <mat-option *ngFor="let hora of horariosDisponibles" [value]="hora">
+                          {{hora}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
+                  <div class="form-actions">
+                    <button mat-button type="button" (click)="cancelarEdicion()">Cancelar</button>
+                    <button mat-flat-button color="primary" type="submit" [disabled]="!editForm.valid">Guardar</button>
+                  </div>
+                </form>
+
+                <!-- Información normal de la cita -->
+                <div *ngIf="editingCita?._id !== cita._id">
+                  <!-- Información del servicio -->
+                  <div class="detail-item" *ngIf="cita.serviceId">
+                    <mat-icon class="detail-icon">content_cut</mat-icon>
+                    <div class="detail-content">
+                      <span class="detail-label">Servicio:</span>
+                      <span class="detail-value">{{cita.serviceId.name}}</span>
+                    </div>
+                  </div>
+
+                  <!-- Información del paquete -->
+                  <div class="detail-item" *ngIf="cita.packageId">
+                    <mat-icon class="detail-icon">card_giftcard</mat-icon>
+                    <div class="detail-content">
+                      <span class="detail-label">Paquete:</span>
+                      <span class="detail-value">{{cita.packageId.name}}</span>
+                      <small class="detail-description">{{cita.packageId.description}}</small>
+                    </div>
+                  </div>
+
+                  <!-- Fecha y hora -->
+                  <div class="detail-item">
+                    <mat-icon class="detail-icon">schedule</mat-icon>
+                    <div class="detail-content">
+                      <span class="detail-label">Fecha y Hora:</span>
+                      <span class="detail-value">
+                        {{cita.appointmentDate | date:'dd/MM/yyyy'}} a las {{cita.appointmentTime}}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Precio total -->
+                  <div class="detail-item price-item">
+                    <mat-icon class="detail-icon">attach_money</mat-icon>
+                    <div class="detail-content">
+                      <span class="detail-label">Precio Total:</span>
+                      <span class="detail-value price-value">${{cita.totalPrice | number:'1.2-2'}}</span>
+                    </div>
+                  </div>
+
+                  <!-- Form para calificar -->
+                   <div *ngIf="cita.status === 'completed'">
+                  <div class="rating-form" *ngIf="!cita.rated">
+                    <h4 class="rating-title">Califica tu experiencia</h4>
+                    <form [formGroup]="ratingForm" (ngSubmit)="calificarCita(cita._id.toString(), ratingForm.get('rating')?.value)">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Calificación</mat-label>
+                        <mat-select formControlName="rating">
+                          <mat-option value="1">1</mat-option>
+                          <mat-option value="2">2</mat-option>
+                          <mat-option value="3">3</mat-option>
+                          <mat-option value="4">4</mat-option>
+                          <mat-option value="5">5</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <button mat-flat-button color="primary" class="rating-button" type="submit" [disabled]="!ratingForm.valid">
+                        Calificar
+                      </button>
+                    </form>
+                  </div>
+                  <div class="rating-display" *ngIf="cita.rated">
+                    <h4 class="rating-title">Ya calificaste esta cita</h4>
+                </div>
                 </div>
 
-                <div class="detail-item">
-                  <mat-icon class="detail-icon">access_time</mat-icon>
-                  <div class="detail-text">
-                    <span class="detail-label">Horario</span>
-                    <span class="detail-value">{{cita.horario}}</span>
-                  </div>
-                </div>
 
-                <div class="detail-item" *ngIf="cita.servicio">
-                  <mat-icon class="detail-icon">content_cut</mat-icon>
-                  <div class="detail-text">
-                    <span class="detail-label">Servicio</span>
-                    <span class="detail-value">{{cita.servicio.nombre}}</span>
-                  </div>
-                </div>
-
-                <div class="detail-item" *ngIf="cita.paquete">
-                  <mat-icon class="detail-icon">card_giftcard</mat-icon>
-                  <div class="detail-text">
-                    <span class="detail-label">Paquete</span>
-                    <span class="detail-value">{{cita.paquete.nombre}}</span>
-                  </div>
-                </div>
-
-                <div class="detail-item" *ngIf="cita.persona">
-                  <mat-icon class="detail-icon">person</mat-icon>
-                  <div class="detail-text">
-                    <span class="detail-label">Profesional</span>
-                    <span class="detail-value">{{cita.persona.nombre}}</span>
-                  </div>
-                </div>
-
-                <div class="detail-item" *ngIf="!cita.persona">
-                  <mat-icon class="detail-icon">people</mat-icon>
-                  <div class="detail-text">
-                    <span class="detail-label">Profesional</span>
-                    <span class="detail-value">Cualquiera disponible</span>
-                  </div>
                 </div>
               </div>
             </mat-card-content>
-
-            <mat-card-actions>
-              <div class="card-footer">
-                <div class="precio-total">
-                  <span class="precio-label">Total:</span>
-                  <span class="precio-valor">{{cita.precioTotal | currency:'MXN':'symbol-narrow':'1.0-0'}}</span>
-                </div>
-              </div>
-            </mat-card-actions>
           </mat-card>
         </div>
       </div>
-
       <div class="loading-state" *ngIf="isLoading">
         <mat-icon class="loading-icon">hourglass_empty</mat-icon>
         <p>Cargando tus citas...</p>

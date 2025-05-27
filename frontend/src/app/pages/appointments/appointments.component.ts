@@ -66,6 +66,12 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   servicios: Service[] = [];
   paquetes: Package[] = [];
 
+  showModalFlag = false;
+  modalType = 'success';
+  modalTitle = '';
+  modalMessage = '';
+
+
   personas: Professional[] = [
     { id: 'a1', nombre: 'Andrea', especialidad: 'Estilista y Uñas', foto: 'assets/andrea.jpg' },
     { id: 'b2', nombre: 'Carlos', especialidad: 'Manicure y Pedicure', foto: 'assets/carlos.jpg' },
@@ -150,7 +156,7 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   initForms(): void {
     this.serviciosForm = this.formBuilder.group({
-      seleccion: ['', Validators.required] // Un solo campo para validar que se seleccionó algo
+      seleccion: ['', Validators.required]
     });
 
     this.fechaForm = this.formBuilder.group({
@@ -170,13 +176,11 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   onNext(currentStep: number): void {
     console.log(`Avanzando desde el paso ${currentStep + 1}`);
 
-    // Validar que se haya seleccionado un servicio o paquete antes de avanzar
     if (currentStep === 0) {
       if (!this.servicioSeleccionado && !this.paqueteSeleccionado) {
         alert('Por favor selecciona un servicio o paquete antes de continuar');
         return;
       }
-      // Actualizar el form para que pase la validación
       this.serviciosForm.patchValue({
         seleccion: this.paqueteSeleccionado ? 'paquete' : 'servicio'
       });
@@ -188,7 +192,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   }
 
   seleccionarServicio(servicio: Service): void {
-    // Solo permitir seleccionar si no hay paquete seleccionado
     if (this.paqueteSeleccionado) {
       this.paqueteSeleccionado = null;
     }
@@ -200,7 +203,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   }
 
   seleccionarPaquete(paquete: Package): void {
-    // Solo permitir seleccionar si no hay servicio seleccionado
     if (this.servicioSeleccionado) {
       this.servicioSeleccionado = null;
     }
@@ -262,6 +264,18 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/salon', this.salon._id]);
   }
 
+   showAlert(type: 'success' | 'error', title: string, message: string) {
+    this.modalType = type;
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.showModalFlag = true;
+  }
+
+  closeModal() {
+    this.showModalFlag = false;
+    this.router.navigate(['/mis-citas']);
+  }
+
   onComplete(): void {
     if (this.confirmacionForm.valid && (this.servicioSeleccionado || this.paqueteSeleccionado)) {
 
@@ -282,8 +296,7 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
       this.appointmentService.createAppointment(appointmentData).subscribe({
         next: (response) => {
           console.log('Cita creada exitosamente:', response);
-          alert('¡Tu cita ha sido confirmada con éxito!');
-          this.router.navigate(['/home']);
+          this.showAlert('success', '¡Éxito!', '¡La cita ha sido creada exitosamente!');
         },
         error: (error) => {
           console.error('Error al crear la cita:', error);

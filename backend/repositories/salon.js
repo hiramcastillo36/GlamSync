@@ -67,11 +67,7 @@ class SalonRepository {
         throw new Error('Invalid salon ID');
       }
 
-      const salon = await Salon.findByIdAndUpdate(
-        id,
-        { isActive: false },
-        { new: true }
-      );
+      const salon = await Salon.findByIdAndDelete(id);
 
       if (!salon) {
         throw new Error('Salon not found');
@@ -88,6 +84,23 @@ class SalonRepository {
       return await Salon.find(query);
     } catch (error) {
       throw new Error(`Error getting salons: ${error.message}`);
+    }
+  }
+
+  async updateRating(id, rating, ratingCount) {
+    try {
+      return await Salon.findByIdAndUpdate(
+        id,
+        {
+          $set: {
+            rating: rating,
+            ratingCount: ratingCount
+          }
+        },
+        { new: true }
+      );
+    } catch (error) {
+      throw new Error(`Error updating rating: ${error.message}`);
     }
   }
 }

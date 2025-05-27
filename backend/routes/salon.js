@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getSalonById, createSalon, updateSalon, deleteSalon, getSalones, getAdminSalones, getImage } = require("../controllers/salones");
+const { getSalonById, createSalon, updateSalon, deleteSalon, getSalones, getAdminSalones, getImage, updateActiveSalon, updateRating } = require("../controllers/salones");
 const { validateJWT } = require("../middlewares/auth");
 const router = Router();
 
@@ -30,6 +30,7 @@ router.get("/:id", getSalonById);
 router.post("/", validateJWT, upload.single('image'), createSalon);
 router.put("/:id", validateJWT, updateSalon);
 router.delete("/:id", validateJWT, deleteSalon);
-
+router.put("/:id/active", validateJWT, updateActiveSalon);
+router.put("/:id/rating", validateJWT, updateRating);
 
 module.exports = router;
