@@ -74,6 +74,11 @@ export class CitasAgendadasComponent implements OnInit {
   contactarCliente(telefono: string) {
   }
 
-  eliminarCita(cita: any) {
+  eliminarCita(cita: AppointmentResponse) {
+    this.appointmentService.deleteAppointment(cita._id.toString()).subscribe({
+      next: () => {
+        this.loadCitasAgendadas();
+      }
+    });
   }
 }
