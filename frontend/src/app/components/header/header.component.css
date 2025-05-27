@@ -6,11 +6,11 @@
     background-color: white;
   }
 
-  /* Breadcrumb Styles */
   .breadcrumb {
     display: flex;
     align-items: center;
     flex-grow: 1;
+    font-family: 'Playfair Display', serif;
   }
 
   .logo {
@@ -18,9 +18,9 @@
     font-weight: 600;
     text-decoration: none;
     margin-right: 8px;
+    font-family: 'Playfair Display', serif;
+    color: #8B5C54 !important
   }
-
-
 
   .separator {
     margin: 0 12px;
@@ -39,12 +39,10 @@
     font-weight: 400;
   }
 
-  /* Spacer para flex layout */
   .spacer {
     flex: 1 1 auto;
   }
 
-  /* Header Actions */
   .header-actions {
     display: flex;
     align-items: center;
@@ -60,14 +58,14 @@
     background-color: #f3f4f6;
   }
 
-  /* User Section (Authenticated) */
   .user-section {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 8px 12px;
     border-radius: 8px;
-    background-color: #f9fafb;
+    background-color: #8B5C54 ;
+    color: white;
     border: 1px solid #e5e7eb;
   }
 
@@ -75,10 +73,12 @@
     display: flex;
     align-items: center;
     gap: 8px;
+
   }
 
   .user-avatar {
     font-size: 24px;
+
   }
 
   .user-email {
@@ -89,6 +89,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: white;
   }
 
   .user-actions {
@@ -99,9 +100,10 @@
 
   .menu-btn,
   .logout-btn {
-    color: #6b7280;
+  
     width: 36px;
     height: 36px;
+    color: white;
   }
 
   .menu-btn:hover {
@@ -114,7 +116,6 @@
     background-color: #fee2e2;
   }
 
-  /* Auth Section (Not Authenticated) */
   .auth-section {
     display: flex;
     align-items: center;

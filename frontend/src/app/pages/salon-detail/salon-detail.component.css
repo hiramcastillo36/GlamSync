@@ -102,12 +102,18 @@
   }
 
   .services-card {
-    background-color: #8B5C54;
-    color: white;
-    border-radius: 10px ;
-    padding: 1rem;
-  }
-
+  background: linear-gradient(135deg, #8B5C54 0%, #a06b62 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(139, 92, 84, 0.25);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
   .services-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.8rem;
@@ -167,24 +173,6 @@
     font-weight: 500;
   }
 
-  .stars-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 0.5rem;
-  }
-
-  .stars-container mat-icon {
-    color: #ddd;
-    font-size: 1.5rem;
-    width: 24px;
-    height: 24px;
-  }
-
-  .stars-container mat-icon.filled {
-    color: #FFD700;
-  }
-
-
   .packages-section {
     margin-top: 50px;
     text-align: center;
@@ -192,43 +180,37 @@
 
   .packages-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-weight: 500;
+    font-size: 2.0rem;
+    margin-bottom: 1.0rem;
+    margin-top: 5rem;;
+    color: #115A75;
+    font-weight: 300;
+    text-shadow: 0 2px 4px rgba(17, 90, 117, 0.1);
+    position: relative;
   }
 
   .packages-container {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 2rem;
     flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .package {
-    width: 220px;
-    height: 130px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
+    width: 250px;
+    height: 160px;
+    background: #1056709f;
+    border-radius: 15px;
     overflow: hidden;
-  }
-
-  .package-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .package-image-container {
     position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f9e4d4;
+    box-shadow: 0 8px 25px rgba(17, 90, 117, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    color: white;
   }
-
+  
   .discount-icon {
     width: 90px;
     height: 90px;

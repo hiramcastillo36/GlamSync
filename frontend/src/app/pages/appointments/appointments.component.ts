@@ -66,6 +66,12 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   servicios: Service[] = [];
   paquetes: Package[] = [];
 
+  showModalFlag = false;
+  modalType = 'success';
+  modalTitle = '';
+  modalMessage = '';
+
+
   personas: Professional[] = [
     { id: 'a1', nombre: 'Andrea', especialidad: 'Estilista y Uñas', foto: 'assets/andrea.jpg' },
     { id: 'b2', nombre: 'Carlos', especialidad: 'Manicure y Pedicure', foto: 'assets/carlos.jpg' },
@@ -262,6 +268,17 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/salon', this.salon._id]);
   }
 
+   showAlert(type: 'success' | 'error', title: string, message: string) {
+    this.modalType = type;
+    this.modalTitle = title;
+    this.modalMessage = message;
+    this.showModalFlag = true;
+  }
+
+  closeModal() {
+    this.showModalFlag = false;
+  }
+
   onComplete(): void {
     if (this.confirmacionForm.valid && (this.servicioSeleccionado || this.paqueteSeleccionado)) {
 
@@ -282,8 +299,10 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
       this.appointmentService.createAppointment(appointmentData).subscribe({
         next: (response) => {
           console.log('Cita creada exitosamente:', response);
-          alert('¡Tu cita ha sido confirmada con éxito!');
-          this.router.navigate(['/home']);
+          this.showAlert('success', '¡Éxito!', '¡La cita ha sido creada exitosamente!');
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 3000); 
         },
         error: (error) => {
           console.error('Error al crear la cita:', error);
@@ -295,3 +314,4 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     }
   }
 }
+

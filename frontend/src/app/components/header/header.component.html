@@ -1,5 +1,4 @@
 <mat-toolbar color="white" class="header">
-    <!-- Breadcrumb Section -->
     <div class="breadcrumb" *ngIf="showBreadcrumb">
       <a routerLink="/home" class="logo">GlamSync</a>
       <ng-container *ngIf="salonId && salonName">
@@ -12,28 +11,21 @@
       </ng-container>
     </div>
 
-    <!-- Logo Simple -->
     <span *ngIf="!showBreadcrumb" class="logo">GlamSync</span>
 
-    <!-- Spacer para empujar elementos a la derecha -->
     <span class="spacer"></span>
 
-    <!-- Header Actions -->
     <div class="header-actions">
-      <!-- Search Button -->
       <button mat-icon-button class="search-btn" matTooltip="Buscar">
         <mat-icon>search</mat-icon>
       </button>
-
-      <!-- Authenticated User Section -->
+      
       <div class="user-section" *ngIf="isAuthenticated && !loading">
-        <!-- User Info Display -->
         <div class="user-info">
           <mat-icon class="user-avatar">account_circle</mat-icon>
           <span class="user-email">{{ getUserEmail() }}</span>
         </div>
 
-        <!-- Action Buttons for Authenticated User -->
         <div class="user-actions">
           <button mat-icon-button
                   (click)="toggleMenu()"
@@ -45,7 +37,6 @@
         </div>
       </div>
 
-      <!-- Login Section for Non-Authenticated Users -->
       <div class="auth-section" *ngIf="!isAuthenticated && !loading">
         <button mat-stroked-button
                 (click)="login()"
@@ -64,13 +55,11 @@
         </button>
       </div>
 
-      <!-- Loading State -->
       <div class="loading-section" *ngIf="loading">
         <mat-icon class="loading-icon">hourglass_empty</mat-icon>
       </div>
     </div>
 
-    <!-- Slide Menu Component -->
     <app-slide-menu
       [isOpen]="isMenuOpen"
       (menuClosed)="closeMenu()"
