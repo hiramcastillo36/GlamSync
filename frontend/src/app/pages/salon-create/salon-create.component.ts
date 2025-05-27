@@ -297,7 +297,8 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
       const packagesArray = this.packages.controls.map(control => ({
         name: control.get('name')?.value,
         description: control.get('description')?.value,
-        price: control.get('price')?.value
+        price: control.get('price')?.value,
+        services: control.get('services')?.value
       }));
 
       const salonData = {

@@ -17,13 +17,16 @@
             </div>
           </div>
           <p>Tel: {{salon.phone}}</p>
-          <p>Horario de atención:</p>
+
+          <p>Ubicación:</p>
+          <p>{{salon.address}}</p>
           <div class="working-hours">
             <div *ngFor="let schedule of salon.workingHours" class="day-schedule">
               <span class="day-name">{{schedule.day | titlecase}}:</span>
               <span class="day-time">{{schedule.time}}</span>
             </div>
           </div>
+          <p>Horario de atención:</p>
         </div>
         <button mat-flat-button class="agendar-btn" (click)="agendarCita()">AGENDAR</button>
       </div>
