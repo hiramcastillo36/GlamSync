@@ -108,6 +108,7 @@
                   </div>
 
                   <!-- Form para calificar -->
+                   <div *ngIf="cita.status === 'completed'">
                   <div class="rating-form" *ngIf="!cita.rated">
                     <h4 class="rating-title">Califica tu experiencia</h4>
                     <form [formGroup]="ratingForm" (ngSubmit)="calificarCita(cita._id.toString(), ratingForm.get('rating')?.value)">
@@ -126,10 +127,12 @@
                       </button>
                     </form>
                   </div>
-
                   <div class="rating-display" *ngIf="cita.rated">
-                      <h4 class="rating-title">Ya calificaste esta cita</h4>
-                  </div>
+                    <h4 class="rating-title">Ya calificaste esta cita</h4>
+                </div>
+                </div>
+
+
                 </div>
               </div>
             </mat-card-content>
