@@ -43,26 +43,50 @@
       </div>
     </div>
 
-
+    
     <div class="salon-image-section">
       <img [src]="salon.image" alt="{{salon.name}}" class="main-image">
 
-      <div class="rating-section">
-        <p>¡No olvides calificar tu visita!</p>
-        <p class="link">Ver comentarios</p>
-        <app-rating-stars [rating]="salon.rating"></app-rating-stars>
-      </div>
-
-      <div class="packages-section">
+      <div class="packages-section" *ngIf="packagesWithImages.length > 0">
         <h2 class="packages-title">Conoce nuestros paquetes del mes</h2>
-        <div class="packages-container">
-          <div class="package" *ngFor="let paquete of packages">
-            <h3 class="package-title">{{paquete.name}}</h3>
-            <p class="package-description">{{paquete.description}}</p>
-            <p class="package-price">{{paquete.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+        
+        <div class="carousel-container">
+          <button class="carousel-btn carousel-btn-prev" 
+                  (click)="prevSlide()" 
+                  *ngIf="packagesWithImages.length > 3 && currentSlide > 0"
+                  mat-icon-button>
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <div class="carousel-wrapper">
+            <div class="carousel-track" [style.transform]="'translateX(-' + (currentSlide * 270) + 'px)'">
+              <div class="package-slide" *ngFor="let paquete of packagesWithImages">
+                <div class="package-card">
+                  <div class="package-image-container">
+                    <img [src]="paquete.imageUrl" 
+                         [alt]="paquete.name" 
+                         class="package-image">
+                    <div class="package-overlay">
+                      <div class="package-content">
+                        <h3 class="package-title">{{paquete.name}}</h3>
+                        <p class="package-description">{{paquete.description}}</p>
+                        <p class="package-price">{{paquete.price | currency:'MXN':'symbol-narrow':'1.0-0'}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <button class="carousel-btn carousel-btn-next" 
+                  (click)="nextSlide()" 
+                  *ngIf="packagesWithImages.length > 3 && currentSlide < packagesWithImages.length - 3"
+                  mat-icon-button>
+            <mat-icon>chevron_right</mat-icon>
+          </button>
         </div>
       </div>
     </div>
   </div>
-</div>`
+</div>
