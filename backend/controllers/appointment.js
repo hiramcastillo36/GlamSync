@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const { appointmentRepository } = require("../repositories/appointment");
+const { salonRepository } = require("../repositories/salon");
 
 const createAppointment = async (req = request, res = response) => {
     try {
@@ -92,10 +93,41 @@ const getAppointmentsByAdmin = async (req = request, res = response) => {
     });
 };
 
+const updateAppointmentDate = async (req = request, res = response) => {
+    const { id } = req.params;
+    const { appointmentDate, appointmentTime } = req.body;
+    const appointment = await appointmentRepository.updateDate(id, appointmentDate, appointmentTime);
+    res.json({
+        success: true,
+        data: appointment
+    });
+};
+
+const markAsCompleted = async (req = request, res = response) => {
+    const { id } = req.params;
+    const appointmentData = await appointmentRepository.getById(id);
+    const salon = await salonRepository.getById(appointmentData.salonId);
+
+    if (req.user._id.toString() !== salon.administratorId.toString()) {
+        return res.status(403).json({
+            success: false,
+            error: 'You are not authorized to mark this appointment as completed'
+        });
+    }
+
+    const appointment = await appointmentRepository.markAsCompleted(id);
+    res.json({
+        success: true,
+        data: appointment
+    });
+};
+
 module.exports = {
     createAppointment,
     getAppointmentsByUserId,
     deleteAppointment,
     getAppointmentsBySalonId,
-    getAppointmentsByAdmin
+    getAppointmentsByAdmin,
+    updateAppointmentDate,
+    markAsCompleted
 };

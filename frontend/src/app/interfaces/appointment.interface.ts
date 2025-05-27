@@ -34,6 +34,7 @@ export interface AppointmentResponse {
     totalPrice: number;
     rating?: number;
     rated?: boolean;
+    status?: string;
 }
 
 

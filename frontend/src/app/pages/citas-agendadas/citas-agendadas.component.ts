@@ -81,4 +81,16 @@ export class CitasAgendadasComponent implements OnInit {
       }
     });
   }
+
+  marcarComoCompletada(cita: AppointmentResponse) {
+    this.appointmentService.markAsCompleted(cita._id.toString()).subscribe({
+      next: () => {
+        this.loadCitasAgendadas();
+      },
+      error: (error) => {
+        console.error('Error al marcar la cita como completada:', error);
+        alert('No se pudo marcar la cita como completada. Por favor intenta de nuevo.');
+      }
+    });
+  }
 }

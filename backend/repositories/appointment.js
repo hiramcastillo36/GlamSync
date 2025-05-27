@@ -77,6 +77,16 @@ class AppointmentRepository {
         })
         .sort({ appointmentDate: -1, appointmentTime: -1 });
     }
+
+    async updateDate(id, date, time) {
+        console.log(id, date, time);
+        console.log("Actualizando fecha y hora de la cita");
+        return await Appointment.findByIdAndUpdate(id, { appointmentDate: date, appointmentTime: time }, { new: true });
+    }
+
+    async markAsCompleted(id) {
+            return await Appointment.findByIdAndUpdate(id, { status: 'completed' }, { new: true });
+    }
 }
 
 const appointmentRepository = new AppointmentRepository();

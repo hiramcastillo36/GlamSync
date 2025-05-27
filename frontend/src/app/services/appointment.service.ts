@@ -40,4 +40,11 @@ export class AppointmentService {
         return this.http.get<{data: AppointmentResponse[]}>(`${this.apiUrl}/admin`, { headers: this.getHeaders() });
     }
 
+    updateAppointment(appointmentId: string, updateData: { appointmentDate: Date; appointmentTime: string }): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${appointmentId}`, updateData, { headers: this.getHeaders() });
+    }
+
+    markAsCompleted(appointmentId: string): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${appointmentId}/completed`, {}, { headers: this.getHeaders() });
+    }
 }

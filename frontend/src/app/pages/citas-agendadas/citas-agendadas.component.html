@@ -40,7 +40,13 @@
                 <p class="salon-name">{{cita.salonId.address}}</p>
               </div>
               <div class="card-actions">
-
+                <button mat-icon-button
+                        class="complete-btn"
+                        (click)="marcarComoCompletada(cita)"
+                        matTooltip="Marcar como completada"
+                        *ngIf="cita.status === 'pending'">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
                 <button mat-icon-button
                         class="cancel-btn"
                         (click)="eliminarCita(cita)"
@@ -52,6 +58,10 @@
 
             <mat-card-content>
               <div class="cita-details">
+                <div class="status-badge" *ngIf="cita.status === 'completed'">
+                  <mat-icon class="status-icon">check_circle</mat-icon>
+                  <span>Completada</span>
+                </div>
                 <div class="detail-row">
                   <div class="detail-item">
                     <mat-icon class="detail-icon">event</mat-icon>

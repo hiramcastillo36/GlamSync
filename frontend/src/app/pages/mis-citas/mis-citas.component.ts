@@ -13,6 +13,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { SalonService } from '../../services/salon.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-mis-citas',
@@ -27,7 +30,10 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
     HeaderComponent,
     MatFormFieldModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule
   ],
   templateUrl: './mis-citas.component.html',
   styleUrls: ['./mis-citas.component.css']
@@ -36,6 +42,12 @@ export class MisCitasComponent implements OnInit {
   citas: AppointmentResponse[] = [];
   isLoading: boolean = true;
   ratingForm: FormGroup;
+  editForm: FormGroup;
+  editingCita: AppointmentResponse | null = null;
+  horariosDisponibles = [
+    '09:00', '10:00', '11:00', '12:00',
+    '13:00', '14:00', '16:00', '17:00', '18:00'
+  ];
 
   constructor(
     private appointmentService: AppointmentService,
@@ -44,6 +56,11 @@ export class MisCitasComponent implements OnInit {
   ) {
     this.ratingForm = this.fb.group({
       rating: ['', Validators.required]
+    });
+
+    this.editForm = this.fb.group({
+      fecha: ['', Validators.required],
+      hora: ['', Validators.required]
     });
   }
 
@@ -85,6 +102,44 @@ export class MisCitasComponent implements OnInit {
         error: (error) => {
           console.error('Error al calificar:', error);
           alert('No se pudo calificar la cita. Por favor intenta de nuevo.');
+        }
+      });
+    }
+  }
+
+  toggleEditForm(cita: AppointmentResponse) {
+    if (this.editingCita?._id === cita._id) {
+      this.cancelarEdicion();
+    } else {
+      this.editingCita = cita;
+      this.editForm.patchValue({
+        fecha: new Date(cita.appointmentDate),
+        hora: cita.appointmentTime
+      });
+    }
+  }
+
+  cancelarEdicion() {
+    this.editingCita = null;
+    this.editForm.reset();
+  }
+
+  actualizarCita(citaId: string) {
+    if (this.editForm.valid) {
+      const { fecha, hora } = this.editForm.value;
+      const appointmentDate = fecha.toISOString().split('T')[0];
+
+      this.appointmentService.updateAppointment(citaId, {
+        appointmentDate: new Date(appointmentDate),
+        appointmentTime: hora
+      }).subscribe({
+        next: () => {
+          this.loadCitas();
+          this.cancelarEdicion();
+        },
+        error: (error) => {
+          console.error('Error al actualizar la cita:', error);
+          alert('No se pudo actualizar la cita. Por favor intenta de nuevo.');
         }
       });
     }
