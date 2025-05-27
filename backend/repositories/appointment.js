@@ -48,14 +48,12 @@ class AppointmentRepository {
     }
 
     async getAppointmentsByAdmin(adminId) {
-        // Primero obtenemos los salones del administrador
         const salons = await Salon.find({ administratorId: new ObjectId(adminId) });
 
         if (!salons.length) {
             return [];
         }
 
-        // Obtenemos las citas de todos los salones del administrador
         return await Appointment.find({
             salonId: { $in: salons.map(salon => salon._id) }
         })

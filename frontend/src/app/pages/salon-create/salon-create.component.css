@@ -196,14 +196,15 @@
 
   .package-form {
     display: grid;
-    grid-template-columns: 1fr 2fr 100px 1fr;
+    grid-template-columns: 1fr 2fr 100px 1fr 1fr;
     gap: 1rem;
     align-items: flex-end;
   }
 
   .package-name-field,
   .package-description-field,
-  .package-price-field {
+  .package-price-field,
+  .package-services-field {
     width: 100%;
   }
 
@@ -503,7 +504,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(2px); 
+  backdrop-filter: blur(2px);
   display: flex;
  }
 
@@ -515,7 +516,7 @@
     max-width: 450px;
     width: 90%;
     max-height: 90vh;
-    box-shadow: 
+    box-shadow:
       0 10px 30px rgba(0, 0, 0, 0.3),
       0 0 0 1px rgba(255, 255, 255, 0.1);
     animation: modalAppear 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -523,9 +524,9 @@
   }
   .modal-content {
     text-align: center;
-    padding: 40px 30px; 
+    padding: 40px 30px;
   }
- 
+
   @media (max-width: 768px) {
     .content-container {
       padding: 1rem;
@@ -597,4 +598,38 @@
       width: 100%;
       margin-bottom: 0.25rem;
     }
+  }
+
+  .package-services {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background-color: #f8f5f3;
+    border-radius: 4px;
+  }
+
+  .package-services strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  .package-services ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .package-services li {
+    padding: 0.25rem 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .package-services li:before {
+    content: "•";
+    color: #8B5C54;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
   }

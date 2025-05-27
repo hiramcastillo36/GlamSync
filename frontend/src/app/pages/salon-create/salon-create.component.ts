@@ -48,6 +48,7 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
   newPackageName: string = '';
   newPackageDescription: string = '';
   newPackagePrice: number = 0;
+  selectedServices: string[] = [];
 
   showModalFlag = false;
   modalType = 'success';
@@ -180,11 +181,12 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
   }
 
   addPackage(): void {
-    if (this.newPackageName.trim() && this.newPackageDescription.trim() && this.newPackagePrice > 0) {
+    if (this.newPackageName.trim() && this.newPackageDescription.trim() && this.newPackagePrice > 0 && this.selectedServices.length > 0) {
       const packageControl = this.formBuilder.group({
         name: [this.newPackageName.trim(), Validators.required],
         description: [this.newPackageDescription.trim(), Validators.required],
-        price: [this.newPackagePrice, [Validators.required, Validators.min(1)]]
+        price: [this.newPackagePrice, [Validators.required, Validators.min(1)]],
+        services: [this.selectedServices, Validators.required]
       });
 
       this.packages.push(packageControl);
@@ -192,6 +194,7 @@ export class SalonCreateComponent implements OnInit, AfterViewInit {
       this.newPackageName = '';
       this.newPackageDescription = '';
       this.newPackagePrice = 0;
+      this.selectedServices = [];
 
       this.servicesForm.markAsDirty();
       this.servicesForm.updateValueAndValidity();

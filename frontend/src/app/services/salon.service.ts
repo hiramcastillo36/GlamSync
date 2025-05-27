@@ -56,4 +56,24 @@ export class SalonService {
     updateRating(appointmentId: string, rating: number): Observable<any> {
         return this.http.put(`${this.apiUrl}/${appointmentId}/rating`, { rating }, { headers: this.getHeaders() });
     }
+
+    addService(salonId: string, serviceData: { name: string; description: string; price: number }): Observable<any> {
+        const data = {
+            ...serviceData,
+            salonId
+        }
+        return this.http.post(`http://localhost:8080/api/service/`, data, { headers: this.getHeaders() });
+    }
+
+    addPackage(salonId: string, packageData: { name: string; description: string; price: number; services: string[] }): Observable<any> {
+
+        const data = {
+            ...packageData,
+            salonId
+        }
+
+        console.log(data);
+
+        return this.http.post(`http://localhost:8080/api/package/`, data, { headers: this.getHeaders() });
+    }
 }

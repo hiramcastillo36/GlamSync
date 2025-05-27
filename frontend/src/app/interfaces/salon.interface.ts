@@ -26,8 +26,31 @@ export interface SalonBase {
   isActive: boolean;
 }
 
+export interface PackageWithId extends Package {
+  _id: ID;
+}
+
+export interface ServiceWithId extends Service {
+  _id: ID;
+}
+
+export interface SalonWithId extends SalonBase {
+    _id: ID;
+    name: string;
+    address: string;
+    phone: string;
+    description: string;
+    workingHours: WorkingHours[];
+    image: string;
+    rating: number;
+    services: ServiceWithId[];
+    packages: PackageWithId[];
+    registerDate: Date;
+    isActive: boolean;
+}
+
 export interface SalonResponse {
-  data: SalonBase[];
+  data: SalonWithId[];
 }
 
 export interface SalonDetailResponse {

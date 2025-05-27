@@ -218,12 +218,25 @@
                     <span matPrefix>$</span>
                   </mat-form-field>
 
+                  <mat-form-field appearance="outline" class="package-services-field">
+                    <mat-label>Servicios incluidos</mat-label>
+                    <mat-select
+                      [(ngModel)]="selectedServices"
+                      [ngModelOptions]="{standalone: true}"
+                      multiple
+                      placeholder="Selecciona los servicios">
+                      <mat-option *ngFor="let service of services.controls" [value]="service.get('name')?.value">
+                        {{service.get('name')?.value}} - ${{service.get('price')?.value | number:'1.0-0'}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
                   <button
                     type="button"
                     mat-flat-button
                     color="accent"
                     (click)="addPackage()"
-                    [disabled]="!newPackageName.trim() || !newPackageDescription.trim() || newPackagePrice <= 0">
+                    [disabled]="!newPackageName.trim() || !newPackageDescription.trim() || newPackagePrice <= 0 || selectedServices.length === 0">
                     <mat-icon>add</mat-icon> Agregar paquete
                   </button>
                 </div>
@@ -324,6 +337,14 @@
                       <div class="package-summary-info">
                         <h4>{{package.get('name')?.value}}</h4>
                         <p>{{package.get('description')?.value}}</p>
+                        <div class="package-services">
+                          <strong>Servicios incluidos:</strong>
+                          <ul>
+                            <li *ngFor="let service of package.get('services')?.value">
+                              {{service}}
+                            </li>
+                          </ul>
+                        </div>
                         <span class="price">${{package.get('price')?.value | number:'1.0-0'}}</span>
                       </div>
                     </div>

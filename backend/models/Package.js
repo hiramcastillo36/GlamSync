@@ -6,7 +6,8 @@ const PackageSchema = new mongoose.Schema({
     description: String,
     price: Number,
     creationDate: Date,
-    isActive: Boolean
+    isActive: Boolean,
+    services: [mongoose.Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model('Package', PackageSchema);

@@ -2,25 +2,8 @@ const { response, request } = require("express");
 const { salonRepository } = require("../repositories/salon");
 const Service = require("../models/Service");
 const Package = require("../models/Package");
-const multer = require('multer');
 const { appointmentRepository } = require("../repositories/appointment");
 const mongoose = require('mongoose');
-
-const storage = multer.memoryStorage();
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB límite
-  },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Solo se permiten archivos de imagen'), false);
-    }
-  }
-});
 
 const getSalonById = async (req = request, res = response) => {
     try {
@@ -73,7 +56,8 @@ const createSalon = async (req = request, res = response) => {
                     salonId: null,
                     name: packageData.name,
                     description: packageData.description,
-                    price: packageData.price
+                    price: packageData.price,
+                    services: serviceIds
                 });
                 const savedPackage = await newPackage.save();
                 packageIds.push(savedPackage._id);

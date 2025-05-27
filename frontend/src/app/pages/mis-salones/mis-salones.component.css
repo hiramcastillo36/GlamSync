@@ -400,3 +400,71 @@
       justify-content: center;
     }
   }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .add-btn {
+    color: #8B5C54;
+  }
+
+  .add-btn:hover {
+    background-color: rgba(139, 92, 84, 0.1);
+  }
+
+  .add-form {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #FAF0EF;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .selected-services {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #F5F5F5;
+    border-radius: 8px;
+  }
+
+  .selected-services h4 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .selected-service-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #E0E0E0;
+  }
+
+  .selected-service-item:last-child {
+    border-bottom: none;
+  }
+
+  .total-price {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 2px solid #E0E0E0;
+    color: #8B5C54;
+  }
